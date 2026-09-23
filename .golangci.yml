@@ -1,0 +1,28 @@
+version: '2'
+
+run:
+  timeout: 5m
+
+linters:
+  default: standard
+  enable:
+    - misspell
+    - revive
+    - unconvert
+    - gocyclo
+    - errorlint
+  settings:
+    gocyclo:
+      # El parser y el analizador tienen switches grandes; subir con criterio.
+      min-complexity: 30
+    revive:
+      rules:
+        - name: exported
+          disabled: true
+        - name: var-naming
+          disabled: true
+
+formatters:
+  enable:
+    - gofmt
+    - goimports

@@ -1,0 +1,24 @@
+{
+  "name": "pokescript",
+  "private": true,
+  "description": "PokeScript: lenguaje pedagógico, compilador e IDE (Wails + Go + Svelte)",
+  "scripts": {
+    "prepare": "husky",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint:md": "markdownlint-cli2 \"**/*.md\"",
+    "spell": "cspell --no-progress --dot \"**\"",
+    "lint": "npm run format:check && npm run lint:md && npm run spell"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
+    "@cspell/dict-es-es": "^3.0.8",
+    "cspell": "^10.3.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.5.1",
+    "markdownlint-cli2": "^0.23.3",
+    "prettier": "^3.9.9"
+  },
+  "type": "module"
+}

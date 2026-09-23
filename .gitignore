@@ -1,0 +1,19 @@
+# Wails / Go
+build/bin/
+*.exe
+*.test
+*.out
+
+# Svelte / Node
+node_modules/
+frontend/dist/
+frontend/wailsjs/
+.svelte-kit/
+
+# Editor / SO
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+.DS_Store
+Thumbs.db

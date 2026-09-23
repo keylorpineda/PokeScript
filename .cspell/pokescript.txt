@@ -1,0 +1,96 @@
+# Diccionario del proyecto. Una palabra por línea.
+# Si cspell marca una palabra válida, agrégala aquí (orden alfabético).
+
+# Palabras reservadas de PokeScript
+electrico
+enseñar
+fantasma
+gritar
+huir
+medalla
+mochila
+movimiento
+recorrer
+redondear
+resto
+segun
+
+# Nombres del proyecto y del dominio
+Bulbi
+chispo
+PokeScript
+Pokémon
+Pokemon
+pokescript
+pks
+
+# Técnicos
+commitlint
+CodeMirror
+cortocircuito
+EBNF
+Howler
+Levenshtein
+lexer
+lexear
+lexema
+PixiJS
+subcódigo
+Svelte
+Wails
+webkit
+
+# Identificadores sin tilde (válidos en código y gramática)
+asignacion
+coleccion
+compilacion
+dano
+declaracion
+diagnosticos
+ejecucion
+especificacion
+expresion
+implementacion
+importacion
+instruccion
+lexico
+parametros
+semantico
+sintactico
+tamano
+variacion
+
+# Español técnico que el diccionario no trae
+autocompletado
+desapila
+encadenable
+encadenables
+entregable
+indentación
+infijo
+multiarchivo
+nulabilidad
+ocultamiento
+reasignación
+recursión
+subcarpetas
+superefectivo
+
+# Herramientas y rutas
+ebnf
+gitmessage
+gofmt
+goimports
+golangci
+Interp
+wailsjs
+davidanson
+eamodio
+errorlens
+errorlint
+esbenp
+gocyclo
+spanish
+unconvert
+usernamehw
+vivaxy

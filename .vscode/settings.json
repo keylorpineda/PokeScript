@@ -1,0 +1,38 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "files.associations": {
+    "*.pks": "plaintext"
+  },
+  "[go]": {
+    "editor.defaultFormatter": "golang.go",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "[plaintext]": {
+    "editor.formatOnSave": false
+  },
+  "go.lintTool": "golangci-lint",
+  "go.lintOnSave": "package",
+  "cSpell.language": "es,en",
+  "conventionalCommits.scopes": [
+    "lexer",
+    "parser",
+    "analyzer",
+    "interpreter",
+    "assistant",
+    "diagnostics",
+    "project",
+    "editor",
+    "ui",
+    "wails",
+    "examples",
+    "tests",
+    "docs",
+    "config"
+  ]
+}

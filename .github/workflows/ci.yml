@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  commits:
+    name: Mensajes de commit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Validar commits del PR
+        if: github.event_name == 'pull_request'
+        run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
+      - name: Validar commits del push
+        if: github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000'
+        run: npx commitlint --from ${{ github.event.before }} --to ${{ github.sha }} --verbose
+      - name: Validar último commit (primer push de la rama)
+        if: github.event_name == 'push' && github.event.before == '0000000000000000000000000000000000000000'
+        run: npx commitlint --last --verbose
+
+  standards:
+    name: Formato, markdown y ortografía
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Prettier
+        run: npm run format:check
+      - name: Markdownlint
+        run: npm run lint:md
+      - name: CSpell
+        run: npm run spell
+
+  go:
+    name: Compilador (Go)
+    runs-on: ubuntu-latest
+    if: hashFiles('go.mod') != ''
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Formato (gofmt)
+        run: |
+          sin_formato=$(gofmt -l ./internal)
+          if [ -n "$sin_formato" ]; then
+            echo "Archivos sin gofmt:"; echo "$sin_formato"; exit 1
+          fi
+      - name: go vet
+        run: go vet ./internal/...
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.4
+          args: ./internal/...
+      - name: Pruebas
+        run: go test -race -cover ./internal/...
+
+  frontend:
+    name: Interfaz (Svelte)
+    runs-on: ubuntu-latest
+    if: hashFiles('frontend/package.json') != ''
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm run build

@@ -1,0 +1,13 @@
+npx --no -- lint-staged
+
+# Verifica formato de los archivos Go que van en el commit (si Go está instalado).
+archivos_go=$(git diff --cached --name-only --diff-filter=ACM -- '*.go')
+if [ -n "$archivos_go" ] && command -v gofmt >/dev/null 2>&1; then
+  sin_formato=$(gofmt -l $archivos_go)
+  if [ -n "$sin_formato" ]; then
+    echo "Estos archivos no tienen formato gofmt:"
+    echo "$sin_formato"
+    echo "Ejecuta: gofmt -w <archivo>"
+    exit 1
+  fi
+fi

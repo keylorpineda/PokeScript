@@ -1,0 +1,48 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  "language": "es,en",
+  "import": ["@cspell/dict-es-es/cspell-ext.json"],
+  "dictionaryDefinitions": [
+    {
+      "name": "pokescript",
+      "path": "./.cspell/pokescript.txt",
+      "addWords": true
+    }
+  ],
+  "dictionaries": [
+    "pokescript",
+    "es-es",
+    "en_US",
+    "golang",
+    "typescript",
+    "node",
+    "npm",
+    "css",
+    "html"
+  ],
+  "languageSettings": [
+    {
+      "languageId": "pokescript",
+      "locale": "es",
+      "dictionaries": ["pokescript", "es-es"]
+    }
+  ],
+  "overrides": [
+    {
+      "filename": "**/*.pks",
+      "languageId": "pokescript"
+    }
+  ],
+  "ignorePaths": [
+    "node_modules/**",
+    "package-lock.json",
+    "go.sum",
+    "frontend/dist/**",
+    "frontend/wailsjs/**",
+    "build/**",
+    ".git/**",
+    ".husky/_/**"
+  ],
+  "ignoreRegExpList": ["/\bT[A-Z][A-Za-z]*\b/"]
+}

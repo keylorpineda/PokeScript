@@ -1,0 +1,5 @@
+{
+  "*.{js,ts,svelte,json,css,html,yml,yaml}": ["prettier --write"],
+  "*.md": ["prettier --write", "markdownlint-cli2"],
+  "*": ["cspell --dot --no-must-find-files --no-progress --no-summary"]
+}

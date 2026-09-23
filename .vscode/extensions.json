@@ -1,0 +1,15 @@
+{
+  "recommendations": [
+    "golang.go",
+    "svelte.svelte-vscode",
+    "esbenp.prettier-vscode",
+    "editorconfig.editorconfig",
+    "streetsidesoftware.code-spell-checker",
+    "streetsidesoftware.code-spell-checker-spanish",
+    "davidanson.vscode-markdownlint",
+    "vivaxy.vscode-conventional-commits",
+    "github.vscode-github-actions",
+    "eamodio.gitlens",
+    "usernamehw.errorlens"
+  ]
+}

@@ -1,0 +1,7 @@
+# PKS type(scope): description in English, imperative mood, starts lowercase, no final period
+#
+# types:  feat fix docs refactor test style perf build ci chore revert
+# scopes: lexer parser analyzer interpreter assistant diagnostics
+#         project editor ui wails examples tests docs config
+#
+# Optional body (what and why), separated by a blank line.

@@ -24,6 +24,20 @@ Pokemon
 pokescript
 pks
 
+# Pokémon y términos del README
+atrápalos
+boton
+Bulbasaur
+Charmander
+Geodude
+Pikachu
+Pokébola
+Porygon
+Snorlax
+Squirtle
+tipado
+Unown
+
 # Técnicos
 commitlint
 CodeMirror
@@ -38,6 +52,8 @@ PixiJS
 subcódigo
 Svelte
 Wails
+Fira
+Segoe
 webkit
 
 # Identificadores sin tilde (válidos en código y gramática)

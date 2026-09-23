@@ -628,6 +628,7 @@ Cada hito es una medalla de gimnasio 🏅
 | -------------------------------------------------------------- | --------------- |
 | [Go](https://go.dev/dl/)                                       | 1.23 o superior |
 | [Node.js](https://nodejs.org)                                  | 22 o superior   |
+| [pnpm](https://pnpm.io/installation)                           | 10 o superior   |
 | [Wails CLI](https://wails.io/docs/gettingstarted/installation) | v2              |
 
 ### Pasos
@@ -635,11 +636,11 @@ Cada hito es una medalla de gimnasio 🏅
 ```bash
 git clone https://github.com/keylorpineda/PokeScript.git
 cd PokeScript
-npm install
+pnpm install
 git config commit.template .gitmessage
 ```
 
-`npm install` activa los hooks de Git (Husky) que revisan el formato, la ortografía y los mensajes de commit.
+`pnpm install` activa los hooks de Git (Husky) que revisan el formato, la ortografía y los mensajes de commit.
 
 > 🥚 El huevo todavía no eclosiona: los comandos para correr el IDE (`wails dev`) se agregan cuando esté el proyecto Wails.
 

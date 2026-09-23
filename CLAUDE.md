@@ -29,6 +29,8 @@ La especificación completa se carga en el contexto con esta importación:
 
 ## Orden de trabajo
 
+El plan del equipo (roles, sprints, tareas `T<id>`, contratos entre módulos y decisiones) está en `docs/PLAN.md`. Las tareas nuevas y las decisiones se registran ahí.
+
 Seguir los hitos de la sección 0 de la especificación. La prioridad es llegar al hito 4: el intérprete corriendo el primer programa.
 
 ## Commits
@@ -55,4 +57,4 @@ Los tipos, los alcances y los ejemplos están en `CONTRIBUTING.md`.
 
 1. commitlint sobre todos los commits nuevos.
 2. `gofmt`, `go vet` y `go test -race` sobre `internal/` (solo si existe `go.mod`).
-3. `npm run build` del frontend (solo si existe `frontend/package.json`).
+3. `pnpm run build` del frontend (solo si existe `frontend/package.json`).

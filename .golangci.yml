@@ -5,8 +5,8 @@ run:
 
 linters:
   default: standard
+  # misspell no se usa: solo conoce inglés. CSpell revisa la ortografía en español e inglés.
   enable:
-    - misspell
     - revive
     - unconvert
     - gocyclo
@@ -23,6 +23,7 @@ linters:
           disabled: true
 
 formatters:
+  # misspell no se usa: solo conoce inglés. CSpell revisa la ortografía en español e inglés.
   enable:
     - gofmt
     - goimports

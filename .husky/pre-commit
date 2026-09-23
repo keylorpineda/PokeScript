@@ -1,4 +1,4 @@
-npx --no -- lint-staged
+pnpm exec lint-staged
 
 # Verifica formato de los archivos Go que van en el commit (si Go está instalado).
 archivos_go=$(git diff --cached --name-only --diff-filter=ACM -- '*.go')

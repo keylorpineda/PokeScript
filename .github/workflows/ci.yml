@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, dev]
   pull_request:
 
 concurrency:
@@ -49,10 +49,24 @@ jobs:
       - name: CSpell
         run: npm run spell
 
+  detect:
+    name: Detectar partes del proyecto
+    runs-on: ubuntu-latest
+    outputs:
+      go: ${{ steps.check.outputs.go }}
+      frontend: ${{ steps.check.outputs.frontend }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: check
+        run: |
+          [ -f go.mod ] && echo "go=true" >> "$GITHUB_OUTPUT" || echo "go=false" >> "$GITHUB_OUTPUT"
+          [ -f frontend/package.json ] && echo "frontend=true" >> "$GITHUB_OUTPUT" || echo "frontend=false" >> "$GITHUB_OUTPUT"
+
   go:
     name: Compilador (Go)
     runs-on: ubuntu-latest
-    if: hashFiles('go.mod') != ''
+    needs: detect
+    if: needs.detect.outputs.go == 'true'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -77,7 +91,8 @@ jobs:
   frontend:
     name: Interfaz (Svelte)
     runs-on: ubuntu-latest
-    if: hashFiles('frontend/package.json') != ''
+    needs: detect
+    if: needs.detect.outputs.frontend == 'true'
     defaults:
       run:
         working-directory: frontend

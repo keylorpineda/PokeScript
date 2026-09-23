@@ -51,7 +51,7 @@ Los tipos, los alcances y los ejemplos están en `CONTRIBUTING.md`.
 
 ## CI
 
-`.github/workflows/ci.yml` corre en cada push a `main`/`develop` y en cada PR:
+`.github/workflows/ci.yml` corre en cada push a `main`/`dev` y en cada PR:
 
 1. commitlint sobre todos los commits nuevos.
 2. `gofmt`, `go vet` y `go test -race` sobre `internal/` (solo si existe `go.mod`).

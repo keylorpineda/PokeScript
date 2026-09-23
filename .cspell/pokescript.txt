@@ -77,12 +77,20 @@ webkit
 
 # Identificadores sin tilde (válidos en código y gramática)
 asignacion
+caracter
+categoria
 coleccion
 compilacion
 dano
+codigo
+codigos
+comilla
 declaracion
+descripcion
 diagnosticos
+digito
 ejecucion
+exito
 especificacion
 expresion
 implementacion
@@ -90,9 +98,15 @@ importacion
 instruccion
 lexico
 parametros
+posicion
 semantico
+simbolo
+simbolos
+sinosi
 sintactico
 tamano
+vacio
+vacios
 variacion
 
 # Español técnico que el diccionario no trae
@@ -115,9 +129,12 @@ superefectivo
 ebnf
 gitmessage
 gofmt
+gantt
+fuzztime
 goimports
 golangci
 Interp
+keylorpineda
 wailsjs
 davidanson
 eamodio

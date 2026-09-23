@@ -44,5 +44,5 @@
     ".git/**",
     ".husky/_/**"
   ],
-  "ignoreRegExpList": ["/\bT[A-Z][A-Za-z]*\b/"]
+  "ignoreRegExpList": ["/\\bT[A-Z][A-Za-z]*\\b/", "/\\u[0-9A-Fa-f]{4}/"]
 }

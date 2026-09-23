@@ -239,7 +239,7 @@ gantt
 
 ## 📋 Tareas por sprint
 
-Cada tarea tiene un identificador (`T1.3`) para usarlo en el nombre de la rama y en el PR. Responsable: **A**, **B** o **C**.
+Cada tarea tiene un identificador (`T1.3`) para usarlo en el título del PR. Responsable: **A**, **B** o **C**.
 
 ### S0 · Preparación (23 – 27 sep)
 
@@ -404,22 +404,25 @@ gitGraph
     commit id: "setup"
     branch dev
     checkout dev
-    branch feature/T1.1-lexer-identificadores
-    commit id: "PKS feat(lexer)…"
-    commit id: "PKS test(lexer)…"
+    branch feature/parser-expressions
+    commit id: "PKS feat(parser)…"
+    commit id: "PKS test(parser)…"
     checkout dev
-    merge feature/T1.1-lexer-identificadores
-    branch feature/T1.5-resaltado
+    merge feature/parser-expressions
+    branch feature/editor-highlighting
     commit id: "PKS feat(editor)…"
     checkout dev
-    merge feature/T1.5-resaltado
+    merge feature/editor-highlighting
     checkout main
     merge dev tag: "v0.1"
 ```
 
-1. Cada tarea sale en su propia rama desde `dev`: `feature/T<id>-<descripcion-corta>` (o `fix/…` para correcciones).
+1. Cada tarea sale en su propia rama desde `dev`, con nombre **en inglés** que diga qué se hace: `<tipo>/<área>-<qué>`, en minúsculas y con guiones.
+   - `feature/…` para funcionalidad nueva: `feature/parser-expressions`, `feature/editor-highlighting`, `feature/interpreter-loops`.
+   - `fix/…` para correcciones: `fix/lexer-string-escapes`.
+   - `docs/…`, `test/…` o `chore/…` cuando no hay código de producto: `docs/user-manual`, `chore/ci-cache`.
 2. Commits pequeños, con el formato `PKS type(scope): description` en inglés (ver [CONTRIBUTING.md](../CONTRIBUTING.md)).
-3. PR hacia `dev` con el ID de la tarea en el título. **Lo revisa al menos otra persona.** El CI debe estar en verde.
+3. PR hacia `dev` con el ID de la tarea en el título, por ejemplo `T2.1 Parse expressions with precedence`. El ID va en el PR, no en la rama. **Lo revisa al menos otra persona.** El CI debe estar en verde.
 4. Merge con **merge commit** (no squash), para que los commits de cada integrante queden en el historial.
 5. Al cerrar cada hito demostrable, PR de `dev` a `main` y etiqueta (`v0.1`, `v0.2`, …).
 

@@ -74,6 +74,20 @@ PKS docs: update the type effectiveness table
 PKS chore(config): set up husky and commitlint
 ```
 
+## Ramas
+
+Las ramas salen de `dev` y se nombran **en inglés**, en minúsculas y con guiones: `<tipo>/<área>-<qué>`.
+
+| Tipo       | Uso                           | Ejemplo                      |
+| ---------- | ----------------------------- | ---------------------------- |
+| `feature/` | Funcionalidad nueva           | `feature/parser-expressions` |
+| `fix/`     | Corrección de un error        | `fix/lexer-string-escapes`   |
+| `docs/`    | Solo documentación            | `docs/user-manual`           |
+| `test/`    | Solo pruebas                  | `test/analyzer-cases`        |
+| `chore/`   | Configuración y mantenimiento | `chore/ci-cache`             |
+
+El ID de la tarea del plan (`T2.1`) va en el título del PR, no en el nombre de la rama. El flujo completo está en [docs/PLAN.md](docs/PLAN.md#-flujo-de-trabajo-en-git).
+
 ## Hooks
 
 | Hook         | Qué hace                                                                                          |

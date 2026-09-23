@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 40" width="900" height="40" role="img" aria-label="Separador con una Pokébola rodando">
+  <style>
+    .rodar { animation: rodar 7s cubic-bezier(.45,.05,.55,.95) infinite alternate; }
+    @keyframes rodar { from { transform: translateX(0); } to { transform: translateX(840px); } }
+    .giro { transform-box: fill-box; transform-origin: center; animation: giro 7s cubic-bezier(.45,.05,.55,.95) infinite alternate; }
+    @keyframes giro { from { transform: rotate(0deg); } to { transform: rotate(1080deg); } }
+  </style>
+  <line x1="10" y1="20" x2="890" y2="20" stroke="#8b90c0" stroke-width="2" stroke-dasharray="2 10" stroke-linecap="round" opacity="0.6"/>
+  <g class="rodar">
+    <g class="giro">
+      <circle cx="30" cy="20" r="14" fill="#ffffff" stroke="#1b1b1b" stroke-width="2.5"/>
+      <path d="M16 20 a14 14 0 0 1 28 0 z" fill="#ee1515" stroke="#1b1b1b" stroke-width="2.5"/>
+      <circle cx="30" cy="20" r="5" fill="#ffffff" stroke="#1b1b1b" stroke-width="2.5"/>
+    </g>
+  </g>
+</svg>

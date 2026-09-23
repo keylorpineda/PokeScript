@@ -28,13 +28,15 @@
 
 </div>
 
----
+<img src="docs/assets/divisor.svg" alt="separador" width="100%">
 
 ## 📖 Contenido
 
 - [¿Qué es PokeScript?](#-qué-es-pokescript)
 - [Así se ve](#-así-se-ve)
 - [Los tipos del lenguaje](#-los-tipos-del-lenguaje)
+- [Guía rápida](#-guía-rápida)
+- [Ejemplos completos](#-ejemplos-completos)
 - [Características](#-características)
 - [Mensajes que enseñan](#-mensajes-que-enseñan)
 - [Arquitectura](#-arquitectura)
@@ -43,7 +45,7 @@
 - [Cómo contribuir](#-cómo-contribuir)
 - [Aviso](#-aviso)
 
----
+<img src="docs/assets/divisor.svg" alt="separador" width="100%">
 
 ## 🔴 ¿Qué es PokeScript?
 
@@ -51,11 +53,11 @@
 
 **PokeScript** es un lenguaje de programación en **español** hecho para quienes están aprendiendo a programar. Las palabras clave vienen del mundo Pokémon: los programas arrancan con `combate`, las funciones son `movimiento`s, las constantes son `medalla`s y para mostrar algo en pantalla… se usa `gritar`.
 
-Detrás del tema hay un lenguaje serio: **tipado estático**, análisis semántico completo, **nulabilidad explícita**, coincidencia de patrones **exhaustiva** y proyectos de varios archivos. Todo eso corre dentro de un IDE de escritorio con un **asistente pedagógico** que no solo te dice qué salió mal, sino **por qué** y **cómo arreglarlo**.
+Detrás del tema hay un lenguaje serio: **tipado estático**, análisis semántico completo, coincidencia de patrones **exhaustiva** y proyectos de varios archivos. Todo eso corre dentro de un IDE de escritorio con un **asistente pedagógico** que no solo te dice qué salió mal, sino **por qué** y **cómo arreglarlo**.
 
 > Proyecto del curso **Paradigmas de Programación**, Universidad Nacional (UNA), II ciclo 2026.
 
----
+<img src="docs/assets/divisor.svg" alt="separador" width="100%">
 
 ## ✨ Así se ve
 
@@ -63,7 +65,7 @@ Detrás del tema hay un lenguaje serio: **tipado estático**, análisis semánti
 <img src="docs/assets/editor.svg" alt="Editor de PokeScript con un programa de ejemplo, el asistente y la salida" width="100%">
 </div>
 
----
+<img src="docs/assets/divisor.svg" alt="separador" width="100%">
 
 ## 🧬 Los tipos del lenguaje
 
@@ -84,9 +86,411 @@ Cada tipo de dato es un tipo de Pokémon. Y como en los combates, **no todos los
 
 </div>
 
-Y para cuando algo **puede no existir**: `posible planta rival = fantasma`. El compilador no te deja usar un `posible` sin comprobar antes que no sea `fantasma`.
+### ⚔️ La tabla de efectividades
 
----
+¿Se puede guardar un `roca` en un `agua`? Sí, es automático. ¿Un `planta` en un `roca`? Solo con `convertir`. ¿Un `electrico` en un `fuego`? Eso no es muy efectivo… y el compilador te lo dice antes de ejecutar.
+
+<div align="center">
+<img src="docs/assets/efectividades.svg" alt="Tabla de efectividades: conversiones entre tipos" width="100%">
+</div>
+
+<img src="docs/assets/divisor.svg" alt="separador" width="100%">
+
+## 📘 Guía rápida
+
+Todo lo esencial del lenguaje, en pedacitos.
+
+### 👋 Hola mundo
+
+Todo programa arranca en el bloque `combate`:
+
+```text
+combate
+    gritar "¡Hola, mundo Pokémon!"
+fin
+```
+
+### 📦 Datos y medallas
+
+Los datos se declaran con su tipo. Una `medalla` es una constante: nunca cambia.
+
+```text
+medalla roca NIVEL_MAXIMO = 100
+
+combate
+    roca nivel = 5
+    agua precision = 0.85
+    fuego rango = 'S'
+    planta nombre = "Pikachu"
+    electrico brillante = falso
+
+    nivel = nivel + 1
+    gritar nombre, " está en el nivel ", nivel, " de ", NIVEL_MAXIMO
+fin
+```
+
+### 🔀 Condicionales
+
+La condición siempre es un `electrico`. No hay "verdad implícita": `si vida` no compila, `si vida > 0` sí.
+
+```text
+si vida > 50
+    gritar "¡En plena forma!"
+sino si vida > 0
+    gritar "Necesita una poción"
+sino
+    gritar "Se debilitó…"
+fin
+```
+
+Para elegir entre muchos casos está `segun`. Si el valor es `roca`, `agua`, `fuego` o `planta`, la rama `otro` es obligatoria:
+
+```text
+segun ataque
+    'F'      entonces gritar "¡Lanzallamas!"
+    'A', 'H' entonces gritar "¡Hidrobomba!"
+    otro     entonces gritar "Placaje"
+fin
+```
+
+### 🔁 Ciclos
+
+```text
+// De un número a otro (ambos incluidos)
+recorrer n de 1 hasta 5
+    gritar "Pokébola número ", n
+fin
+
+// Por cada elemento de una colección
+recorrer pokemon en mi_equipo
+    si pokemon igual "Magikarp"
+        siguiente
+    fin
+    gritar pokemon, " está listo"
+fin
+
+// Mientras se cumpla la condición
+mientras vida > 0
+    vida = vida - 10
+    si vida < 20
+        huir
+    fin
+fin
+```
+
+`siguiente` salta a la próxima vuelta y `huir` sale del ciclo.
+
+### ⚡ Movimientos (funciones)
+
+Un movimiento puede **entregar** un valor, o solo hacer algo:
+
+```text
+movimiento roca calcular_dano(roca ataque, roca defensa)
+    entregar ataque * 2 - defensa
+fin
+
+movimiento saludar(planta entrenador)
+    gritar "¡Hola, ", entrenador, "! Bienvenido al Centro Pokémon"
+fin
+
+combate
+    saludar("Ash")
+    roca dano = calcular_dano(55, 40)
+    gritar "El ataque hizo ", dano, " de daño"
+fin
+```
+
+### 🎒 Colecciones
+
+`equipo` es una lista y `mochila` es un diccionario. Los índices empiezan en **1**.
+
+```text
+equipo de planta equipo_ash = ["Pikachu", "Charizard"]
+sumar "Bulbasaur" a equipo_ash
+gritar equipo_ash[1]
+quitar equipo_ash[2]
+gritar "Quedan ", tamaño(equipo_ash), " Pokémon"
+
+mochila de planta a roca objetos = {"Poción": 3, "Pokébola": 10}
+objetos["Poción"] = objetos["Poción"] - 1
+si objetos contiene "Pokébola"
+    gritar "Tienes ", objetos["Pokébola"], " Pokébolas"
+fin
+```
+
+### 🧬 Especies y fichas
+
+Una `especie` define una lista cerrada de valores; una `ficha` agrupa datos con nombre.
+
+```text
+especie Clima
+    SOLEADO, LLUVIA, GRANIZO
+fin
+
+ficha Entrenador
+    planta nombre
+    roca   medallas
+    Clima  clima_favorito
+fin
+
+combate
+    Entrenador misty = {nombre: "Misty", medallas: 2, clima_favorito: LLUVIA}
+    misty.medallas = misty.medallas + 1
+    gritar misty.nombre, " ya tiene ", misty.medallas, " medallas"
+fin
+```
+
+### 🔄 Conversiones y utilidades
+
+```text
+planta texto = "25"
+roca numero = convertir(texto) a roca
+agua decimal = numero
+planta mensaje = convertir(numero) a planta
+roca redondo = redondear(7.5)
+roca dado = aleatorio(1, 6)
+```
+
+`convertir(agua) a roca` **corta** los decimales; `redondear` redondea.
+
+### 📂 Varios archivos
+
+Con `enseñar … desde` traes movimientos, especies, fichas y medallas de otro archivo del proyecto:
+
+```text
+enseñar calcular_dano desde "operaciones.pks"
+enseñar Estado, Pokemon desde "tipos.pks"
+```
+
+<img src="docs/assets/divisor.svg" alt="separador" width="100%">
+
+## 🎮 Ejemplos completos
+
+Programas enteros, con lo que muestran en pantalla. Cada uno trae su código listo para copiar.
+
+### 🎒 Entrenamiento: equipo, mochila y ciclos
+
+<div align="center">
+<img src="docs/assets/ejemplo-colecciones.svg" alt="Programa con equipo, mochila, recorrer y mientras, y su salida" width="100%">
+</div>
+
+<details>
+<summary><b>📋 Ver el código</b></summary>
+
+```text
+// entrenamiento.pks · equipo, mochila y ciclos
+combate
+    equipo de planta mi_equipo = ["Pikachu", "Charmander", "Squirtle"]
+    sumar "Bulbasaur" a mi_equipo
+    gritar "Tu equipo tiene ", tamaño(mi_equipo), " Pokémon"
+
+    mochila de planta a roca bayas = {"Aranja": 3, "Zreza": 0, "Meloc": 5}
+    recorrer baya, cantidad en bayas
+        si cantidad igual 0
+            siguiente
+        fin
+        gritar "  ", baya, " x", cantidad
+    fin
+
+    roca nivel = 5
+    mientras nivel < 10
+        nivel = nivel + 2
+    fin
+    gritar "Nivel final: ", nivel
+fin
+```
+
+</details>
+
+### 🧪 Estados: especie, ficha, `segun` y movimientos
+
+<div align="center">
+<img src="docs/assets/ejemplo-especies.svg" alt="Programa con especie, ficha, segun exhaustivo y movimientos, y su salida" width="100%">
+</div>
+
+<details>
+<summary><b>📋 Ver el código</b></summary>
+
+```text
+// estados.pks · especie, ficha, segun y movimientos
+especie Estado
+    SANO, ENVENENADO, DORMIDO
+fin
+
+ficha Pokemon
+    planta nombre
+    roca   vida
+    Estado estado
+fin
+
+movimiento roca pasar_turno(Pokemon p)
+    roca dano = 0
+    segun p.estado
+        SANO        entonces gritar p.nombre, " está en plena forma"
+        ENVENENADO  entonces dano = 10
+        DORMIDO     entonces gritar p.nombre, " sigue dormido…"
+    fin
+    entregar p.vida - dano
+fin
+
+combate
+    Pokemon bulbi = {nombre: "Bulbasaur", vida: 45, estado: ENVENENADO}
+    recorrer t de 1 hasta 3
+        bulbi.vida = pasar_turno(bulbi)
+        gritar "Turno ", t, ": ", bulbi.nombre, " tiene ", bulbi.vida, " PS"
+    fin
+fin
+```
+
+</details>
+
+### 🎯 Centro Pokémon: entrada del usuario
+
+`capturar` espera a que escribas algo. Si lo que escribes no encaja con el tipo del dato, te lo explica y vuelve a preguntar.
+
+<div align="center">
+<img src="docs/assets/ejemplo-captura.svg" alt="Programa que pide datos con capturar y valida la entrada" width="100%">
+</div>
+
+<details>
+<summary><b>📋 Ver el código</b></summary>
+
+```text
+// centro.pks · capturar, contiene y sino si
+movimiento electrico es_legendario(planta nombre)
+    equipo de planta legendarios = ["Mewtwo", "Lugia", "Rayquaza"]
+    entregar legendarios contiene nombre
+fin
+
+combate
+    planta nombre
+    roca nivel
+    capturar(nombre, "¿Qué Pokémon atrapaste? ")
+    capturar(nivel, "¿De qué nivel? ")
+
+    si es_legendario(nombre)
+        gritar "¡Increíble! ", nombre, " es legendario"
+    sino si nivel >= 50
+        gritar nombre, " ya es todo un veterano"
+    sino
+        agua progreso = nivel / 100
+        gritar nombre, " va al ", redondear(progreso * 100), "% del camino"
+    fin
+fin
+```
+
+</details>
+
+### 🚨 Cuando algo sale mal
+
+El diagnóstico estrella: si olvidas un `fin`, PokeScript no se queda en "error en la última línea". Te dice **qué bloque** quedó abierto, **dónde** lo abriste y, por la sangría, **cuál** es el que probablemente olvidaste cerrar.
+
+<div align="center">
+<img src="docs/assets/ejemplo-error.svg" alt="PokeScript detecta un bloque sin cerrar y explica dónde se abrió" width="100%">
+</div>
+
+### 🏆 Proyecto completo: combate por turnos
+
+Un proyecto de cuatro archivos que usa casi todo el lenguaje: importaciones, medallas, especies, fichas, `capturar`, `segun` exhaustivo, ciclos, condicionales y movimientos con y sin valor de retorno.
+
+<details>
+<summary><b>📄 constantes.pks</b></summary>
+
+```text
+medalla roca VIDA_MAXIMA = 100
+medalla roca NIVEL       = 25
+```
+
+</details>
+
+<details>
+<summary><b>📄 tipos.pks</b></summary>
+
+```text
+especie Estado
+    SANO, ENVENENADO, DORMIDO, PARALIZADO
+fin
+
+ficha Pokemon
+    planta nombre
+    roca   vida
+    Estado estado
+fin
+```
+
+</details>
+
+<details>
+<summary><b>📄 operaciones.pks</b></summary>
+
+```text
+enseñar NIVEL desde "constantes.pks"
+
+// Daño base con variación al azar del 85% al 100%
+movimiento roca calcular_dano(roca poder)
+    agua base      = poder * NIVEL / 50
+    roca variacion = aleatorio(85, 100)
+    agua total     = base * variacion / 100
+    entregar redondear(total) + 2
+fin
+```
+
+</details>
+
+<details>
+<summary><b>📄 principal.pks</b></summary>
+
+```text
+enseñar calcular_dano desde "operaciones.pks"
+enseñar Estado, Pokemon desde "tipos.pks"
+enseñar VIDA_MAXIMA desde "constantes.pks"
+
+movimiento describir(Estado actual)
+    segun actual
+        SANO                 entonces gritar "  Puede atacar"
+        ENVENENADO           entonces gritar "  Pierde vida cada turno"
+        DORMIDO, PARALIZADO  entonces gritar "  Podría no atacar"
+    fin
+fin
+
+combate
+    planta nombre
+    capturar(nombre, "¿Cómo se llama tu Pokemon? ")
+
+    Pokemon mio   = {nombre: nombre,   vida: VIDA_MAXIMA, estado: SANO}
+    Pokemon rival = {nombre: "Bulbi", vida: VIDA_MAXIMA, estado: SANO}
+
+    gritar "¡", mio.nombre, " entra en combate!"
+    describir(mio.estado)
+
+    recorrer turno de 1 hasta 20
+        gritar "--- Turno ", turno, " ---"
+
+        roca dano = calcular_dano(40)
+        rival.vida = rival.vida - dano
+        gritar mio.nombre, " ataca y hace ", dano, " de daño"
+
+        si rival.vida <= 0
+            gritar rival.nombre, " se debilitó. ¡Ganaste!"
+            huir
+        fin
+
+        roca contra = calcular_dano(35)
+        mio.vida = mio.vida - contra
+        gritar rival.nombre, " contraataca: ", contra, " de daño"
+        gritar "Vida de ", mio.nombre, ": ", mio.vida
+
+        si mio.vida <= 0
+            gritar mio.nombre, " se debilitó. Perdiste."
+            huir
+        fin
+    fin
+fin
+```
+
+</details>
+
+<img src="docs/assets/divisor.svg" alt="separador" width="100%">
 
 ## ⚡ Características
 
@@ -110,7 +514,7 @@ Y para cuando algo **puede no existir**: `posible planta rival = fantasma`. El c
 - **Tipado estático** con tabla de efectividades
 - Revisa que ningún dato se lea **antes de tener valor**
 - `segun` **exhaustivo**: te dice qué casos faltan
-- **Nulabilidad** con `posible` / `fantasma`
+- Prohíbe cambiar una `medalla` o una colección mientras la recorres
 - Te dice **en qué línea abriste** el bloque que no cerraste
 
 </td>
@@ -139,7 +543,7 @@ Y para cuando algo **puede no existir**: `posible planta rival = fantasma`. El c
 </tr>
 </table>
 
----
+<img src="docs/assets/divisor.svg" alt="separador" width="100%">
 
 ## 💬 Mensajes que enseñan
 
@@ -152,7 +556,7 @@ Los diagnósticos llevan encabezados que cualquier entrenador reconoce:
 | 🧱 Error de sintaxis o bloque abierto | **¡Se escapó!**                    |
 | 👻 Dato sin valor o no declarado      | **¡No pasó nada!**                 |
 | 💥 Error en ejecución                 | **¡Falló el ataque!**              |
-| 🗺️ Problema de importación            | **No se encontró la ruta**         |
+| 🧭 Problema de importación            | **No se encontró la ruta**         |
 | ⚠️ Advertencia                        | **¿Seguro que quieres hacer eso?** |
 
 Un error completo se ve así:
@@ -168,7 +572,7 @@ Posible causa: la combinación de estos dos tipos no tiene efecto según la tabl
 Sugerencia: consultar la tabla de efectividades desde el menú del entorno.
 ```
 
----
+<img src="docs/assets/divisor.svg" alt="separador" width="100%">
 
 ## 🔧 Arquitectura
 
@@ -195,7 +599,7 @@ flowchart LR
 | Interfaz   | Svelte + CodeMirror 6                       |
 | Extras     | Howler.js (audio) · PixiJS (salida gráfica) |
 
----
+<img src="docs/assets/divisor.svg" alt="separador" width="100%">
 
 ## 🧭 Hoja de ruta
 
@@ -210,11 +614,11 @@ Cada hito es una medalla de gimnasio 🏅
 - [ ] **7.** Colecciones: `equipo` y `mochila`
 - [ ] **8.** `especie` y `segun` exhaustivo
 - [ ] **9.** Importaciones y grafo de dependencias
-- [ ] **10.** `posible` / `fantasma` con estrechamiento
+- [ ] **10.** Datos opcionales con `posible`
 - [ ] **11.** `ficha`
 - [ ] **12.** Asistente pedagógico
 
----
+<img src="docs/assets/divisor.svg" alt="separador" width="100%">
 
 ## 🚀 Cómo empezar
 
@@ -252,7 +656,7 @@ PokeScript/
 
 La especificación completa del lenguaje está en [`docs/PokeScript_Especificacion_Implementacion.md`](docs/PokeScript_Especificacion_Implementacion.md).
 
----
+<img src="docs/assets/divisor.svg" alt="separador" width="100%">
 
 ## 🤝 Cómo contribuir
 
@@ -265,7 +669,7 @@ PKS fix(parser): report the line where an unclosed block was opened
 
 Husky los valida al hacer commit y el CI los vuelve a revisar en cada push. Todos los detalles (tipos, alcances, herramientas y flujo de ramas) están en [CONTRIBUTING.md](CONTRIBUTING.md).
 
----
+<img src="docs/assets/divisor.svg" alt="separador" width="100%">
 
 ## 📜 Aviso
 

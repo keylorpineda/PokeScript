@@ -38,6 +38,24 @@ Squirtle
 tipado
 Unown
 
+# Nombres usados en los ejemplos
+Aranja
+bulbi
+Charizard
+Eevee
+Hidrobomba
+Lanzallamas
+Lugia
+Magikarp
+maximo
+Meloc
+Mewtwo
+Placaje
+Pokébolas
+pokemon
+Rayquaza
+Zreza
+
 # Técnicos
 commitlint
 CodeMirror
@@ -53,6 +71,7 @@ subcódigo
 Svelte
 Wails
 Fira
+Menlo
 Segoe
 webkit
 

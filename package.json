@@ -8,7 +8,8 @@
     "format:check": "prettier --check .",
     "lint:md": "markdownlint-cli2 \"**/*.md\"",
     "spell": "cspell --no-progress --dot \"**\"",
-    "lint": "npm run format:check && npm run lint:md && npm run spell"
+    "lint": "npm run format:check && npm run lint:md && npm run spell",
+    "docs:svg": "node scripts/generar-svg.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.3",

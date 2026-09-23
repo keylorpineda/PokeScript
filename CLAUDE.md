@@ -29,6 +29,8 @@ La especificación completa se carga en el contexto con esta importación:
 
 ## Orden de trabajo
 
+El plan del equipo (roles, sprints, tareas `T<id>`, contratos entre módulos y decisiones) está en `docs/PLAN.md`. Las tareas nuevas y las decisiones se registran ahí.
+
 Seguir los hitos de la sección 0 de la especificación. La prioridad es llegar al hito 4: el intérprete corriendo el primer programa.
 
 ## Commits

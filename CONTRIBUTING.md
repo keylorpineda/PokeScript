@@ -3,10 +3,12 @@
 ## Preparación
 
 ```bash
-npm install
+pnpm install
 ```
 
 Esto instala Husky y activa los hooks de Git (`.husky/`). Cada integrante debe correrlo una vez después de clonar.
+
+> El proyecto usa **solo pnpm** (`winget install pnpm.pnpm`). `npm install` y `yarn` se detienen con un mensaje a propósito, y el único lockfile válido es `pnpm-lock.yaml`.
 
 Para que `git commit` abra la plantilla con la guía:
 
@@ -114,9 +116,9 @@ Al abrir el proyecto, VS Code ofrece instalar las extensiones recomendadas de `.
 ### Comandos
 
 ```bash
-npm run format   # formatea todo con Prettier
-npm run lint     # revisa formato, markdown y ortografía (lo mismo que el CI)
-npm run spell    # solo ortografía
+pnpm format   # formatea todo con Prettier
+pnpm lint     # revisa formato, markdown y ortografía (lo mismo que el CI)
+pnpm spell    # solo ortografía
 ```
 
 ### Cuando CSpell marca una palabra válida

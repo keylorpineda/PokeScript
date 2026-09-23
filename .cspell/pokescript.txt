@@ -73,7 +73,9 @@ Wails
 Fira
 Menlo
 Segoe
+wailsapp
 webkit
+winget
 
 # Identificadores sin tilde (válidos en código y gramática)
 asignacion
@@ -134,6 +136,7 @@ fuzztime
 goimports
 golangci
 Interp
+keylor
 keylorpineda
 wailsjs
 davidanson

@@ -3,7 +3,7 @@ import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// Uso: npm run docs:svg   (escribe en docs/assets/)
+// Uso: pnpm docs:svg   (escribe en docs/assets/)
 const OUT = process.argv[2] ?? fileURLToPath(new URL('../docs/assets/', import.meta.url));
 const CW = 9; // ancho de carácter (px): cada token se posiciona en esta rejilla
 const LH = 23; // alto de línea

@@ -8,18 +8,142 @@ Este es el documento de coordinación del equipo: quién hace qué, en qué orde
 
 ## 📌 Índice
 
-1. [Prioridades](#-prioridades)
-2. [Equipo y roles](#-equipo-y-roles)
-3. [Arquitectura del código](#-arquitectura-del-código)
-4. [Contratos entre módulos](#-contratos-entre-módulos)
-5. [Cronograma](#-cronograma)
-6. [Tareas por sprint](#-tareas-por-sprint)
-7. [Estrategia de pruebas](#-estrategia-de-pruebas)
-8. [Flujo de trabajo en Git](#-flujo-de-trabajo-en-git)
-9. [Definición de terminado](#-definición-de-terminado)
-10. [Riesgos y recortes](#-riesgos-y-recortes)
-11. [Preparación para la defensa](#-preparación-para-la-defensa)
-12. [Registro de decisiones](#-registro-de-decisiones)
+1. [Estado actual](#-estado-actual) ← **empieza aquí si vas a retomar el trabajo**
+2. [Cómo retomar el trabajo](#-cómo-retomar-el-trabajo)
+3. [Prioridades](#-prioridades)
+4. [Equipo y roles](#-equipo-y-roles)
+5. [Arquitectura del código](#-arquitectura-del-código)
+6. [Contratos entre módulos](#-contratos-entre-módulos)
+7. [Cronograma](#-cronograma)
+8. [Tareas por sprint](#-tareas-por-sprint)
+9. [Estrategia de pruebas](#-estrategia-de-pruebas)
+10. [Flujo de trabajo en Git](#-flujo-de-trabajo-en-git)
+11. [Definición de terminado](#-definición-de-terminado)
+12. [Riesgos y recortes](#-riesgos-y-recortes)
+13. [Preparación para la defensa](#-preparación-para-la-defensa)
+14. [Registro de decisiones](#-registro-de-decisiones)
+
+---
+
+## 📍 Estado actual
+
+> Última actualización: **2026-09-23**. Quien termine una tarea actualiza esta sección y marca la tarea con ✅ en su tabla, en el mismo PR.
+
+### Resumen
+
+| Sprint                 | Estado         | Detalle                                                                                                         |
+| ---------------------- | -------------- | --------------------------------------------------------------------------------------------------------------- |
+| **S0** · Preparación   | 🟡 En curso    | Contratos listos (T0.3 a T0.6). Faltan Wails, protección de ramas y tablero.                                    |
+| **S1** · Hito 1: lexer | 🟡 En curso    | Lexer terminado (T1.1 a T1.4). Faltan el resaltado del editor, la maqueta del IDE y los valores del intérprete. |
+| **S2** en adelante     | ⚪ Sin empezar | El parser y la evaluación de expresiones **ya se pueden empezar**: sus dependencias están listas.               |
+
+### ✅ Terminado
+
+Todo está en la rama `feature/compiler-foundation`, **pendiente de PR hacia `dev`**.
+
+| Tarea          | Qué quedó                                                                                                                                                                   | Dónde                             |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| ✅ T0.3        | Módulo `github.com/keylorpineda/PokeScript` (`go 1.23`) y los 10 paquetes de `internal/`                                                                                    | `go.mod`, `internal/*/doc.go`     |
+| ✅ T0.4        | Los 48 tokens de palabras reservadas + `SINO_SI`, símbolos, literales y categorías de resaltado. `Diagnostic`, `Fix`, encabezados temáticos y `Lista` con límite de errores | `internal/token`, `internal/diag` |
+| ✅ T0.5        | Un nodo por regla de la gramática, todos con `Pos`                                                                                                                          | `internal/ast/ast.go`             |
+| ✅ T0.6        | Interfaz `ES` (`Escribir`, `Leer`) y `ESMemoria` para pruebas; nombres de eventos de Wails documentados                                                                     | `internal/interprete/es.go`       |
+| ✅ T1.1 – T1.4 | Lexer completo: `ñ` y tildes, `roca`/`agua`, `fuego`/`planta` con escapes, `SINO_SI`, `NEWLINE`, sangrías, 10 tipos de error léxico en español                              | `internal/lexer`                  |
+
+**Pruebas:** 100 % de cobertura en `lexer`, `ast` e `interprete`; 96 % en `token` y `diag`. Fuzzing del lexer con más de 500 000 entradas sin fallos. Los 4 archivos del programa de la sección 10 pasan el lexer sin errores.
+
+### 🟡 Parcial
+
+| Tarea   | Falta                                                                                                                                           |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🟡 T0.1 | Go 1.27, Node 24 y pnpm 11 instalados en la máquina de Keylor. Falta **Wails CLI** ahí y **todo** en las máquinas de los otros dos integrantes. |
+
+### ⏭️ Siguientes tareas disponibles
+
+Ordenadas por prioridad dentro de cada rol. Las que dependen de "nada" o de algo con ✅ se pueden empezar **hoy**.
+
+| Rol            | Tarea                                                                                                           | Rama sugerida                     | Depende de     |
+| -------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------- | -------------- |
+| Dueño del repo | Abrir el PR `feature/compiler-foundation` → `dev` (el CI de Go corre por primera vez ahí)                       | —                                 | nada           |
+| Dueño del repo | T0.7 · Proteger `main` y `dev`                                                                                  | —                                 | nada           |
+| Todos          | T0.8 · Tablero en GitHub Projects y anotar nombres en [Equipo y roles](#-equipo-y-roles)                        | —                                 | nada           |
+| **A**          | T0.2 · Proyecto Wails + Svelte                                                                                  | `feature/wails-app`               | T0.1           |
+| **A**          | T1.5 · Resaltado en CodeMirror (la lista de palabras sale de `token.PalabrasReservadas()` y `Kind.Categoria()`) | `feature/editor-highlighting`     | T0.2           |
+| **A**          | T1.6 · Maqueta del IDE                                                                                          | `feature/ide-layout`              | T0.2           |
+| **B**          | T2.1 · Parser de expresiones con precedencia                                                                    | `feature/parser-expressions`      | ✅ lexer y AST |
+| **B**          | T2.2 a T2.5 · No encadenables, instrucciones, **pila de bloques** ⭐, recuperación de errores                   | `feature/parser-statements`       | T2.1           |
+| **C**          | T1.7 · Valores en ejecución, mochila ordenada y copia profunda                                                  | `feature/interpreter-values`      | nada           |
+| **C**          | T2.6 · Evaluar expresiones sobre AST armados a mano                                                             | `feature/interpreter-expressions` | ✅ AST, T1.7   |
+
+### ⬜ Pendiente del plan
+
+- **S0:** T0.1 (resto), T0.2, T0.7, T0.8.
+- **S1:** T1.5, T1.6, T1.7.
+- **S2 a S8:** todas las tareas (T2.1 en adelante), ver [Tareas por sprint](#-tareas-por-sprint).
+- **Decisiones abiertas:** cómo muestra `gritar` un `agua` y si asignar a una clave nueva de una mochila la agrega (ver [registro](#-registro-de-decisiones)).
+
+---
+
+## 🧭 Cómo retomar el trabajo
+
+### 1. Preparar la máquina (una sola vez)
+
+| Herramienta                      | Versión          | Instalación en Windows                                     |
+| -------------------------------- | ---------------- | ---------------------------------------------------------- |
+| Go                               | 1.23 o más nueva | `winget install GoLang.Go`                                 |
+| Node.js                          | 22 o más nueva   | `winget install OpenJS.NodeJS.LTS`                         |
+| pnpm                             | 10 o más nueva   | `winget install pnpm.pnpm`                                 |
+| Wails CLI (solo rol A por ahora) | v2               | `go install github.com/wailsapp/wails/v2/cmd/wails@latest` |
+
+Después de instalar, **cierra y abre la terminal** para que reconozca `go` y `pnpm`.
+
+> ⚠️ **El proyecto usa solo pnpm.** `npm install` y `yarn` están bloqueados a propósito: el script `preinstall` los detiene con un mensaje. Nunca subas un `package-lock.json`.
+
+```bash
+git clone https://github.com/keylorpineda/PokeScript.git
+cd PokeScript
+pnpm install
+git config commit.template .gitmessage
+```
+
+### 2. Comprobar que todo funciona
+
+```bash
+go test ./internal/...
+```
+
+```bash
+pnpm lint
+```
+
+Las dos deben terminar sin errores. Si `go test` falla en una máquina nueva, avisa en el grupo antes de tocar código.
+
+### 3. Mapa del código que ya existe
+
+| Paquete               | Punto de entrada                                               | Para qué lo vas a usar                                     |
+| --------------------- | -------------------------------------------------------------- | ---------------------------------------------------------- |
+| `internal/token`      | `token.Token`, `token.Kind`, `token.Buscar(palabra)`           | El parser compara `tok.Kind == token.SI`, etc.             |
+| `internal/diag`       | `diag.Diagnostic`, `diag.Lista{Max: 20}`                       | Todos los errores del compilador y del intérprete          |
+| `internal/lexer`      | `lexer.Analizar(archivo, fuente) Resultado`                    | Entrada del parser: `Resultado.Tokens`                     |
+| `internal/ast`        | `ast.Programa`, `ast.Expr`, `ast.Instr`, `ast.DesdeToken(tok)` | Salida del parser, entrada del analizador y del intérprete |
+| `internal/interprete` | `interprete.ES`, `interprete.NuevaESMemoria(...)`              | Salida de `gritar` y entrada de `capturar`, sin Wails      |
+
+### 4. Cosas que conviene saber antes de programar
+
+- **`a`, `y`, `o`, `de` y `en` son palabras reservadas.** No las uses como nombres de variables, tampoco en las pruebas.
+- **Las posiciones se cuentan en caracteres (runas), no en bytes**, para que `año` no descuadre el subrayado. Usa `ast.DesdeToken(tok)` para pasar la posición de un token a un nodo.
+- En `PLANTA_LIT` y `FUEGO_LIT`, `tok.Lexeme` ya es el valor final: sin comillas y con los escapes resueltos.
+- **Un token `ILLEGAL` ya fue reportado por el lexer.** El parser lo salta sin reportar otro error.
+- Los símbolos de otros lenguajes (`==`, `&&`, `%`…) llegan al parser ya convertidos en `IGUAL`, `Y`, `RESTO`… y con su error léxico reportado.
+- Todo archivo con código termina en `NEWLINE` antes de `EOF`, aunque le falte el salto de línea final.
+- Los 4 archivos de la sección 10 están en `internal/lexer/testdata/`. Sirven como prueba de integración del parser también.
+- Para probar el lexer con entradas al azar: `go test -fuzz=FuzzAnalizar -fuzztime=30s ./internal/lexer/`
+
+### 5. Al terminar una tarea
+
+1. Marca la tarea con ✅ en su tabla de [Tareas por sprint](#-tareas-por-sprint).
+2. Actualiza la sección [Estado actual](#-estado-actual): mueve la tarea a "Terminado" y ajusta "Siguientes tareas".
+3. Si tomaste una decisión que la especificación no define, anota la decisión en el [registro](#-registro-de-decisiones).
+4. Abre el PR hacia `dev` con el ID de la tarea en el título.
 
 ---
 
@@ -243,28 +367,28 @@ Cada tarea tiene un identificador (`T1.3`) para usarlo en el título del PR. Res
 
 ### S0 · Preparación (23 – 27 sep)
 
-| ID   | Tarea                                                                                              | Resp.          | Listo cuando                       |
-| ---- | -------------------------------------------------------------------------------------------------- | -------------- | ---------------------------------- |
-| T0.1 | Instalar Go ≥ 1.23, Node ≥ 22 y Wails CLI v2; correr `wails doctor` sin errores                    | Todos          | Cada quien lo confirma en el grupo |
-| T0.2 | `wails init -n PokeScript -t svelte` e integrarlo a la estructura del repo (raíz Go + `frontend/`) | A              | `wails dev` abre una ventana       |
-| T0.3 | Crear `go.mod` y los paquetes vacíos de `internal/` con un `doc.go` cada uno                       | B              | `go build ./...` y el CI pasan     |
-| T0.4 | Escribir `internal/token` (todos los `Kind`, tabla de 48 palabras reservadas) y `internal/diag`    | B              | Revisado por A y C                 |
-| T0.5 | Proponer la lista de nodos de `internal/ast`                                                       | B              | Revisado por C                     |
-| T0.6 | Proponer la interfaz `ES` y los nombres de eventos de Wails                                        | C              | Revisado por A                     |
-| T0.7 | Proteger `main` y `dev` en GitHub (PR obligatorio + CI en verde)                                   | Dueño del repo | Push directo a `dev` rechazado     |
-| T0.8 | Crear el tablero en GitHub Projects con las tareas de este plan                                    | Todos          | Cada tarea tiene su tarjeta        |
+| ID      | Tarea                                                                                                                                                                  | Resp.          | Listo cuando                       |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ---------------------------------- |
+| 🟡 T0.1 | Instalar Go ≥ 1.23, Node ≥ 22, pnpm ≥ 10 y Wails CLI v2; correr `wails doctor` sin errores                                                                             | Todos          | Cada quien lo confirma en el grupo |
+| T0.2    | `wails init -n PokeScript -t svelte` e integrarlo a la estructura del repo (raíz Go + `frontend/`), con `pnpm` en `wails.json` (`frontend:install` y `frontend:build`) | A              | `wails dev` abre una ventana       |
+| ✅ T0.3 | Crear `go.mod` y los paquetes vacíos de `internal/` con un `doc.go` cada uno                                                                                           | B              | `go build ./...` y el CI pasan     |
+| ✅ T0.4 | Escribir `internal/token` (todos los `Kind`, tabla de 48 palabras reservadas) y `internal/diag`                                                                        | B              | Revisado por A y C                 |
+| ✅ T0.5 | Proponer la lista de nodos de `internal/ast`                                                                                                                           | B              | Revisado por C                     |
+| ✅ T0.6 | Proponer la interfaz `ES` y los nombres de eventos de Wails                                                                                                            | C              | Revisado por A                     |
+| T0.7    | Proteger `main` y `dev` en GitHub (PR obligatorio + CI en verde)                                                                                                       | Dueño del repo | Push directo a `dev` rechazado     |
+| T0.8    | Crear el tablero en GitHub Projects con las tareas de este plan                                                                                                        | Todos          | Cada tarea tiene su tarjeta        |
 
 ### S1 · Hito 1: lexer (28 sep – 4 oct)
 
-| ID   | Tarea                                                                                                                      | Resp. | Listo cuando                                          |
-| ---- | -------------------------------------------------------------------------------------------------------------------------- | ----- | ----------------------------------------------------- |
-| T1.1 | Lexer: identificadores con `ñ` y tildes, palabras reservadas, números `roca`/`agua`                                        | B     | Pruebas de tabla pasan                                |
-| T1.2 | Lexer: `fuego`, `planta` con escapes `\"` `\n` `\\`; escape desconocido = error léxico                                     | B     | Incluye caso "cadena sin cerrar" (sección 11)         |
-| T1.3 | Lexer: `sino si` como `SINO_SI`, punto de `6.9` vs `chispo.vida`, `//` comentarios                                         | B     | Pruebas de los casos ambiguos                         |
-| T1.4 | Lexer: `NEWLINE` significativo, líneas en blanco y comentarios sin `NEWLINE` propio, columna inicial de cada línea         | B     | Pruebas                                               |
-| T1.5 | Resaltado en CodeMirror 6 con `StreamLanguage` (categorías: reservada, tipo, literal, identificador, comentario, operador) | A     | Los ejemplos del README se ven coloreados             |
-| T1.6 | Diseño base del IDE: editor, panel de salida, panel de diagnósticos, barra con Compilar / Ejecutar                         | A     | Maqueta funcional (botones aún sin lógica)            |
-| T1.7 | `internal/interprete`: tipos de valores en ejecución (sección 3.4), incluida la mochila con orden de inserción             | C     | Pruebas de la mochila ordenada y de la copia profunda |
+| ID      | Tarea                                                                                                                      | Resp. | Listo cuando                                          |
+| ------- | -------------------------------------------------------------------------------------------------------------------------- | ----- | ----------------------------------------------------- |
+| ✅ T1.1 | Lexer: identificadores con `ñ` y tildes, palabras reservadas, números `roca`/`agua`                                        | B     | Pruebas de tabla pasan                                |
+| ✅ T1.2 | Lexer: `fuego`, `planta` con escapes `\"` `\n` `\\`; escape desconocido = error léxico                                     | B     | Incluye caso "cadena sin cerrar" (sección 11)         |
+| ✅ T1.3 | Lexer: `sino si` como `SINO_SI`, punto de `6.9` vs `chispo.vida`, `//` comentarios                                         | B     | Pruebas de los casos ambiguos                         |
+| ✅ T1.4 | Lexer: `NEWLINE` significativo, líneas en blanco y comentarios sin `NEWLINE` propio, columna inicial de cada línea         | B     | Pruebas                                               |
+| T1.5    | Resaltado en CodeMirror 6 con `StreamLanguage` (categorías: reservada, tipo, literal, identificador, comentario, operador) | A     | Los ejemplos del README se ven coloreados             |
+| T1.6    | Diseño base del IDE: editor, panel de salida, panel de diagnósticos, barra con Compilar / Ejecutar                         | A     | Maqueta funcional (botones aún sin lógica)            |
+| T1.7    | `internal/interprete`: tipos de valores en ejecución (sección 3.4), incluida la mochila con orden de inserción             | C     | Pruebas de la mochila ordenada y de la copia profunda |
 
 ### S2 · Hitos 2 y 3: parser (5 – 11 oct)
 
@@ -513,6 +637,7 @@ Todo lo que la especificación no define y el equipo decide. Formato: fecha, dec
 | 2026-09-23 | Merge commits (no squash) de las ramas a `dev`                                                                | Conservar los commits de cada integrante                                                         |
 | 2026-09-23 | `go.mod` declara `go 1.23`, aunque se desarrolle con una versión más nueva                                    | El CI instala esa versión y nadie usa algo que los demás no tengan                               |
 | 2026-09-23 | Linter `misspell` desactivado en golangci-lint                                                                | Solo conoce inglés y marca los comentarios en español; CSpell revisa ambos idiomas               |
+| 2026-09-23 | Solo pnpm como gestor de paquetes; `npm` y `yarn` quedan bloqueados por `preinstall`                          | Un solo lockfile (`pnpm-lock.yaml`) y las mismas versiones en las tres máquinas y en el CI       |
 | 2026-09-23 | En `fuego` se aceptan los escapes `\'` `\n` `\\`                                                              | La especificación solo define los de `planta`; sin `\'` no se puede escribir una comilla simple  |
 | 2026-09-23 | En `PLANTA_LIT` y `FUEGO_LIT`, `Lexeme` guarda el valor ya decodificado                                       | El parser no repite el manejo de escapes; `Col` y `Len` siguen apuntando al texto original       |
 | 2026-09-23 | `==`, `!=`, `&&`, `\|\|` y `%` son error léxico, pero el lexer emite `igual`, `diferente`, `y`, `o` y `resto` | Explica el error de quien viene de otro lenguaje y el parser puede seguir sin errores en cascada |

@@ -57,4 +57,4 @@ Los tipos, los alcances y los ejemplos están en `CONTRIBUTING.md`.
 
 1. commitlint sobre todos los commits nuevos.
 2. `gofmt`, `go vet` y `go test -race` sobre `internal/` (solo si existe `go.mod`).
-3. `npm run build` del frontend (solo si existe `frontend/package.json`).
+3. `pnpm run build` del frontend (solo si existe `frontend/package.json`).

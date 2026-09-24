@@ -108,13 +108,20 @@ func (m *Mochila) igual(o *Mochila) bool {
 	return true
 }
 
+// EsClave indica si v puede ser clave de una mochila.
+func EsClave(v Value) bool {
+	switch v.(type) {
+	case int64, rune, string, EspecieVal:
+		return true
+	}
+	return false
+}
+
 // validarClave detiene la ejecución si la clave no es de un tipo permitido.
 // El analizador lo impide (tipo_clave en la gramática y decisión H3), así
 // que llegar aquí es un error interno.
 func validarClave(clave Value) {
-	switch clave.(type) {
-	case int64, rune, string, EspecieVal:
-	default:
+	if !EsClave(clave) {
 		panic(fmt.Sprintf("error interno: %T no puede ser clave de una mochila", clave))
 	}
 }

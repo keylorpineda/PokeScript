@@ -135,6 +135,12 @@ func (f *Ficha) Campos() []string {
 	return append([]string(nil), f.campos...)
 }
 
+// TieneCampo indica si la ficha tiene un campo con ese nombre.
+func (f *Ficha) TieneCampo(nombre string) bool {
+	_, ok := f.valores[nombre]
+	return ok
+}
+
 // Campo devuelve el valor de un campo, sin copiarlo.
 func (f *Ficha) Campo(nombre string) Value {
 	v, ok := f.valores[nombre]

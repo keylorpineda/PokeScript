@@ -51,8 +51,10 @@ Este es el documento de coordinación del equipo: quién hace qué, en qué orde
 | ✅ T2.1 – T2.5             | Parser: expresiones con precedencia, no encadenables, instrucciones, pila de bloques con pista de sangría, recuperación y límite de 20 errores | `internal/parser`                                   |
 | ✅ Hito 4                  | Comando de consola y ejemplos; la prueba de contrato garantiza que el parser produce el árbol de `astprueba.Seccion10()`                       | `cmd/pks`, `ejemplos/`                              |
 | ✅ T4.1, T5.1, T7.3        | Tipos y tablas; ejecución de colecciones y conversiones                                                                                        | `internal/tipos`, `internal/interprete`             |
+| ✅ K1 (T6.1, T6.2)         | Proyecto: `proyecto.json`, carga, validación de `enseñar` y ciclos con la cadena completa                                                      | `internal/proyecto`                                 |
+| ✅ K2 (T4.2)               | Pasada 1 y `analizador.Tabla`; punto de entrada `Analizar` con registro de verificaciones; `ast.Inspeccionar`                                  | `internal/analizador`, `internal/ast`               |
 
-**Pruebas:** 9 paquetes en verde; 97 % de cobertura en el parser. golangci-lint sin problemas. Los 5 casos sintácticos de la sección 11 están cubiertos.
+**Pruebas:** 11 paquetes en verde; 97 % de cobertura en el parser, 100 % en `ast`. golangci-lint sin problemas. Cubiertos de la sección 11: los 5 sintácticos y las importaciones 1, 2 y 4.
 
 ### 🟡 Parcial
 
@@ -65,18 +67,18 @@ Este es el documento de coordinación del equipo: quién hace qué, en qué orde
 
 Cada uno trabaja en **archivos o paquetes distintos** para avanzar al mismo tiempo sin conflictos. Los números entre paréntesis son las validaciones de la sección 4 de la especificación.
 
-**Paso 0, juntos:** acordar el contrato de `analizador.Tabla` (la tabla de símbolos del proyecto) antes de separarse. Keylor lo propone en su tarea 2.
+**Paso 0 (listo):** el contrato de `analizador.Tabla` está en `internal/analizador/doc.go`. Jordy lo revisa en el PR de K2 y, si algo le falta, se agrega ahí.
 
 #### Keylor: proyecto, nombres y asistente
 
-| #   | Tarea                                                                                                                                                                               | Dónde                        | Rama                       |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | -------------------------- |
-| K1  | Proyecto: `proyecto.json`, carga de `.pks`, `enseñar … desde`, ciclos con la cadena completa (T6.1, T6.2)                                                                           | `internal/proyecto`          | `feature/project-imports`  |
-| K2  | Pasada 1: tabla de símbolos, duplicados, un solo `combate`, valores de especie únicos (T4.2)                                                                                        | `analizador/recoleccion.go`  | `feature/analyzer-symbols` |
-| K3  | Nombres y ámbitos: medalla reasignada (7), ocultamiento (8), `huir`/`siguiente` fuera de ciclo (12), modificar la colección recorrida (13), asignar a la variable de recorrido (16) | `analizador/nombres.go`      | `feature/analyzer-names`   |
-| K4  | Asistente: Levenshtein, `Fix` y plantillas por `Category + Code` (T5.4)                                                                                                             | `internal/asistente`         | `feature/assistant`        |
-| K5  | Servicio `Compilar`/`Ejecutar` que une todo; `cmd/pks` lo usa y el futuro `app.go` será solo un puente                                                                              | `internal/servicio`          | `feature/compile-service`  |
-| K6  | Advertencias 20 a 23 (prescindibles)                                                                                                                                                | `analizador/advertencias.go` | al final                   |
+| #     | Tarea                                                                                                                                                                               | Dónde                        | Rama                       |
+| ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | -------------------------- |
+| ✅ K1 | Proyecto: `proyecto.json`, carga de `.pks`, `enseñar … desde`, ciclos con la cadena completa (T6.1, T6.2)                                                                           | `internal/proyecto`          | `feature/project-imports`  |
+| ✅ K2 | Pasada 1: tabla de símbolos, duplicados, un solo `combate`, valores de especie únicos (T4.2)                                                                                        | `analizador/recoleccion.go`  | `feature/analyzer-symbols` |
+| K3    | Nombres y ámbitos: medalla reasignada (7), ocultamiento (8), `huir`/`siguiente` fuera de ciclo (12), modificar la colección recorrida (13), asignar a la variable de recorrido (16) | `analizador/nombres.go`      | `feature/analyzer-names`   |
+| K4    | Asistente: Levenshtein, `Fix` y plantillas por `Category + Code` (T5.4)                                                                                                             | `internal/asistente`         | `feature/assistant`        |
+| K5    | Servicio `Compilar`/`Ejecutar` que une todo; `cmd/pks` lo usa y el futuro `app.go` será solo un puente                                                                              | `internal/servicio`          | `feature/compile-service`  |
+| K6    | Advertencias 20 a 23 (prescindibles)                                                                                                                                                | `analizador/advertencias.go` | al final                   |
 
 Casos de la sección 11: importaciones 1, 2 y 4; semántico 4.
 
@@ -93,12 +95,41 @@ Casos de la sección 11: importaciones 1, 2 y 4; semántico 4.
 
 Casos de la sección 11: semánticos 1, 2, 3 y 5; importación 3.
 
+#### 🚀 Cómo empieza Jordy
+
+Todo lo que necesita ya existe. Para cada tarea J:
+
+1. Crea su archivo en `internal/analizador/` y se registra solo, sin tocar ningún archivo de Keylor:
+
+   ```go
+   func init() { registrar("tipos", revisarTipos) }
+
+   func revisarTipos(c *Contexto) {
+       for _, a := range c.Archivos() {
+           // recorrer a.Programa y reportar con c.Error(…) o c.Advertencia(…)
+       }
+   }
+   ```
+
+2. Para saber qué es un nombre, usa `c.Tabla.Buscar(a.Nombre, nombre)`; para los tipos escritos, `c.Tabla.ResolverTipo(a.Nombre, tipo)`; para operar tipos, `internal/tipos` (`ResultadoOp`, `Convertible`, `Asignable`).
+3. Si no necesita llevar ámbitos, recorre con `ast.Inspeccionar` / `ast.InspeccionarPrograma` (visita los 46 tipos de nodo).
+4. Prueba con programas reales, sin armar árboles a mano:
+
+   ```go
+   r := analizar(t, programa("    roca x = 1 + verdadero"))
+   // codigos(r.Diagnosticos) == []string{"…"}
+   ```
+
+   `analizar`, `programa` y `codigos` están en `analizador/ayudas_test.go`.
+
+5. `go run ./cmd/pks archivo.pks` ya corre las dos pasadas: cada verificación nueva se ve en consola de inmediato.
+
 #### Puntos de encuentro
 
 | Cuándo         | Qué se integra                                            |
 | -------------- | --------------------------------------------------------- |
-| Día 1          | Contrato de `analizador.Tabla`                            |
-| K2 listo       | Jordy pasa de tablas de prueba a la tabla real            |
+| ✅ Día 1       | Contrato de `analizador.Tabla`                            |
+| ✅ K2 listo    | Jordy empieza J1 a J5 con la tabla real                   |
 | K1 y J6 listos | `cmd/pks ejemplos/combate` corre con importaciones reales |
 | Al final       | Los 15 casos de la sección 11 pasan → etiqueta `v0.2`     |
 
@@ -109,7 +140,7 @@ Casos de la sección 11: semánticos 1, 2, 3 y 5; importación 3.
 
 ### ⬜ Pendiente del plan
 
-- **Backend:** K1 a K6 y J1 a J6.
+- **Backend:** K3 a K6 y J1 a J6.
 - **Parte gráfica (en pausa):** T0.2, T1.5, T1.6, T2.7, T3.4, T3.5 y el resto de la interfaz.
 - **S0:** T0.7, T0.8.
 - **Decisiones abiertas:** ninguna.
@@ -699,3 +730,7 @@ Todo lo que la especificación no define y el equipo decide. Formato: fecha, dec
 | 2026-09-24 | Contrato del AST: todo nodo embebe `Pos`; los opcionales que pueden ser nil lo dicen en un comentario; `Si.Sino` es un slice vacío cuando no hay sino; `LitLlaves.Resuelto` lo llena el analizador                                                                                                                                              | El intérprete nunca adivina la forma de un nodo                                                                               |
 | 2026-09-24 | `LitLlaves.Resuelto` es de tipo `ast.FormaLlaves` y no `tipos.Kind`                                                                                                                                                                                                                                                                             | Así `ast` no depende de `tipos` y se conservan las reglas de dependencia del plan                                             |
 | 2026-09-24 | Los árboles de prueba viven en `internal/ast/astprueba`. `Seccion10()` se comprueba contra los tokens de los `.pks` reales; cuando exista el parser, `Diferencia` compara su árbol con el fixture ignorando posiciones                                                                                                                          | Si el parser y el intérprete entienden el AST distinto, falla una prueba y no la demo                                         |
+| 2026-09-25 | Todo nombre de alcance de archivo (movimiento, especie, valor de especie, ficha, medalla) es único en todo el proyecto, aunque los archivos no se importen entre sí                                                                                                                                                                             | Evita que un mismo nombre signifique dos cosas; la especificación ya lo exige para movimientos y valores de especie           |
+| 2026-09-25 | Un proyecto se carga leyendo todos los `.pks` de la carpeta; un archivo suelto (`cmd/pks archivo.pks`) solo lee lo que importa                                                                                                                                                                                                                  | En el IDE interesa ver los errores de todos los archivos; al correr un archivo, los rotos de al lado no deben afectarlo       |
+| 2026-09-25 | La pasada 2 se arma con verificaciones que se registran solas (`registrar` en el `init` de cada archivo de `internal/analizador`) y se ejecutan en orden alfabético                                                                                                                                                                             | Keylor y Jordy agregan validaciones en archivos distintos sin editar una lista compartida                                     |
+| 2026-09-25 | Encabezados de los errores semánticos: «No es muy efectivo…» para tipos y reglas del lenguaje; «¡No pasó nada!» para nombres no declarados y datos sin valor                                                                                                                                                                                    | Aplica la tabla de la sección 7 a los casos que no nombra                                                                     |

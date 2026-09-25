@@ -160,6 +160,7 @@ fuzztime
 goimports
 golangci
 Interp
+jordy
 keylor
 keylorpineda
 wailsjs

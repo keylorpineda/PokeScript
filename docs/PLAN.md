@@ -31,68 +31,87 @@ Este es el documento de coordinación del equipo: quién hace qué, en qué orde
 
 ### Resumen
 
-| Sprint               | Estado              | Detalle                                                                                                                          |
-| -------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| **S0** · Preparación | 🟡 En curso         | Contratos listos (T0.3 a T0.6). Faltan Wails, protección de ramas y tablero.                                                     |
-| **S1** · Hito 1      | 🟡 En curso         | Lexer y valores del intérprete listos. Faltan el resaltado del editor y la maqueta del IDE.                                      |
-| **S2** · Hitos 2 y 3 | 🔴 **Bloquea todo** | La evaluación de expresiones está lista, pero **no hay parser**. Sin él no se puede ejecutar ningún archivo `.pks`.              |
-| **S3** · Hito 4      | 🟡 Adelantado       | El intérprete ya ejecuta el programa completo de la sección 10 desde un AST armado a mano. Falta conectarlo al parser y a Wails. |
-| **S4** en adelante   | 🟡 Adelantado       | `internal/tipos` listo (T4.1). La parte de ejecución de movimientos, colecciones, `segun`, fichas y conversiones también.        |
+| Sprint               | Estado        | Detalle                                                                                                     |
+| -------------------- | ------------- | ----------------------------------------------------------------------------------------------------------- |
+| **S0** · Preparación | 🟡 En curso   | Contratos listos. Faltan Wails, protección de ramas en GitHub y tablero.                                    |
+| **S1** · Hito 1      | 🟡 En curso   | Lexer y valores listos. Faltan el resaltado del editor y la maqueta del IDE (parte gráfica).                |
+| **S2** · Hitos 2 y 3 | ✅ Listo      | Parser completo con pila de bloques y recuperación de errores.                                              |
+| **S3** · Hito 4      | ✅ En consola | `go run ./cmd/pks ejemplos/combate` ejecuta el programa de la sección 10 desde los `.pks`. Falta el IDE.    |
+| **S4** en adelante   | 🟡 En curso   | `internal/tipos` listo. **Siguiente: analizador, proyecto e importaciones, y asistente**, repartidos abajo. |
 
-**Lo más importante ahora:** el intérprete va varios sprints adelantado y el parser no ha empezado. El parser es el camino crítico hacia el hito 4.
+**La parte gráfica (Wails, Svelte, CodeMirror) queda en pausa** hasta terminar el backend. Mientras tanto, todo se prueba con `cmd/pks`.
 
 ### ✅ Terminado
 
-| Tarea          | Qué quedó                                                                                                                         | Dónde                                                               |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| ✅ T0.3 – T0.6 | Módulo Go, tokens, diagnósticos, nodos del AST e interfaz `ES`                                                                    | `internal/token`, `diag`, `ast`, `interprete/es.go`                 |
-| ✅ T1.1 – T1.4 | Lexer completo con 10 tipos de error léxico en español; fuzzing sin fallos                                                        | `internal/lexer`                                                    |
-| ✅ T1.7        | Valores en ejecución, mochila con orden de inserción, copia profunda y formato para `gritar`                                      | `internal/interprete/valores.go`, `mochila.go`, `texto.go`          |
-| ✅ T2.6        | Evaluación de expresiones: aritmética con desbordamiento, comparaciones, cortocircuito, `contiene`, `sino`                        | `internal/interprete/expresiones.go`, `aritmetica.go`               |
-| ✅ T3.1 – T3.3 | Todas las instrucciones, `capturar` con reintento y los 8 códigos de error de ejecución                                           | `internal/interprete/instrucciones.go`, `capturar.go`, `errores.go` |
-| ✅ T4.1        | Tipos, tabla de efectividades y tabla de operaciones como datos                                                                   | `internal/tipos`                                                    |
-| ✅ T5.1        | Parte de ejecución de `equipo` y `mochila`: acceso desde 1, `sumar`, `quitar`, `recorrer` con 1 y 2 variables                     | `internal/interprete`                                               |
-| ✅ T7.3        | `convertir`, `redondear` y `aleatorio` con sus errores de ejecución                                                               | `internal/interprete`                                               |
-| —              | Árboles de prueba compartidos: `astprueba.Seccion10()` y `astprueba.Diferencia` para comparar el árbol del parser con el esperado | `internal/ast/astprueba`                                            |
+| Tarea                      | Qué quedó                                                                                                                                      | Dónde                                               |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| ✅ T0.3 – T0.6             | Módulo Go, tokens, diagnósticos, nodos del AST e interfaz `ES`                                                                                 | `internal/token`, `diag`, `ast`, `interprete/es.go` |
+| ✅ T1.1 – T1.4             | Lexer completo con 10 tipos de error léxico en español; fuzzing sin fallos                                                                     | `internal/lexer`                                    |
+| ✅ T1.7, T2.6, T3.1 – T3.3 | Intérprete: valores, expresiones, instrucciones, `capturar` y errores de ejecución                                                             | `internal/interprete`                               |
+| ✅ T2.1 – T2.5             | Parser: expresiones con precedencia, no encadenables, instrucciones, pila de bloques con pista de sangría, recuperación y límite de 20 errores | `internal/parser`                                   |
+| ✅ Hito 4                  | Comando de consola y ejemplos; la prueba de contrato garantiza que el parser produce el árbol de `astprueba.Seccion10()`                       | `cmd/pks`, `ejemplos/`                              |
+| ✅ T4.1, T5.1, T7.3        | Tipos y tablas; ejecución de colecciones y conversiones                                                                                        | `internal/tipos`, `internal/interprete`             |
 
-**Pruebas:** 7 paquetes en verde. Cobertura: 100 % en `lexer` y `ast`; 96 % en `token`, `diag` y `tipos`; 86 % en `interprete`. golangci-lint sin problemas. El programa de la sección 10 corre de principio a fin (`TestProgramaSeccion10`).
+**Pruebas:** 9 paquetes en verde; 97 % de cobertura en el parser. golangci-lint sin problemas. Los 5 casos sintácticos de la sección 11 están cubiertos.
 
 ### 🟡 Parcial
 
-| Tarea   | Falta                                                                                                                                                            |
-| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 🟡 T0.1 | Wails CLI en todas las máquinas; confirmar Go, Node y pnpm en las de los otros dos integrantes.                                                                  |
-| 🟡 T4.5 | La ejecución de movimientos está lista (copia de argumentos, `entregar`, límite de 1000 llamadas). Falta la parte del analizador: retorno por todos los caminos. |
+| Tarea   | Falta                                                                                                 |
+| ------- | ----------------------------------------------------------------------------------------------------- |
+| 🟡 T0.1 | Wails CLI en todas las máquinas; el tercer integrante todavía no configuró la suya.                   |
+| 🟡 T4.5 | La ejecución de movimientos está lista. Falta la parte del analizador: retorno por todos los caminos. |
 
-### ⏭️ Siguientes tareas
+### ⏭️ División del backend: Keylor y Jordy
 
-Ordenadas por prioridad. **Las dos primeras filas son el camino crítico.**
+Cada uno trabaja en **archivos o paquetes distintos** para avanzar al mismo tiempo sin conflictos. Los números entre paréntesis son las validaciones de la sección 4 de la especificación.
 
-| Prioridad | Rol            | Tarea                                                                               | Rama sugerida                 | Listo cuando                                                                               |
-| --------- | -------------- | ----------------------------------------------------------------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------ |
-| 1         | **B**          | T2.1 · Parser de expresiones con precedencia                                        | `feature/parser-expressions`  | Pruebas de precedencia y `a > b > c` como error                                            |
-| 2         | **B**          | T2.3 – T2.5 · Instrucciones, bloques, **pila de bloques** ⭐ y recuperación         | `feature/parser-statements`   | `astprueba.Diferencia` no encuentra diferencias con `Seccion10()` al analizar los 4 `.pks` |
-| 3         | **B** o **C**  | Comando de consola `cmd/pks`: lexer → parser → intérprete                           | `feature/cli-runner`          | `go run ./cmd/pks ejemplos/combate` ejecuta el programa de la sección 10 🏁                |
-| 4         | **A**          | T0.2 · Proyecto Wails + Svelte con pnpm                                             | `feature/wails-app`           | `wails dev` abre una ventana                                                               |
-| 5         | **A**          | T1.5 y T1.6 · Resaltado y maqueta del IDE                                           | `feature/editor-highlighting` | Los ejemplos del README se ven coloreados                                                  |
-| 6         | **C**          | T4.2 – T4.3 · Analizador: tabla de símbolos y chequeo de tipos con `internal/tipos` | `feature/analyzer-symbols`    | Casos semánticos 1 y 4 de la sección 11, sobre árboles de `astprueba`                      |
-| 7         | **A** + **C**  | T3.4 · `EjecutarProyecto` con streaming por eventos de Wails                        | `feature/wails-run`           | En el IDE, `capturar` pide un dato y el programa sigue                                     |
-| —         | Dueño del repo | T0.7 · Proteger `main` y `dev`                                                      | —                             | Push directo rechazado                                                                     |
-| —         | Todos          | T0.8 · Tablero y nombres en [Equipo y roles](#-equipo-y-roles)                      | —                             | Cada tarea tiene su tarjeta                                                                |
+**Paso 0, juntos:** acordar el contrato de `analizador.Tabla` (la tabla de símbolos del proyecto) antes de separarse. Keylor lo propone en su tarea 2.
 
-### ⚠️ Pendientes de orden en el repositorio
+#### Keylor: proyecto, nombres y asistente
 
-- ✅ **Resuelto (2026-09-25):** `main` había recibido un merge directo de T4.1 (`5de95ba`) sin pasar por `dev` ni por un PR. Se sacó de `main`, que volvió a `432e918`. No se perdió nada: todo ese trabajo ya estaba en `dev`. `main` solo recibe `dev` al cerrar un hito; T0.7 evita que se repita.
-- **El merge de T4.1 a `dev` (`4c84833`) no pasó por un PR**, así que no tuvo revisión ni CI previo. Se deja como está para no reescribir el historial de `dev`; desde ahora todo entra por PR.
-- Ramas ya integradas que se pueden borrar: `feature/compiler-foundation` y `feature/interpreter-values`.
+| #   | Tarea                                                                                                                                                                               | Dónde                        | Rama                       |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | -------------------------- |
+| K1  | Proyecto: `proyecto.json`, carga de `.pks`, `enseñar … desde`, ciclos con la cadena completa (T6.1, T6.2)                                                                           | `internal/proyecto`          | `feature/project-imports`  |
+| K2  | Pasada 1: tabla de símbolos, duplicados, un solo `combate`, valores de especie únicos (T4.2)                                                                                        | `analizador/recoleccion.go`  | `feature/analyzer-symbols` |
+| K3  | Nombres y ámbitos: medalla reasignada (7), ocultamiento (8), `huir`/`siguiente` fuera de ciclo (12), modificar la colección recorrida (13), asignar a la variable de recorrido (16) | `analizador/nombres.go`      | `feature/analyzer-names`   |
+| K4  | Asistente: Levenshtein, `Fix` y plantillas por `Category + Code` (T5.4)                                                                                                             | `internal/asistente`         | `feature/assistant`        |
+| K5  | Servicio `Compilar`/`Ejecutar` que une todo; `cmd/pks` lo usa y el futuro `app.go` será solo un puente                                                                              | `internal/servicio`          | `feature/compile-service`  |
+| K6  | Advertencias 20 a 23 (prescindibles)                                                                                                                                                | `analizador/advertencias.go` | al final                   |
+
+Casos de la sección 11: importaciones 1, 2 y 4; semántico 4.
+
+#### Jordy: tipos y flujo
+
+| #   | Tarea                                                                                                                                 | Dónde                      | Rama                           |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- | ------------------------------ |
+| J1  | Pasada 2, tipos: expresiones contra la tabla (1), condiciones `electrico` (2), argumentos (3), división entre literal `0` (17) (T4.3) | `analizador/tipos_expr.go` | `feature/analyzer-types`       |
+| J2  | Literales `{ }`: mochila o ficha según el tipo esperado; sin tipo esperado (14); ficha completa (15) (T6.5)                           | `analizador/literales.go`  | `feature/analyzer-literals`    |
+| J3  | Flujo: asignación definida (6), retorno por todos los caminos (4), `entregar` con o sin valor (5) (T4.4, T4.5)                        | `analizador/flujo.go`      | `feature/analyzer-flow`        |
+| J4  | `segun`: exhaustivo nombrando los faltantes (9), `otro` obligatorio (10), ramas inalcanzables (18) (T5.3)                             | `analizador/segun.go`      | `feature/analyzer-segun`       |
+| J5  | `posible`: uso sin comprobar (11) y estrechamiento (T7.1, T7.2)                                                                       | `analizador/posible.go`    | `feature/analyzer-posible`     |
+| J6  | Intérprete multiarchivo, con el archivo correcto en los errores de ejecución                                                          | `internal/interprete`      | `feature/interpreter-projects` |
+
+Casos de la sección 11: semánticos 1, 2, 3 y 5; importación 3.
+
+#### Puntos de encuentro
+
+| Cuándo         | Qué se integra                                            |
+| -------------- | --------------------------------------------------------- |
+| Día 1          | Contrato de `analizador.Tabla`                            |
+| K2 listo       | Jordy pasa de tablas de prueba a la tabla real            |
+| K1 y J6 listos | `cmd/pks ejemplos/combate` corre con importaciones reales |
+| Al final       | Los 15 casos de la sección 11 pasan → etiqueta `v0.2`     |
+
+### ⚠️ Pendientes de orden
+
+- **El tercer integrante no tiene commits.** Cuando se retome la parte gráfica, el rol A (Wails + Svelte) es suyo.
+- T0.7: activar la protección de `main` y `dev` en GitHub. El hook `pre-push` ya bloquea el push directo en las máquinas del equipo.
 
 ### ⬜ Pendiente del plan
 
-- **S0:** T0.1 (resto), T0.2, T0.7, T0.8.
-- **S1:** T1.5, T1.6.
-- **S2:** T2.1 a T2.5 (parser) y T2.7 (subrayado en el editor).
-- **S3:** T3.4 a T3.6 (Wails, panel de salida, etiqueta `v0.1`).
-- **S4 a S8:** analizador, importaciones, asistente e interfaz; ver [Tareas por sprint](#-tareas-por-sprint).
+- **Backend:** K1 a K6 y J1 a J6.
+- **Parte gráfica (en pausa):** T0.2, T1.5, T1.6, T2.7, T3.4, T3.5 y el resto de la interfaz.
+- **S0:** T0.7, T0.8.
 - **Decisiones abiertas:** ninguna.
 
 ---
@@ -408,11 +427,11 @@ Cada tarea tiene un identificador (`T1.3`) para usarlo en el título del PR. Res
 
 | ID      | Tarea                                                                                                                         | Resp. | Listo cuando                                                      |
 | ------- | ----------------------------------------------------------------------------------------------------------------------------- | ----- | ----------------------------------------------------------------- |
-| T2.1    | Parser de expresiones con la jerarquía `expr_o` → `expr_acceso`; `2 + 3 * 4` da el árbol correcto                             | B     | Pruebas de precedencia                                            |
-| T2.2    | Operadores no encadenables: `a > b > c` es error sintáctico                                                                   | B     | Caso de la sección 11                                             |
-| T2.3    | Parser de instrucciones y bloques, anticipación de 2 tokens, retroceso en `decl_dato`                                         | B     | Árbol completo de los 4 archivos de la sección 10                 |
-| T2.4    | ⭐ Pila de bloques: el error dice **en qué línea se abrió** el bloque sin `fin`                                               | B     | Caso "falta un `fin`" de la sección 11                            |
-| T2.5    | Recuperación hasta el siguiente `NEWLINE`, máximo 20 diagnósticos                                                             | B     | Casos "dos instrucciones en una línea" y "`recorrer` sin `hasta`" |
+| ✅ T2.1 | Parser de expresiones con la jerarquía `expr_o` → `expr_acceso`; `2 + 3 * 4` da el árbol correcto                             | B     | Pruebas de precedencia                                            |
+| ✅ T2.2 | Operadores no encadenables: `a > b > c` es error sintáctico                                                                   | B     | Caso de la sección 11                                             |
+| ✅ T2.3 | Parser de instrucciones y bloques, anticipación de 2 tokens, retroceso en `decl_dato`                                         | B     | Árbol completo de los 4 archivos de la sección 10                 |
+| ✅ T2.4 | ⭐ Pila de bloques: el error dice **en qué línea se abrió** el bloque sin `fin`                                               | B     | Caso "falta un `fin`" de la sección 11                            |
+| ✅ T2.5 | Recuperación hasta el siguiente `NEWLINE`, máximo 20 diagnósticos                                                             | B     | Casos "dos instrucciones en una línea" y "`recorrer` sin `hasta`" |
 | ✅ T2.6 | Intérprete: evaluar expresiones sobre un AST (aritmética, comparación, `y`/`o` en cortocircuito)                              | C     | Pruebas con AST armados a mano, sin esperar al parser             |
 | T2.7    | Método `CompilarProyecto` en `app.go` (por ahora solo lexer + parser) y subrayado de errores en CodeMirror con `Line/Col/Len` | A     | Un error de sintaxis se subraya en el editor                      |
 

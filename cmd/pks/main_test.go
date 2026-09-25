@@ -113,3 +113,19 @@ func TestProyectoJSONInvalido(t *testing.T) {
 		t.Errorf("código %d, errores %q", c, errores)
 	}
 }
+
+func TestErroresDelAnalizador(t *testing.T) {
+	ruta := filepath.Join(t.TempDir(), "sin.pks")
+	if err := os.WriteFile(ruta, []byte("movimiento f()\nfin\nmovimiento f()\nfin\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	codigo, salida, errores := ejecutarPrueba(t, ruta, "")
+	if codigo != salidaCompilar || salida != "" {
+		t.Errorf("código %d, salida %q", codigo, salida)
+	}
+	for _, parte := range []string{"no hay sobrecarga", "no tiene un bloque combate"} {
+		if !strings.Contains(errores, parte) {
+			t.Errorf("faltó el error %q:\n%s", parte, errores)
+		}
+	}
+}

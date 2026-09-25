@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 
+	"github.com/keylorpineda/PokeScript/internal/analizador"
 	"github.com/keylorpineda/PokeScript/internal/ast"
 	"github.com/keylorpineda/PokeScript/internal/diag"
 	"github.com/keylorpineda/PokeScript/internal/proyecto"
@@ -29,9 +30,16 @@ func cargar(ruta string) (*ast.Programa, []diag.Diagnostic, error) {
 	}
 
 	p := r.Proyecto
+	diags := r.Diagnosticos
+	if !r.TieneErrores() {
+		// La pasada 1 del analizador solo tiene sentido sobre un proyecto
+		// que se pudo leer completo.
+		diags = append(diags, analizador.Recolectar(p).Diagnosticos...)
+	}
+
 	prog := &ast.Programa{Archivo: p.Principal}
 	for _, n := range p.Orden {
 		prog.Declaraciones = append(prog.Declaraciones, p.Archivos[n].Programa.Declaraciones...)
 	}
-	return prog, r.Diagnosticos, nil
+	return prog, diags, nil
 }

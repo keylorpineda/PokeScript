@@ -31,3 +31,35 @@ func FuzzParsearExpresion(f *testing.F) {
 		}
 	})
 }
+
+// FuzzAnalizar verifica que ningún archivo haga fallar o colgar al parser,
+// y que siempre devuelva un programa.
+//
+//	go test -fuzz=FuzzAnalizar -fuzztime=30s ./internal/parser/
+func FuzzAnalizar(f *testing.F) {
+	for _, s := range []string{
+		"combate\n gritar 1\nfin",
+		"combate\n si x\n  huir\n sino si y\n sino\n fin\nfin",
+		"movimiento roca f(roca x)\n entregar x\nfin",
+		"especie E\n A, B\nfin\nficha F\n roca x\nfin",
+		"combate\n segun x\n  1, 2 entonces huir\n  otro entonces siguiente\n fin\nfin",
+		"combate\n recorrer n de 1 hasta 3\n fin\n recorrer k, v en m\n fin\nfin",
+		"combate\n mientras x\n si y\nfin", "fin fin", "sino si", "enseñar x desde",
+	} {
+		f.Add(s)
+	}
+	f.Fuzz(func(t *testing.T, fuente string) {
+		if !utf8.ValidString(fuente) {
+			t.Skip()
+		}
+		r := Analizar("fuzz.pks", fuente)
+		if r.Programa == nil {
+			t.Fatal("Programa es nil")
+		}
+		for _, d := range r.Diagnosticos {
+			if d.Line < 1 || d.Col < 1 || d.Len < 1 {
+				t.Fatalf("diagnóstico con posición inválida: %+v", d)
+			}
+		}
+	})
+}

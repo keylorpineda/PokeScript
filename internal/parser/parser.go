@@ -18,6 +18,10 @@ type parser struct {
 	tokens  []token.Token
 	pos     int
 	diags   diag.Lista
+
+	// sospechosos son bloques cerrados por un fin con menos sangría que su
+	// apertura: pistas para explicar un bloque sin cerrar.
+	sospechosos []token.Token
 }
 
 func nuevo(archivo string, tokens []token.Token) *parser {

@@ -49,12 +49,13 @@ Los tipos, los alcances y los ejemplos están en `CONTRIBUTING.md`.
 - En la raíz quedan solo `main.go` y `app.go` de Wails, que hacen de puente.
 - Las pruebas usan `testing` de la librería estándar, en archivos `*_test.go` al lado del código, con estilo de tabla.
 - Los programas `.pks` de prueba van en `testdata/` dentro de cada paquete.
-- Para correrlas: `go test ./internal/...`
+- Para correrlas: `go test ./internal/... ./cmd/...`
+- Para ejecutar un programa sin el IDE: `go run ./cmd/pks ejemplos/combate` (o un archivo `.pks`).
 
 ## CI
 
 `.github/workflows/ci.yml` corre en cada push a `main`/`dev` y en cada PR:
 
 1. commitlint sobre todos los commits nuevos.
-2. `gofmt`, `go vet` y `go test -race` sobre `internal/` (solo si existe `go.mod`).
+2. `gofmt`, `go vet`, golangci-lint y `go test -race` sobre `internal/` y `cmd/` (solo si existe `go.mod`).
 3. `pnpm run build` del frontend (solo si existe `frontend/package.json`).

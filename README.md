@@ -606,9 +606,9 @@ flowchart LR
 Cada hito es una medalla de gimnasio 🏅
 
 - [ ] **1.** Lexer completo y resaltado en el editor
-- [ ] **2.** Parser de expresiones: `2 + 3 * 4`
-- [ ] **3.** Parser de instrucciones y bloques
-- [ ] **4.** Intérprete: `gritar`, variables, `si`, `mientras`: **¡el primer programa corriendo!**
+- [x] **2.** Parser de expresiones: `2 + 3 * 4`
+- [x] **3.** Parser de instrucciones y bloques
+- [x] **4.** Intérprete: `gritar`, variables, `si`, `mientras`: **¡el primer programa corriendo!** (en consola; falta el IDE)
 - [ ] **5.** Tabla de símbolos y chequeo de tipos
 - [ ] **6.** Movimientos, parámetros y retorno
 - [ ] **7.** Colecciones: `equipo` y `mochila`
@@ -642,7 +642,21 @@ git config commit.template .gitmessage
 
 `pnpm install` activa los hooks de Git (Husky) que revisan el formato, la ortografía y los mensajes de commit.
 
-> 🥚 El huevo todavía no eclosiona: los comandos para correr el IDE (`wails dev`) se agregan cuando esté el proyecto Wails.
+### Correr un programa
+
+El IDE todavía está en camino, pero los programas ya corren desde la terminal:
+
+```bash
+go run ./cmd/pks ejemplos/hola.pks
+```
+
+```bash
+go run ./cmd/pks ejemplos/combate
+```
+
+El segundo es el proyecto completo de combate por turnos, con cuatro archivos. En [`ejemplos/`](ejemplos) están también los programas de esta página.
+
+> 🥚 El IDE (`wails dev`) se agrega cuando esté el proyecto Wails.
 
 ### Estructura
 

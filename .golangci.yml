@@ -12,6 +12,12 @@ linters:
     - gocyclo
     - errorlint
   settings:
+    errcheck:
+      # Escribir en la terminal o en un búfer no tiene un error útil que manejar.
+      exclude-functions:
+        - fmt.Fprint
+        - fmt.Fprintf
+        - fmt.Fprintln
     gocyclo:
       # El parser y el analizador tienen switches grandes; subir con criterio.
       min-complexity: 30
@@ -23,7 +29,6 @@ linters:
           disabled: true
 
 formatters:
-  # misspell no se usa: solo conoce inglés. CSpell revisa la ortografía en español e inglés.
   enable:
     - gofmt
     - goimports

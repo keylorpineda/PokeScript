@@ -6,39 +6,11 @@ import (
 	"sort"
 	"strings"
 	"testing"
-	"testing/fstest"
 
 	"github.com/keylorpineda/PokeScript/internal/diag"
 	"github.com/keylorpineda/PokeScript/internal/proyecto"
 	"github.com/keylorpineda/PokeScript/internal/tipos"
 )
-
-// recolectar carga un proyecto en memoria y corre la pasada 1. Falla si
-// el proyecto tiene errores de sintaxis o de importación, para que cada
-// prueba mida solo la recolección.
-func recolectar(t *testing.T, archivos map[string]string) Resultado {
-	t.Helper()
-	fsys := fstest.MapFS{}
-	for n, c := range archivos {
-		fsys[n] = &fstest.MapFile{Data: []byte(c)}
-	}
-	cargado, err := proyecto.CargarFS(fsys, "prueba")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if cargado.TieneErrores() {
-		t.Fatalf("el proyecto de prueba tiene errores previos: %v", codigos(cargado.Diagnosticos))
-	}
-	return Recolectar(cargado.Proyecto)
-}
-
-func codigos(ds []diag.Diagnostic) []string {
-	var cs []string
-	for _, d := range ds {
-		cs = append(cs, d.Code)
-	}
-	return cs
-}
 
 func TestTablaSeccion10(t *testing.T) {
 	cargado, err := proyecto.Cargar(filepath.Join("..", "..", "ejemplos", "combate"))

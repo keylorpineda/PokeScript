@@ -8,11 +8,18 @@ import (
 	"github.com/keylorpineda/PokeScript/internal/ast"
 )
 
-var tipoPos = reflect.TypeOf(ast.Pos{})
+var (
+	tipoPos = reflect.TypeOf(ast.Pos{})
+	tipoSi  = reflect.TypeOf(ast.Si{})
+)
 
 // Diferencia compara dos árboles ignorando todas las posiciones (los campos
 // de tipo ast.Pos). Devuelve "" si son iguales, o la ruta del primer lugar
 // donde difieren, por ejemplo "Declaraciones[1].Cuerpo[3].Valor.Op: + ≠ -".
+//
+// En general un slice nil y uno vacío cuentan como iguales. La excepción es
+// Si.Sino: el contrato del AST dice que nunca es nil, así que ahí sí se
+// distinguen y la prueba del parser lo hace cumplir.
 //
 // Cuando exista el parser, la prueba de contrato queda así:
 //
@@ -61,13 +68,17 @@ func diferencia(ruta string, a, b reflect.Value) string {
 			if ruta != "" {
 				sub = ruta + "." + sub
 			}
+			if a.Type() == tipoSi && campo.Name == "Sino" && a.Field(i).IsNil() != b.Field(i).IsNil() {
+				return fmt.Sprintf("%s: nil ≠ vacío (el contrato pide un slice vacío)", sub)
+			}
 			if d := diferencia(sub, a.Field(i), b.Field(i)); d != "" {
 				return d
 			}
 		}
 		return ""
 	case reflect.Slice:
-		// Un slice nil y uno vacío son iguales: ninguno tiene elementos.
+		// Un slice nil y uno vacío son iguales: ninguno tiene elementos
+		// (salvo Si.Sino, que se revisa arriba).
 		if a.Len() != b.Len() {
 			return fmt.Sprintf("%s: %d elementos ≠ %d", nombreRuta(ruta), a.Len(), b.Len())
 		}

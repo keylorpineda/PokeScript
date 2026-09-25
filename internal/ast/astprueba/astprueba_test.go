@@ -4,6 +4,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -26,13 +27,7 @@ func TestSeccion10CoincideConLosArchivos(t *testing.T) {
 		if len(res.Diagnosticos) > 0 {
 			t.Fatalf("%s tiene errores léxicos: %v", archivo, res.Diagnosticos)
 		}
-		var tokens []string
-		for _, tk := range res.Tokens {
-			switch tk.Kind {
-			case token.IDENT, token.ROCA_LIT, token.AGUA_LIT, token.FUEGO_LIT, token.PLANTA_LIT:
-				tokens = append(tokens, tk.Lexeme)
-			}
-		}
+		tokens := hojasDelLexer(t, res.Tokens)
 		hojas := Hojas(programa)
 		if !reflect.DeepEqual(hojas, tokens) {
 			t.Errorf("%s: el fixture no coincide con el archivo\n  fixture: %q\n  lexer:   %q", archivo, hojas, tokens)
@@ -89,10 +84,15 @@ func TestDiferenciaEncuentraElPrimerCambio(t *testing.T) {
 }
 
 func TestDiferenciaSliceVacioYNil(t *testing.T) {
+	// En general, nil y vacío son iguales.
+	if d := Diferencia(Gritar(), &ast.Gritar{Pos: p0, Args: []ast.Expr{}}); d != "" {
+		t.Errorf("unos argumentos nil y unos vacíos deberían ser iguales: %s", d)
+	}
+	// Pero Si.Sino nil rompe el contrato del AST.
 	a := &ast.Si{Pos: p0, Sino: nil}
 	b := &ast.Si{Pos: p0, Sino: []ast.Instr{}}
-	if d := Diferencia(a, b); d != "" {
-		t.Errorf("un sino nil y uno vacío deberían ser iguales: %s", d)
+	if d := Diferencia(a, b); !strings.Contains(d, "Sino") {
+		t.Errorf("un sino nil debería reportarse, Diferencia dijo %q", d)
 	}
 }
 
@@ -108,5 +108,41 @@ func TestLosTiposNoSeComparten(t *testing.T) {
 	TPosible(a)
 	if a.Posible {
 		t.Error("TPosible no debe modificar el tipo original")
+	}
+}
+
+// hojasDelLexer toma los tokens IDENT y *_LIT. Los números se pasan a su
+// forma canónica (007 → 7, 1.50 → 1.5), la misma que usa Hojas, porque el
+// árbol guarda el valor y no cómo se escribió.
+func hojasDelLexer(t *testing.T, tokens []token.Token) []string {
+	t.Helper()
+	var hojas []string
+	for _, tk := range tokens {
+		switch tk.Kind {
+		case token.IDENT, token.FUEGO_LIT, token.PLANTA_LIT:
+			hojas = append(hojas, tk.Lexeme)
+		case token.ROCA_LIT:
+			n, err := strconv.ParseInt(tk.Lexeme, 10, 64)
+			if err != nil {
+				t.Fatalf("roca inválida %q: %v", tk.Lexeme, err)
+			}
+			hojas = append(hojas, strconv.FormatInt(n, 10))
+		case token.AGUA_LIT:
+			f, err := strconv.ParseFloat(tk.Lexeme, 64)
+			if err != nil {
+				t.Fatalf("agua inválida %q: %v", tk.Lexeme, err)
+			}
+			hojas = append(hojas, strconv.FormatFloat(f, 'f', -1, 64))
+		}
+	}
+	return hojas
+}
+
+func TestHojasConLiteralesEscritosDistinto(t *testing.T) {
+	res := lexer.Analizar("prueba.pks", "gritar 1.0, 1.50, 007\n")
+	got := hojasDelLexer(t, res.Tokens)
+	want := Hojas(Gritar(Agua(1.0), Agua(1.5), Roca(7)))
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("lexer %q, fixture %q", got, want)
 	}
 }

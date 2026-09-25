@@ -96,6 +96,7 @@ El ID de la tarea del plan (`T2.1`) va en el título del PR, no en el nombre de 
 | ------------ | ------------------------------------------------------------------------------------------------- |
 | `commit-msg` | Valida el mensaje con commitlint (`commitlint.config.js`)                                         |
 | `pre-commit` | Corre lint-staged (Prettier, markdownlint, CSpell) y `gofmt` sobre los `.go` si Go está instalado |
+| `pre-push`   | Rechaza el push directo a `main` y a `dev`: todo entra por un PR                                  |
 
 Si un commit se rechaza, corrige el mensaje y vuelve a intentarlo. No uses `--no-verify`.
 

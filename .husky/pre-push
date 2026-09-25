@@ -1,0 +1,18 @@
+# Bloquea el push directo a main y dev: todo entra por un PR revisado.
+# Git pasa por stdin una línea por rama: <ref local> <sha local> <ref remota> <sha remota>
+while read -r ref_local sha_local ref_remota sha_remota; do
+  case "$ref_remota" in
+    refs/heads/main | refs/heads/dev)
+      rama=${ref_remota#refs/heads/}
+      echo ""
+      echo "✖ No se puede hacer push directo a '$rama'."
+      echo "  Sube tu rama y abre un PR hacia dev:"
+      echo ""
+      echo "    git switch -c feature/<area>-<que>"
+      echo "    git push -u origin HEAD"
+      echo ""
+      exit 1
+      ;;
+  esac
+done
+exit 0

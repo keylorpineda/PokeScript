@@ -32,9 +32,9 @@ func cargar(ruta string) (*ast.Programa, []diag.Diagnostic, error) {
 	p := r.Proyecto
 	diags := r.Diagnosticos
 	if !r.TieneErrores() {
-		// La pasada 1 del analizador solo tiene sentido sobre un proyecto
-		// que se pudo leer completo.
-		diags = append(diags, analizador.Recolectar(p).Diagnosticos...)
+		// El analizador solo tiene sentido sobre un proyecto que se pudo
+		// leer completo.
+		diags = append(diags, analizador.Analizar(p).Diagnosticos...)
 	}
 
 	prog := &ast.Programa{Archivo: p.Principal}

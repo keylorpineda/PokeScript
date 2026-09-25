@@ -432,3 +432,21 @@ func TestFichaYClaveInvalidasNoRompenLaEjecucion(t *testing.T) {
 		t.Errorf("clave agua: código = %s", d.Code)
 	}
 }
+
+// Si el analizador ya decidió qué es un { }, el intérprete lo respeta y
+// detecta si no coincide con el tipo esperado.
+func TestLlavesResueltasPorElAnalizador(t *testing.T) {
+	comoMochila := llaves(planta("a"), roca(1))
+	comoMochila.Resuelto = ast.LlavesMochila
+	salida, err := soloCombate(t, dato(tMochila(tPlanta, tRoca), "m", comoMochila), gritar(id("m")))
+	if err != nil || len(salida) != 1 || salida[0] != `{"a": 1}` {
+		t.Errorf("mochila resuelta: %q, %v", salida, err)
+	}
+
+	contradictorio := llaves(planta("a"), roca(1))
+	contradictorio.Resuelto = ast.LlavesFicha
+	_, err = soloCombate(t, dato(tMochila(tPlanta, tRoca), "m", contradictorio))
+	if d := errorEjecucion(t, err); d.Code != CodigoInterno {
+		t.Errorf("código = %s, want %s", d.Code, CodigoInterno)
+	}
+}

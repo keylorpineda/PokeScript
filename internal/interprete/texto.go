@@ -69,7 +69,11 @@ func literal(v Value) string {
 
 // textoAgua escribe un agua siempre con punto decimal, para que se distinga
 // de una roca: 12.0, 3.14, -0.5. Usa la menor cantidad de decimales que
-// representa el valor exacto y nunca notación científica.
+// representa el valor exacto.
+//
+// Si el exponente decimal queda fuera de -4 a 15, usa notación científica:
+// 1.0e16, 2.5e-5 (decisión H19). Ese texto no es un literal válido de
+// PokeScript; es la tercera excepción de la regla de mostrar literales.
 func textoAgua(f float64) string {
 	if math.IsInf(f, 0) || math.IsNaN(f) {
 		// Las operaciones de agua detienen la ejecución antes de producir
@@ -77,7 +81,18 @@ func textoAgua(f float64) string {
 		panic(fmt.Sprintf("error interno: agua no finita: %v", f))
 	}
 	if f == 0 {
-		f = 0 // -0.0 se muestra como 0.0
+		return "0.0" // también -0.0
+	}
+	// 'e' da la mantisa y el exponente exactos: "1.5e+16".
+	cientifica := strconv.FormatFloat(f, 'e', -1, 64)
+	i := strings.IndexByte(cientifica, 'e')
+	exponente, _ := strconv.Atoi(cientifica[i+1:])
+	if exponente < -4 || exponente > 15 {
+		mantisa := cientifica[:i]
+		if !strings.Contains(mantisa, ".") {
+			mantisa += ".0"
+		}
+		return mantisa + "e" + strconv.Itoa(exponente)
 	}
 	s := strconv.FormatFloat(f, 'f', -1, 64)
 	if !strings.Contains(s, ".") {

@@ -77,6 +77,12 @@ func TestExpresiones(t *testing.T) {
 		{"índice de texto", nil, idx(planta("Pokémon"), roca(4)), "é"},
 		{"clave de mochila", mochila, idx(id("m"), planta("agua")), "3"},
 		{"contiene en equipo", equipo, bin(token.CONTIENE, id("e"), planta("Eevee")), "verdadero"},
+		{
+			"contiene ensancha una roca para buscarla en un equipo de agua",
+			[]ast.Instr{dato(tEquipo(tAgua), "a", equipoLit(agua(1.5), roca(2)))},
+			bin(token.CONTIENE, id("a"), roca(2)),
+			"verdadero",
+		},
 		{"contiene en mochila busca claves", mochila, bin(token.CONTIENE, id("m"), planta("fuego")), "falso"},
 		{"texto contiene texto", nil, bin(token.CONTIENE, planta("Pikachu"), planta("chu")), "verdadero"},
 		{"texto no contiene texto", nil, bin(token.CONTIENE, planta("Pikachu"), planta("Chu")), "falso"},

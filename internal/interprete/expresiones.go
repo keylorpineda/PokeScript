@@ -302,7 +302,7 @@ func (in *Interprete) contiene(x *ast.Binaria, a, b Value) (Value, error) {
 		}
 	case *Equipo:
 		for _, e := range c.elems {
-			if Igual(e, b) {
+			if Igual(e, ensancharComo(b, e)) {
 				return true, nil
 			}
 		}
@@ -481,3 +481,16 @@ func (in *Interprete) convertirTexto(x *ast.Convertir, texto string, d *ast.Tipo
 
 func esRune(v Value) bool { _, ok := v.(rune); return ok }
 func esBool(v Value) bool { _, ok := v.(bool); return ok }
+
+// ensancharComo aplica roca → agua a v si el valor con el que se va a
+// comparar es un agua. El analizador acepta "equipo de agua contiene 1"
+// porque la conversión es automática (tipos.Asignable); sin esto, 1 y 1.0
+// nunca serían iguales.
+func ensancharComo(v, modelo Value) Value {
+	if n, ok := v.(int64); ok {
+		if _, esAgua := modelo.(float64); esAgua {
+			return float64(n)
+		}
+	}
+	return v
+}

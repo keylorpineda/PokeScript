@@ -27,59 +27,73 @@ Este es el documento de coordinación del equipo: quién hace qué, en qué orde
 
 ## 📍 Estado actual
 
-> Última actualización: **2026-09-23**. Quien termine una tarea actualiza esta sección y marca la tarea con ✅ en su tabla, en el mismo PR.
+> Última actualización: **2026-09-25**. Quien termine una tarea actualiza esta sección y marca la tarea con ✅ en su tabla, en el mismo PR.
 
 ### Resumen
 
-| Sprint                 | Estado         | Detalle                                                                                                         |
-| ---------------------- | -------------- | --------------------------------------------------------------------------------------------------------------- |
-| **S0** · Preparación   | 🟡 En curso    | Contratos listos (T0.3 a T0.6). Faltan Wails, protección de ramas y tablero.                                    |
-| **S1** · Hito 1: lexer | 🟡 En curso    | Lexer terminado (T1.1 a T1.4). Faltan el resaltado del editor, la maqueta del IDE y los valores del intérprete. |
-| **S2** en adelante     | ⚪ Sin empezar | El parser y la evaluación de expresiones **ya se pueden empezar**: sus dependencias están listas.               |
+| Sprint               | Estado              | Detalle                                                                                                                          |
+| -------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| **S0** · Preparación | 🟡 En curso         | Contratos listos (T0.3 a T0.6). Faltan Wails, protección de ramas y tablero.                                                     |
+| **S1** · Hito 1      | 🟡 En curso         | Lexer y valores del intérprete listos. Faltan el resaltado del editor y la maqueta del IDE.                                      |
+| **S2** · Hitos 2 y 3 | 🔴 **Bloquea todo** | La evaluación de expresiones está lista, pero **no hay parser**. Sin él no se puede ejecutar ningún archivo `.pks`.              |
+| **S3** · Hito 4      | 🟡 Adelantado       | El intérprete ya ejecuta el programa completo de la sección 10 desde un AST armado a mano. Falta conectarlo al parser y a Wails. |
+| **S4** en adelante   | 🟡 Adelantado       | `internal/tipos` listo (T4.1). La parte de ejecución de movimientos, colecciones, `segun`, fichas y conversiones también.        |
+
+**Lo más importante ahora:** el intérprete va varios sprints adelantado y el parser no ha empezado. El parser es el camino crítico hacia el hito 4.
 
 ### ✅ Terminado
 
-Todo está en la rama `feature/compiler-foundation`, **pendiente de PR hacia `dev`**.
+| Tarea          | Qué quedó                                                                                                                         | Dónde                                                               |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| ✅ T0.3 – T0.6 | Módulo Go, tokens, diagnósticos, nodos del AST e interfaz `ES`                                                                    | `internal/token`, `diag`, `ast`, `interprete/es.go`                 |
+| ✅ T1.1 – T1.4 | Lexer completo con 10 tipos de error léxico en español; fuzzing sin fallos                                                        | `internal/lexer`                                                    |
+| ✅ T1.7        | Valores en ejecución, mochila con orden de inserción, copia profunda y formato para `gritar`                                      | `internal/interprete/valores.go`, `mochila.go`, `texto.go`          |
+| ✅ T2.6        | Evaluación de expresiones: aritmética con desbordamiento, comparaciones, cortocircuito, `contiene`, `sino`                        | `internal/interprete/expresiones.go`, `aritmetica.go`               |
+| ✅ T3.1 – T3.3 | Todas las instrucciones, `capturar` con reintento y los 8 códigos de error de ejecución                                           | `internal/interprete/instrucciones.go`, `capturar.go`, `errores.go` |
+| ✅ T4.1        | Tipos, tabla de efectividades y tabla de operaciones como datos                                                                   | `internal/tipos`                                                    |
+| ✅ T5.1        | Parte de ejecución de `equipo` y `mochila`: acceso desde 1, `sumar`, `quitar`, `recorrer` con 1 y 2 variables                     | `internal/interprete`                                               |
+| ✅ T7.3        | `convertir`, `redondear` y `aleatorio` con sus errores de ejecución                                                               | `internal/interprete`                                               |
+| —              | Árboles de prueba compartidos: `astprueba.Seccion10()` y `astprueba.Diferencia` para comparar el árbol del parser con el esperado | `internal/ast/astprueba`                                            |
 
-| Tarea          | Qué quedó                                                                                                                                                                   | Dónde                             |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
-| ✅ T0.3        | Módulo `github.com/keylorpineda/PokeScript` (`go 1.23`) y los 10 paquetes de `internal/`                                                                                    | `go.mod`, `internal/*/doc.go`     |
-| ✅ T0.4        | Los 48 tokens de palabras reservadas + `SINO_SI`, símbolos, literales y categorías de resaltado. `Diagnostic`, `Fix`, encabezados temáticos y `Lista` con límite de errores | `internal/token`, `internal/diag` |
-| ✅ T0.5        | Un nodo por regla de la gramática, todos con `Pos`                                                                                                                          | `internal/ast/ast.go`             |
-| ✅ T0.6        | Interfaz `ES` (`Escribir`, `Leer`) y `ESMemoria` para pruebas; nombres de eventos de Wails documentados                                                                     | `internal/interprete/es.go`       |
-| ✅ T1.1 – T1.4 | Lexer completo: `ñ` y tildes, `roca`/`agua`, `fuego`/`planta` con escapes, `SINO_SI`, `NEWLINE`, sangrías, 10 tipos de error léxico en español                              | `internal/lexer`                  |
-
-**Pruebas:** 100 % de cobertura en `lexer`, `ast` e `interprete`; 96 % en `token` y `diag`. Fuzzing del lexer con más de 500 000 entradas sin fallos. Los 4 archivos del programa de la sección 10 pasan el lexer sin errores.
+**Pruebas:** 7 paquetes en verde. Cobertura: 100 % en `lexer` y `ast`; 96 % en `token`, `diag` y `tipos`; 86 % en `interprete`. golangci-lint sin problemas. El programa de la sección 10 corre de principio a fin (`TestProgramaSeccion10`).
 
 ### 🟡 Parcial
 
-| Tarea   | Falta                                                                                                                                           |
-| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| 🟡 T0.1 | Go 1.27, Node 24 y pnpm 11 instalados en la máquina de Keylor. Falta **Wails CLI** ahí y **todo** en las máquinas de los otros dos integrantes. |
+| Tarea   | Falta                                                                                                                                                            |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🟡 T0.1 | Wails CLI en todas las máquinas; confirmar Go, Node y pnpm en las de los otros dos integrantes.                                                                  |
+| 🟡 T4.5 | La ejecución de movimientos está lista (copia de argumentos, `entregar`, límite de 1000 llamadas). Falta la parte del analizador: retorno por todos los caminos. |
 
-### ⏭️ Siguientes tareas disponibles
+### ⏭️ Siguientes tareas
 
-Ordenadas por prioridad dentro de cada rol. Las que dependen de "nada" o de algo con ✅ se pueden empezar **hoy**.
+Ordenadas por prioridad. **Las dos primeras filas son el camino crítico.**
 
-| Rol            | Tarea                                                                                                           | Rama sugerida                     | Depende de     |
-| -------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------- | -------------- |
-| Dueño del repo | Abrir el PR `feature/compiler-foundation` → `dev` (el CI de Go corre por primera vez ahí)                       | —                                 | nada           |
-| Dueño del repo | T0.7 · Proteger `main` y `dev`                                                                                  | —                                 | nada           |
-| Todos          | T0.8 · Tablero en GitHub Projects y anotar nombres en [Equipo y roles](#-equipo-y-roles)                        | —                                 | nada           |
-| **A**          | T0.2 · Proyecto Wails + Svelte                                                                                  | `feature/wails-app`               | T0.1           |
-| **A**          | T1.5 · Resaltado en CodeMirror (la lista de palabras sale de `token.PalabrasReservadas()` y `Kind.Categoria()`) | `feature/editor-highlighting`     | T0.2           |
-| **A**          | T1.6 · Maqueta del IDE                                                                                          | `feature/ide-layout`              | T0.2           |
-| **B**          | T2.1 · Parser de expresiones con precedencia                                                                    | `feature/parser-expressions`      | ✅ lexer y AST |
-| **B**          | T2.2 a T2.5 · No encadenables, instrucciones, **pila de bloques** ⭐, recuperación de errores                   | `feature/parser-statements`       | T2.1           |
-| **C**          | T1.7 · Valores en ejecución, mochila ordenada y copia profunda                                                  | `feature/interpreter-values`      | nada           |
-| **C**          | T2.6 · Evaluar expresiones sobre AST armados a mano                                                             | `feature/interpreter-expressions` | ✅ AST, T1.7   |
+| Prioridad | Rol            | Tarea                                                                               | Rama sugerida                 | Listo cuando                                                                               |
+| --------- | -------------- | ----------------------------------------------------------------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------ |
+| 1         | **B**          | T2.1 · Parser de expresiones con precedencia                                        | `feature/parser-expressions`  | Pruebas de precedencia y `a > b > c` como error                                            |
+| 2         | **B**          | T2.3 – T2.5 · Instrucciones, bloques, **pila de bloques** ⭐ y recuperación         | `feature/parser-statements`   | `astprueba.Diferencia` no encuentra diferencias con `Seccion10()` al analizar los 4 `.pks` |
+| 3         | **B** o **C**  | Comando de consola `cmd/pks`: lexer → parser → intérprete                           | `feature/cli-runner`          | `go run ./cmd/pks ejemplos/combate` ejecuta el programa de la sección 10 🏁                |
+| 4         | **A**          | T0.2 · Proyecto Wails + Svelte con pnpm                                             | `feature/wails-app`           | `wails dev` abre una ventana                                                               |
+| 5         | **A**          | T1.5 y T1.6 · Resaltado y maqueta del IDE                                           | `feature/editor-highlighting` | Los ejemplos del README se ven coloreados                                                  |
+| 6         | **C**          | T4.2 – T4.3 · Analizador: tabla de símbolos y chequeo de tipos con `internal/tipos` | `feature/analyzer-symbols`    | Casos semánticos 1 y 4 de la sección 11, sobre árboles de `astprueba`                      |
+| 7         | **A** + **C**  | T3.4 · `EjecutarProyecto` con streaming por eventos de Wails                        | `feature/wails-run`           | En el IDE, `capturar` pide un dato y el programa sigue                                     |
+| —         | Dueño del repo | T0.7 · Proteger `main` y `dev`                                                      | —                             | Push directo rechazado                                                                     |
+| —         | Todos          | T0.8 · Tablero y nombres en [Equipo y roles](#-equipo-y-roles)                      | —                             | Cada tarea tiene su tarjeta                                                                |
+
+### ⚠️ Pendientes de orden en el repositorio
+
+- ✅ **Resuelto (2026-09-25):** `main` había recibido un merge directo de T4.1 (`5de95ba`) sin pasar por `dev` ni por un PR. Se sacó de `main`, que volvió a `432e918`. No se perdió nada: todo ese trabajo ya estaba en `dev`. `main` solo recibe `dev` al cerrar un hito; T0.7 evita que se repita.
+- **El merge de T4.1 a `dev` (`4c84833`) no pasó por un PR**, así que no tuvo revisión ni CI previo. Se deja como está para no reescribir el historial de `dev`; desde ahora todo entra por PR.
+- Ramas ya integradas que se pueden borrar: `feature/compiler-foundation` y `feature/interpreter-values`.
 
 ### ⬜ Pendiente del plan
 
 - **S0:** T0.1 (resto), T0.2, T0.7, T0.8.
-- **S1:** T1.5, T1.6, T1.7.
-- **S2 a S8:** todas las tareas (T2.1 en adelante), ver [Tareas por sprint](#-tareas-por-sprint).
-- **Decisiones abiertas:** ninguna del rol C por ahora (ver [registro](#-registro-de-decisiones)).
+- **S1:** T1.5, T1.6.
+- **S2:** T2.1 a T2.5 (parser) y T2.7 (subrayado en el editor).
+- **S3:** T3.4 a T3.6 (Wails, panel de salida, etiqueta `v0.1`).
+- **S4 a S8:** analizador, importaciones, asistente e interfaz; ver [Tareas por sprint](#-tareas-por-sprint).
+- **Decisiones abiertas:** ninguna.
 
 ---
 
@@ -388,52 +402,52 @@ Cada tarea tiene un identificador (`T1.3`) para usarlo en el título del PR. Res
 | ✅ T1.4 | Lexer: `NEWLINE` significativo, líneas en blanco y comentarios sin `NEWLINE` propio, columna inicial de cada línea         | B     | Pruebas                                               |
 | T1.5    | Resaltado en CodeMirror 6 con `StreamLanguage` (categorías: reservada, tipo, literal, identificador, comentario, operador) | A     | Los ejemplos del README se ven coloreados             |
 | T1.6    | Diseño base del IDE: editor, panel de salida, panel de diagnósticos, barra con Compilar / Ejecutar                         | A     | Maqueta funcional (botones aún sin lógica)            |
-| T1.7    | `internal/interprete`: tipos de valores en ejecución (sección 3.4), incluida la mochila con orden de inserción             | C     | Pruebas de la mochila ordenada y de la copia profunda |
+| ✅ T1.7 | `internal/interprete`: tipos de valores en ejecución (sección 3.4), incluida la mochila con orden de inserción             | C     | Pruebas de la mochila ordenada y de la copia profunda |
 
 ### S2 · Hitos 2 y 3: parser (5 – 11 oct)
 
-| ID   | Tarea                                                                                                                         | Resp. | Listo cuando                                                      |
-| ---- | ----------------------------------------------------------------------------------------------------------------------------- | ----- | ----------------------------------------------------------------- |
-| T2.1 | Parser de expresiones con la jerarquía `expr_o` → `expr_acceso`; `2 + 3 * 4` da el árbol correcto                             | B     | Pruebas de precedencia                                            |
-| T2.2 | Operadores no encadenables: `a > b > c` es error sintáctico                                                                   | B     | Caso de la sección 11                                             |
-| T2.3 | Parser de instrucciones y bloques, anticipación de 2 tokens, retroceso en `decl_dato`                                         | B     | Árbol completo de los 4 archivos de la sección 10                 |
-| T2.4 | ⭐ Pila de bloques: el error dice **en qué línea se abrió** el bloque sin `fin`                                               | B     | Caso "falta un `fin`" de la sección 11                            |
-| T2.5 | Recuperación hasta el siguiente `NEWLINE`, máximo 20 diagnósticos                                                             | B     | Casos "dos instrucciones en una línea" y "`recorrer` sin `hasta`" |
-| T2.6 | Intérprete: evaluar expresiones sobre un AST (aritmética, comparación, `y`/`o` en cortocircuito)                              | C     | Pruebas con AST armados a mano, sin esperar al parser             |
-| T2.7 | Método `CompilarProyecto` en `app.go` (por ahora solo lexer + parser) y subrayado de errores en CodeMirror con `Line/Col/Len` | A     | Un error de sintaxis se subraya en el editor                      |
+| ID      | Tarea                                                                                                                         | Resp. | Listo cuando                                                      |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------- | ----- | ----------------------------------------------------------------- |
+| T2.1    | Parser de expresiones con la jerarquía `expr_o` → `expr_acceso`; `2 + 3 * 4` da el árbol correcto                             | B     | Pruebas de precedencia                                            |
+| T2.2    | Operadores no encadenables: `a > b > c` es error sintáctico                                                                   | B     | Caso de la sección 11                                             |
+| T2.3    | Parser de instrucciones y bloques, anticipación de 2 tokens, retroceso en `decl_dato`                                         | B     | Árbol completo de los 4 archivos de la sección 10                 |
+| T2.4    | ⭐ Pila de bloques: el error dice **en qué línea se abrió** el bloque sin `fin`                                               | B     | Caso "falta un `fin`" de la sección 11                            |
+| T2.5    | Recuperación hasta el siguiente `NEWLINE`, máximo 20 diagnósticos                                                             | B     | Casos "dos instrucciones en una línea" y "`recorrer` sin `hasta`" |
+| ✅ T2.6 | Intérprete: evaluar expresiones sobre un AST (aritmética, comparación, `y`/`o` en cortocircuito)                              | C     | Pruebas con AST armados a mano, sin esperar al parser             |
+| T2.7    | Método `CompilarProyecto` en `app.go` (por ahora solo lexer + parser) y subrayado de errores en CodeMirror con `Line/Col/Len` | A     | Un error de sintaxis se subraya en el editor                      |
 
 ### S3 · Hito 4: primer programa corriendo (12 – 18 oct) 🏁
 
-| ID   | Tarea                                                                                                                    | Resp. | Listo cuando                                           |
-| ---- | ------------------------------------------------------------------------------------------------------------------------ | ----- | ------------------------------------------------------ |
-| T3.1 | Intérprete: variables, asignación, `gritar`, `si`/`sino si`/`sino`, `mientras`, `recorrer` de rango, `huir`, `siguiente` | C     | Pruebas con programas `.pks` en `testdata/`            |
-| T3.2 | Intérprete: `capturar` usando la interfaz `ES`                                                                           | C     | Prueba con entrada simulada                            |
-| T3.3 | Errores de ejecución: división entre cero, desbordamiento de `roca`                                                      | C     | Diagnóstico `¡Falló el ataque!` con línea              |
-| T3.4 | `EjecutarProyecto` con streaming por eventos, `EnviarEntrada` y `DetenerEjecucion`                                       | A + C | En el IDE: `capturar` pide un dato y el programa sigue |
-| T3.5 | Panel de salida con caja de entrada cuando el programa espera `capturar`                                                 | A     | Demo en vivo                                           |
-| T3.6 | Etiqueta `v0.1` en `main` y video corto de la demo                                                                       | Todos | Tag publicado                                          |
+| ID      | Tarea                                                                                                                    | Resp. | Listo cuando                                           |
+| ------- | ------------------------------------------------------------------------------------------------------------------------ | ----- | ------------------------------------------------------ |
+| ✅ T3.1 | Intérprete: variables, asignación, `gritar`, `si`/`sino si`/`sino`, `mientras`, `recorrer` de rango, `huir`, `siguiente` | C     | Pruebas con programas `.pks` en `testdata/`            |
+| ✅ T3.2 | Intérprete: `capturar` usando la interfaz `ES`                                                                           | C     | Prueba con entrada simulada                            |
+| ✅ T3.3 | Errores de ejecución: división entre cero, desbordamiento de `roca`                                                      | C     | Diagnóstico `¡Falló el ataque!` con línea              |
+| T3.4    | `EjecutarProyecto` con streaming por eventos, `EnviarEntrada` y `DetenerEjecucion`                                       | A + C | En el IDE: `capturar` pide un dato y el programa sigue |
+| T3.5    | Panel de salida con caja de entrada cuando el programa espera `capturar`                                                 | A     | Demo en vivo                                           |
+| T3.6    | Etiqueta `v0.1` en `main` y video corto de la demo                                                                       | Todos | Tag publicado                                          |
 
 ### S4 · Hitos 5 y 6: tipos y movimientos (19 – 25 oct)
 
-| ID   | Tarea                                                                                                                    | Resp. | Listo cuando                            |
-| ---- | ------------------------------------------------------------------------------------------------------------------------ | ----- | --------------------------------------- |
-| T4.1 | `internal/tipos`: `Type`, tabla de efectividades, tabla de operaciones (secciones 3.2 y 3.3)                             | C     | Pruebas celda por celda                 |
-| T4.2 | Analizador, pasada 1: tabla de símbolos, medallas, cabeceras de movimientos, un solo `combate`                           | C     | Pruebas                                 |
-| T4.3 | Analizador, pasada 2: tipos de expresiones, condiciones `electrico`, reasignación de `medalla`, ocultamiento             | C     | Casos semánticos 1 y 4 de la sección 11 |
-| T4.4 | Asignación definida (sección 4.2)                                                                                        | B     | Caso semántico 5 de la sección 11       |
-| T4.5 | Movimientos: parámetros por valor con copia profunda, `entregar`, retorno por todos los caminos, límite de 1000 llamadas | C     | Pruebas de recursión y de copia         |
-| T4.6 | Diagnósticos con encabezados temáticos y panel de diagnósticos navegable (clic → salta a la línea)                       | A     | Demo                                    |
+| ID      | Tarea                                                                                                                    | Resp. | Listo cuando                            |
+| ------- | ------------------------------------------------------------------------------------------------------------------------ | ----- | --------------------------------------- |
+| ✅ T4.1 | `internal/tipos`: `Type`, tabla de efectividades, tabla de operaciones (secciones 3.2 y 3.3)                             | C     | Pruebas celda por celda                 |
+| T4.2    | Analizador, pasada 1: tabla de símbolos, medallas, cabeceras de movimientos, un solo `combate`                           | C     | Pruebas                                 |
+| T4.3    | Analizador, pasada 2: tipos de expresiones, condiciones `electrico`, reasignación de `medalla`, ocultamiento             | C     | Casos semánticos 1 y 4 de la sección 11 |
+| T4.4    | Asignación definida (sección 4.2)                                                                                        | B     | Caso semántico 5 de la sección 11       |
+| 🟡 T4.5 | Movimientos: parámetros por valor con copia profunda, `entregar`, retorno por todos los caminos, límite de 1000 llamadas | C     | Pruebas de recursión y de copia         |
+| T4.6    | Diagnósticos con encabezados temáticos y panel de diagnósticos navegable (clic → salta a la línea)                       | A     | Demo                                    |
 
 ### S5 · Hitos 7, 8 y 12: colecciones, `segun` y asistente (26 oct – 1 nov)
 
-| ID   | Tarea                                                                                                                          | Resp. | Listo cuando                                                 |
-| ---- | ------------------------------------------------------------------------------------------------------------------------------ | ----- | ------------------------------------------------------------ |
-| T5.1 | `equipo` y `mochila`: literales, acceso `[ ]` desde 1, `sumar`, `quitar`, `contiene`, `tamaño`, `recorrer` con 1 y 2 variables | C     | Pruebas, incluidos índice fuera de rango y clave inexistente |
-| T5.2 | Prohibido modificar la colección que se recorre; la variable de recorrido es de solo lectura                                   | B     | Pruebas                                                      |
-| T5.3 | `especie` y `segun`: exhaustivo **nombrando los faltantes**, `otro` obligatorio en tipos abiertos, ramas inalcanzables         | B     | Caso semántico 2 de la sección 11                            |
-| T5.4 | Asistente: plantillas por `Category + Code` y sugerencia por Levenshtein (distancia ≤ 2 o ≤ 1/3 de la longitud)                | A     | Escribir `curra(vida)` sugiere `curar`                       |
-| T5.5 | Botón "Aplicar arreglo" en el editor (`Fix` → `dispatch`)                                                                      | A     | Demo                                                         |
-| T5.6 | Etiqueta `v0.2`                                                                                                                | Todos | Tag publicado                                                |
+| ID      | Tarea                                                                                                                          | Resp. | Listo cuando                                                 |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------ | ----- | ------------------------------------------------------------ |
+| ✅ T5.1 | `equipo` y `mochila`: literales, acceso `[ ]` desde 1, `sumar`, `quitar`, `contiene`, `tamaño`, `recorrer` con 1 y 2 variables | C     | Pruebas, incluidos índice fuera de rango y clave inexistente |
+| T5.2    | Prohibido modificar la colección que se recorre; la variable de recorrido es de solo lectura                                   | B     | Pruebas                                                      |
+| T5.3    | `especie` y `segun`: exhaustivo **nombrando los faltantes**, `otro` obligatorio en tipos abiertos, ramas inalcanzables         | B     | Caso semántico 2 de la sección 11                            |
+| T5.4    | Asistente: plantillas por `Category + Code` y sugerencia por Levenshtein (distancia ≤ 2 o ≤ 1/3 de la longitud)                | A     | Escribir `curra(vida)` sugiere `curar`                       |
+| T5.5    | Botón "Aplicar arreglo" en el editor (`Fix` → `dispatch`)                                                                      | A     | Demo                                                         |
+| T5.6    | Etiqueta `v0.2`                                                                                                                | Todos | Tag publicado                                                |
 
 ### S6 · Hitos 9 y 11: importaciones y fichas (2 – 8 nov)
 
@@ -448,14 +462,14 @@ Cada tarea tiene un identificador (`T1.3`) para usarlo en el título del PR. Res
 
 ### S7 · Hito 10: `posible` y programa completo (9 – 15 nov)
 
-| ID   | Tarea                                                                                            | Resp. | Listo cuando                         |
-| ---- | ------------------------------------------------------------------------------------------------ | ----- | ------------------------------------ |
-| T7.1 | `posible` y su literal nulo, operador `sino` de respaldo                                         | B     | Pruebas                              |
-| T7.2 | Estrechamiento con `igual`/`diferente` contra el nulo, propagación por `y`, pérdida al reasignar | B     | Caso semántico 3 de la sección 11    |
-| T7.3 | `convertir`, `redondear` y `aleatorio` completos, con sus errores de ejecución                   | C     | Pruebas                              |
-| T7.4 | 🏆 El programa de la sección 10 corre completo en el IDE                                         | Todos | Prueba de integración en `ejemplos/` |
-| T7.5 | Menú de consulta: tabla de efectividades y palabras reservadas                                   | A     | Demo                                 |
-| T7.6 | Etiqueta `v0.3`                                                                                  | Todos | Tag publicado                        |
+| ID      | Tarea                                                                                            | Resp. | Listo cuando                         |
+| ------- | ------------------------------------------------------------------------------------------------ | ----- | ------------------------------------ |
+| T7.1    | `posible` y su literal nulo, operador `sino` de respaldo                                         | B     | Pruebas                              |
+| T7.2    | Estrechamiento con `igual`/`diferente` contra el nulo, propagación por `y`, pérdida al reasignar | B     | Caso semántico 3 de la sección 11    |
+| ✅ T7.3 | `convertir`, `redondear` y `aleatorio` completos, con sus errores de ejecución                   | C     | Pruebas                              |
+| T7.4    | 🏆 El programa de la sección 10 corre completo en el IDE                                         | Todos | Prueba de integración en `ejemplos/` |
+| T7.5    | Menú de consulta: tabla de efectividades y palabras reservadas                                   | A     | Demo                                 |
+| T7.6    | Etiqueta `v0.3`                                                                                  | Todos | Tag publicado                        |
 
 ### S8 · Cierre (16 – 22 nov)
 

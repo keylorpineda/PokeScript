@@ -83,6 +83,7 @@ aritmetica
 asignacion
 caracter
 categoria
+cientifica
 codigo
 codigos
 coleccion
@@ -105,6 +106,7 @@ instruccion
 lexico
 logica
 minimo
+numericos
 operacion
 operandos
 parametros
@@ -139,6 +141,7 @@ subcarpetas
 superefectivo
 
 # Herramientas y rutas
+astprueba
 ebnf
 gitmessage
 gofmt

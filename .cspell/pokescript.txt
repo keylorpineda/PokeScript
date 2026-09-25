@@ -73,6 +73,7 @@ Wails
 esac
 Fira
 Menlo
+nolint
 Segoe
 wailsapp
 webkit
@@ -128,6 +129,7 @@ sinosi
 sintactico
 tamano
 vacio
+verificacion
 vacios
 variacion
 

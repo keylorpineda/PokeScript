@@ -73,6 +73,7 @@ Wails
 esac
 Fira
 Menlo
+nolint
 Segoe
 wailsapp
 webkit
@@ -86,6 +87,7 @@ caracter
 categoria
 cientifica
 codigo
+colision
 codigos
 coleccion
 comilla
@@ -112,12 +114,14 @@ minimo
 numericos
 operacion
 operandos
+parametro
 parametros
 parsear
 posicion
 raiz
 seccion
 semantico
+sintácticamente
 senal
 simbolo
 simbolos
@@ -125,6 +129,7 @@ sinosi
 sintactico
 tamano
 vacio
+verificacion
 vacios
 variacion
 
@@ -140,6 +145,7 @@ multiarchivo
 nulabilidad
 ocultamiento
 reasignación
+recoleccion
 recuperacion
 recursión
 subcarpetas
@@ -151,10 +157,12 @@ ebnf
 gitmessage
 gofmt
 gantt
+fsys
 fuzztime
 goimports
 golangci
 Interp
+jordy
 keylor
 keylorpineda
 wailsjs

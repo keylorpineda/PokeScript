@@ -325,12 +325,12 @@ func (p *parser) bloqueSinCerrar(ini token.Token) {
 			break
 		}
 	}
-	donde := "el final del archivo"
+	donde := "al final del archivo"
 	if !p.es(token.EOF) {
-		donde = fmt.Sprintf("la línea %d", p.actual().Line)
+		donde = fmt.Sprintf("a la línea %d", p.actual().Line)
 	}
 	p.error(ast.DesdeToken(ini), "bloque-sin-cerrar",
-		fmt.Sprintf("el bloque «%s» que abriste en la línea %d no tiene su «fin»; se llegó a %s sin cerrarlo.", ini.Kind, ini.Line, donde),
+		fmt.Sprintf("el bloque «%s» que abriste en la línea %d no tiene su «fin»; se llegó %s sin cerrarlo.", ini.Kind, ini.Line, donde),
 		causa,
 		"agrega «fin» donde termina el bloque, con la misma sangría que la línea que lo abre.")
 }

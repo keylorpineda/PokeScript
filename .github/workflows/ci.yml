@@ -76,19 +76,19 @@ jobs:
           go-version-file: go.mod
       - name: Formato (gofmt)
         run: |
-          sin_formato=$(gofmt -l ./internal)
+          sin_formato=$(gofmt -l ./internal ./cmd)
           if [ -n "$sin_formato" ]; then
             echo "Archivos sin gofmt:"; echo "$sin_formato"; exit 1
           fi
       - name: go vet
-        run: go vet ./internal/...
+        run: go vet ./internal/... ./cmd/...
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v8
         with:
           version: v2.4
-          args: ./internal/...
+          args: ./internal/... ./cmd/...
       - name: Pruebas
-        run: go test -race -cover ./internal/...
+        run: go test -race -cover ./internal/... ./cmd/...
 
   frontend:
     name: Interfaz (Svelte)

@@ -93,6 +93,7 @@ compilacion
 condicion
 dano
 declaracion
+despues
 descripcion
 diagnosticos
 digito
@@ -105,12 +106,14 @@ implementacion
 importacion
 instruccion
 lexico
+lexicos
 logica
 minimo
 numericos
 operacion
 operandos
 parametros
+parsear
 posicion
 raiz
 seccion
@@ -137,6 +140,7 @@ multiarchivo
 nulabilidad
 ocultamiento
 reasignación
+recuperacion
 recursión
 subcarpetas
 superefectivo

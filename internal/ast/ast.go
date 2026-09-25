@@ -187,10 +187,13 @@ type Quitar struct {
 // Si: si cond … {sino si cond …} [sino …] fin
 type Si struct {
 	Pos
-	Ramas     []*RamaSi // la primera es el si; las demás, los sino si
+	Ramas []*RamaSi // la primera es el si; las demás, los sino si
+	// Sino son las instrucciones del sino. El parser lo deja como slice
+	// vacío, nunca nil, cuando no hay sino; así se puede recorrer sin
+	// comprobar nada.
 	Sino      []Instr
 	TieneSino bool // distingue "sin sino" de "sino vacío" (asignación definida)
-	SinoPos   Pos
+	SinoPos   Pos  // cero si no hay sino
 }
 
 // RamaSi es el si inicial o un sino si.
@@ -300,12 +303,24 @@ type LitEquipo struct {
 	Elems []Expr
 }
 
-// LitLlaves: { … }. El parser no puede saber si es mochila o ficha: lo
-// decide el analizador según el tipo esperado (sección 2.1).
+// LitLlaves: { … }. El parser no puede saber si es mochila o ficha y no lo
+// intenta: deja Resuelto en LlavesSinResolver y el analizador lo llena según
+// el tipo esperado (sección 2.1).
 type LitLlaves struct {
 	Pos
-	Pares []*Par
+	Pares    []*Par
+	Resuelto FormaLlaves // lo llena el analizador
 }
+
+// FormaLlaves dice qué es un literal { }. Se define aquí y no se usa
+// tipos.Kind para que ast no dependa de tipos.
+type FormaLlaves int
+
+const (
+	LlavesSinResolver FormaLlaves = iota // el parser siempre deja este valor
+	LlavesMochila
+	LlavesFicha
+)
 
 // Par clave: valor dentro de LitLlaves. En una ficha, Clave es un *Ident.
 type Par struct {

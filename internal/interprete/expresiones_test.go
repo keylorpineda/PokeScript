@@ -77,7 +77,18 @@ func TestExpresiones(t *testing.T) {
 		{"índice de texto", nil, idx(planta("Pokémon"), roca(4)), "é"},
 		{"clave de mochila", mochila, idx(id("m"), planta("agua")), "3"},
 		{"contiene en equipo", equipo, bin(token.CONTIENE, id("e"), planta("Eevee")), "verdadero"},
+		{
+			"contiene ensancha una roca para buscarla en un equipo de agua",
+			[]ast.Instr{dato(tEquipo(tAgua), "a", equipoLit(agua(1.5), roca(2)))},
+			bin(token.CONTIENE, id("a"), roca(2)),
+			"verdadero",
+		},
 		{"contiene en mochila busca claves", mochila, bin(token.CONTIENE, id("m"), planta("fuego")), "falso"},
+		{"texto contiene texto", nil, bin(token.CONTIENE, planta("Pikachu"), planta("chu")), "verdadero"},
+		{"texto no contiene texto", nil, bin(token.CONTIENE, planta("Pikachu"), planta("Chu")), "falso"},
+		{"texto contiene letra", nil, bin(token.CONTIENE, planta("Pokémon"), fuego('é')), "verdadero"},
+		{"texto no contiene letra", nil, bin(token.CONTIENE, planta("Pikachu"), fuego('z')), "falso"},
+		{"el texto vacío siempre está contenido", nil, bin(token.CONTIENE, planta(""), planta("")), "verdadero"},
 		{"tamaño de equipo", equipo, &ast.Tamano{Valor: id("e")}, "2"},
 		{"tamaño de texto cuenta letras", nil, &ast.Tamano{Valor: planta("Pokémon")}, "7"},
 		{"redondear la mitad se aleja de cero", nil, &ast.Redondear{Valor: agua(2.5)}, "3"},
@@ -182,7 +193,7 @@ func TestErroresDeEjecucion(t *testing.T) {
 			nil,
 			&ast.Convertir{Valor: agua(1e20), Destino: tRoca},
 			CodigoDesbordamiento,
-			"el resultado de convertir(100000000000000000000.0) a roca es demasiado grande.",
+			"el resultado de convertir(1.0e20) a roca es demasiado grande.",
 		},
 	}
 	for _, c := range casos {

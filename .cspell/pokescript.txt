@@ -87,6 +87,7 @@ accion
 aritmetica
 ambitos
 asignacion
+autocompletar
 caracter
 categoria
 cientifica
@@ -117,6 +118,7 @@ lexico
 leccion
 leida
 leidos
+invalidos
 lexicos
 mayuscula
 minuscula
@@ -134,6 +136,8 @@ seccion
 semantico
 sintácticamente
 senal
+serializar
+sesion
 simbolo
 simbolos
 sinosi

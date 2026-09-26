@@ -17,6 +17,7 @@ import (
 
 	"github.com/keylorpineda/PokeScript/internal/diag"
 	"github.com/keylorpineda/PokeScript/internal/interprete"
+	"github.com/keylorpineda/PokeScript/internal/servicio"
 )
 
 // Códigos de salida.
@@ -41,22 +42,21 @@ func correr(ctx context.Context, args []string, entrada io.Reader, salida, error
 		fmt.Fprintln(errores, "Uso: pks <archivo.pks | carpeta del proyecto>")
 		return salidaUso
 	}
-	archivos, diags, err := cargar(args[0])
+	c, err := servicio.Compilar(args[0])
 	if err != nil {
 		fmt.Fprintln(errores, "✖", err)
 		return salidaUso
 	}
-	if hayErrores(diags) {
-		imprimir(errores, diags)
+	imprimir(errores, c.Diagnosticos) // errores, o advertencias si las hay
+	if c.TieneErrores() {
 		return salidaCompilar
 	}
-	imprimir(errores, diags) // advertencias, si las hay
 
 	if motor == nil {
 		motor = interprete.Nuevo(nil)
 	}
 	motor.ES = nuevaConsola(entrada, salida)
-	err = motor.EjecutarProyecto(ctx, archivos)
+	err = servicio.Ejecutar(ctx, c, motor)
 
 	var errEjecucion *interprete.ErrorEjecucion
 	switch {
@@ -73,15 +73,6 @@ func correr(ctx context.Context, args []string, entrada io.Reader, salida, error
 		fmt.Fprintln(errores, "✖", err)
 		return salidaEjecucion
 	}
-}
-
-func hayErrores(diags []diag.Diagnostic) bool {
-	for _, d := range diags {
-		if d.Severity == diag.Error {
-			return true
-		}
-	}
-	return false
 }
 
 func imprimir(w io.Writer, diags []diag.Diagnostic) {

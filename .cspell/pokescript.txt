@@ -74,6 +74,7 @@ esac
 Fira
 Menlo
 nolint
+nombrador
 Segoe
 wailsapp
 webkit
@@ -82,6 +83,7 @@ winget
 # Identificadores sin tilde (válidos en código y gramática)
 accion
 aritmetica
+ambitos
 asignacion
 caracter
 categoria

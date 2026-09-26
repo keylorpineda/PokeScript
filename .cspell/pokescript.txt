@@ -91,6 +91,7 @@ caracter
 categoria
 cientifica
 codigo
+convencion
 cópialo
 colision
 codigos
@@ -115,7 +116,10 @@ instruccion
 lexico
 leccion
 leida
+leidos
 lexicos
+mayuscula
+minuscula
 logica
 minimo
 numericos

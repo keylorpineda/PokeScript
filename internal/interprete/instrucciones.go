@@ -433,7 +433,8 @@ func (in *Interprete) llamar(x *ast.Llamada, env *Entorno) (Value, bool, error) 
 		return nil, false, err
 	}
 
-	local := NuevoEntorno(in.global)
+	archivoMov := in.origen[mov]
+	local := NuevoEntorno(in.alcances[archivoMov])
 	local.mov = mov
 	for i, p := range mov.Params {
 		v, err := in.evaluarCon(x.Args[i], p.Tipo, env)
@@ -443,9 +444,14 @@ func (in *Interprete) llamar(x *ast.Llamada, env *Entorno) (Value, bool, error) 
 		local.Declarar(p.Nombre.Nombre, &Variable{Valor: Copiar(v), Tipo: p.Tipo, Asignada: true})
 	}
 
+	// Mientras corre el cuerpo, los errores señalan el archivo del
+	// movimiento, no el de quien llama.
+	llamador := in.archivo
+	in.archivo = archivoMov
 	in.profundidad++
 	s, err := in.ejecutarBloque(mov.Cuerpo, local)
 	in.profundidad--
+	in.archivo = llamador
 	if err != nil {
 		return nil, false, err
 	}

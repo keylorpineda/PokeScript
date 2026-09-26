@@ -41,7 +41,7 @@ func correr(ctx context.Context, args []string, entrada io.Reader, salida, error
 		fmt.Fprintln(errores, "Uso: pks <archivo.pks | carpeta del proyecto>")
 		return salidaUso
 	}
-	prog, diags, err := cargar(args[0])
+	archivos, diags, err := cargar(args[0])
 	if err != nil {
 		fmt.Fprintln(errores, "✖", err)
 		return salidaUso
@@ -56,7 +56,7 @@ func correr(ctx context.Context, args []string, entrada io.Reader, salida, error
 		motor = interprete.Nuevo(nil)
 	}
 	motor.ES = nuevaConsola(entrada, salida)
-	err = motor.Ejecutar(ctx, prog)
+	err = motor.EjecutarProyecto(ctx, archivos)
 
 	var errEjecucion *interprete.ErrorEjecucion
 	switch {

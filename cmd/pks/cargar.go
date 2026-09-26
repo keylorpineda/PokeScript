@@ -10,13 +10,13 @@ import (
 )
 
 // cargar lee un archivo .pks o una carpeta de proyecto, con sus
-// importaciones, y devuelve un único programa listo para ejecutar junto con
-// los diagnósticos de todos los archivos.
+// importaciones, y devuelve sus archivos listos para ejecutar junto con los
+// diagnósticos de todos ellos.
 //
-// Mientras el intérprete ejecute un solo programa (tarea J6), las
-// declaraciones se juntan en el orden de internal/proyecto: cada archivo
-// después de los que importa y el principal al final.
-func cargar(ruta string) (*ast.Programa, []diag.Diagnostic, error) {
+// Los archivos van en el orden de internal/proyecto: cada archivo después
+// de los que importa y el principal al final. El intérprete los ejecuta con
+// un alcance por archivo (tarea J6).
+func cargar(ruta string) ([]*ast.Programa, []diag.Diagnostic, error) {
 	info, err := os.Stat(ruta)
 	var r proyecto.Resultado
 	switch {
@@ -37,9 +37,9 @@ func cargar(ruta string) (*ast.Programa, []diag.Diagnostic, error) {
 		diags = append(diags, analizador.Analizar(p).Diagnosticos...)
 	}
 
-	prog := &ast.Programa{Archivo: p.Principal}
+	var archivos []*ast.Programa
 	for _, n := range p.Orden {
-		prog.Declaraciones = append(prog.Declaraciones, p.Archivos[n].Programa.Declaraciones...)
+		archivos = append(archivos, p.Archivos[n].Programa)
 	}
-	return prog, diags, nil
+	return archivos, diags, nil
 }

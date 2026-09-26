@@ -84,7 +84,8 @@ func TestFichaIncompletaNombraLosFaltantes(t *testing.T) {
 // El analizador anota qué es cada { } para el intérprete.
 func TestLlavesResueltas(t *testing.T) {
 	archivos := conFicha("    Pokemon p = {nombre: \"a\", vida: 1, estado: SANO}\n" +
-		"    mochila de planta a roca m = {\"x\": 1}")
+		"    mochila de planta a roca m = {\"x\": 1}\n" +
+		"    gritar p.vida, m[\"x\"]")
 	p := cargarProyecto(t, archivos)
 	if ds := Analizar(p).Diagnosticos; len(ds) != 0 {
 		t.Fatalf("diagnósticos: %v", codigos(ds))

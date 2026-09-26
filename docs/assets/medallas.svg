@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 330" width="900" height="330" role="img" aria-label="Medallas de la hoja de ruta: 11 de 12 hitos ganados; falta el editor del hito 1">
+  <style>
+    .pop { opacity: 0; transform-box: fill-box; transform-origin: center; animation: pop 0.45s cubic-bezier(.34,1.56,.64,1) both; }
+    @keyframes pop { from { opacity: 0; transform: scale(0.3); } to { opacity: 1; transform: scale(1); } }
+    .destello { opacity: 0; transform-box: fill-box; transform-origin: center; animation: destello 4.4s ease-in-out infinite; }
+    @keyframes destello { 0%, 100% { opacity: 0; transform: scale(0.4); } 8% { opacity: 1; transform: scale(1.2); } 16% { opacity: 0; transform: scale(0.4); } }
+  </style>
+  <rect width="900" height="330" rx="16" fill="#1b1d36"/>
+  <text x="40" y="44" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="22" font-weight="900" fill="#ffcb05">Medallas: 11 de 12</text>
+  <text x="860" y="44" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="14" fill="#8b90c0" text-anchor="end">una por cada hito de la especificación</text>
+    <defs><linearGradient id="g0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.25" stop-color="#b8a038"/><stop offset="1" stop-color="#b8a038" stop-opacity="0.7"/></linearGradient></defs>
+    <g class="pop" style="animation-delay:0.25s"><g transform="translate(90 118)" fill="#3a3f66" stroke="#6b70a8" stroke-width="2.5" stroke-dasharray="5 4"><path transform="rotate(22.5)" d="M0.0 -34.0 L12.0 -29.0 L24.0 -24.0 L29.0 -12.0 L34.0 0.0 L29.0 12.0 L24.0 24.0 L12.0 29.0 L0.0 34.0 L-12.0 29.0 L-24.0 24.0 L-29.0 12.0 L-34.0 0.0 L-29.0 -12.0 L-24.0 -24.0 L-12.0 -29.0 Z"/></g>
+      <text x="90" y="174" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="14" font-weight="700" fill="#8b90c0" text-anchor="middle">Lexer</text>
+      <text x="90" y="192" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="11" fill="#8b90c0" text-anchor="middle">falta el editor</text>
+      
+    </g>
+    <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.25" stop-color="#6890f0"/><stop offset="1" stop-color="#6890f0" stop-opacity="0.7"/></linearGradient></defs>
+    <g class="pop" style="animation-delay:0.37s"><g transform="translate(234 118)" fill="url(#g1)" stroke="#3a3a3a" stroke-width="2.5"><path d="M0 -36 C18 -12 26 2 26 12 A26 26 0 0 1 -26 12 C-26 2 -18 -12 0 -36 Z"/></g>
+      <text x="234" y="174" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="14" font-weight="700" fill="#e6e9ff" text-anchor="middle">Expresiones</text>
+      
+      <path class="destello" style="animation-delay:2.17s" d="M258 84 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 z" fill="#ffffff"/>
+    </g>
+    <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.25" stop-color="#f8d030"/><stop offset="1" stop-color="#f8d030" stop-opacity="0.7"/></linearGradient></defs>
+    <g class="pop" style="animation-delay:0.49s"><g transform="translate(378 118)" fill="url(#g2)" stroke="#3a3a3a" stroke-width="2.5"><path d="M0.0 -36.0 L6.9 -16.6 L25.5 -25.5 L16.6 -6.9 L36.0 0.0 L16.6 6.9 L25.5 25.5 L6.9 16.6 L0.0 36.0 L-6.9 16.6 L-25.5 25.5 L-16.6 6.9 L-36.0 0.0 L-16.6 -6.9 L-25.5 -25.5 L-6.9 -16.6 Z"/></g>
+      <text x="378" y="174" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="14" font-weight="700" fill="#e6e9ff" text-anchor="middle">Bloques</text>
+      
+      <path class="destello" style="animation-delay:2.54s" d="M402 84 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 z" fill="#ffffff"/>
+    </g>
+    <defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.25" stop-color="#f08030"/><stop offset="1" stop-color="#f08030" stop-opacity="0.7"/></linearGradient></defs>
+    <g class="pop" style="animation-delay:0.61s"><g transform="translate(522 118)" fill="url(#g3)" stroke="#3a3a3a" stroke-width="2.5"><g><circle cx="0" cy="-17" r="16"/><circle cx="17" cy="0" r="16"/><circle cx="0" cy="17" r="16"/><circle cx="-17" cy="0" r="16"/></g></g>
+      <text x="522" y="174" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="14" font-weight="700" fill="#e6e9ff" text-anchor="middle">Primer programa</text>
+      
+      <path class="destello" style="animation-delay:2.91s" d="M546 84 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 z" fill="#ffffff"/>
+    </g>
+    <defs><linearGradient id="g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.25" stop-color="#e0588a"/><stop offset="1" stop-color="#e0588a" stop-opacity="0.7"/></linearGradient></defs>
+    <g class="pop" style="animation-delay:0.73s"><g transform="translate(666 118)" fill="url(#g4)" stroke="#3a3a3a" stroke-width="2.5"><path d="M0 30 C-40 4 -30 -30 0 -14 C30 -30 40 4 0 30 Z"/></g>
+      <text x="666" y="174" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="14" font-weight="700" fill="#e6e9ff" text-anchor="middle">Tipos</text>
+      
+      <path class="destello" style="animation-delay:3.28s" d="M690 84 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 z" fill="#ffffff"/>
+    </g>
+    <defs><linearGradient id="g5" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.25" stop-color="#a060d8"/><stop offset="1" stop-color="#a060d8" stop-opacity="0.7"/></linearGradient></defs>
+    <g class="pop" style="animation-delay:0.85s"><g transform="translate(810 118)" fill="url(#g5)" stroke="#3a3a3a" stroke-width="2.5"><g><circle r="34"/><circle r="22" fill-opacity="0.55"/><circle r="10"/></g></g>
+      <text x="810" y="174" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="14" font-weight="700" fill="#e6e9ff" text-anchor="middle">Movimientos</text>
+      
+      <path class="destello" style="animation-delay:3.65s" d="M834 84 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 z" fill="#ffffff"/>
+    </g>
+    <defs><linearGradient id="g6" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.25" stop-color="#e05030"/><stop offset="1" stop-color="#e05030" stop-opacity="0.7"/></linearGradient></defs>
+    <g class="pop" style="animation-delay:0.97s"><g transform="translate(90 236)" fill="url(#g6)" stroke="#3a3a3a" stroke-width="2.5"><path d="M0 -36 C14 -20 26 -8 22 12 A22 22 0 0 1 -22 12 C-26 -6 -12 -14 -6 -26 C-2 -14 6 -12 0 -36 Z"/></g>
+      <text x="90" y="292" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="14" font-weight="700" fill="#e6e9ff" text-anchor="middle">Colecciones</text>
+      
+      <path class="destello" style="animation-delay:4.02s" d="M114 202 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 z" fill="#ffffff"/>
+    </g>
+    <defs><linearGradient id="g7" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.25" stop-color="#58b848"/><stop offset="1" stop-color="#58b848" stop-opacity="0.7"/></linearGradient></defs>
+    <g class="pop" style="animation-delay:1.09s"><g transform="translate(234 236)" fill="url(#g7)" stroke="#3a3a3a" stroke-width="2.5"><path d="M-30 30 C-30 -10 0 -34 32 -32 C34 0 10 30 -30 30 Z"/></g>
+      <text x="234" y="292" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="14" font-weight="700" fill="#e6e9ff" text-anchor="middle">Segun</text>
+      
+      <path class="destello" style="animation-delay:4.39s" d="M258 202 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 z" fill="#ffffff"/>
+    </g>
+    <defs><linearGradient id="g8" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.25" stop-color="#40a8c8"/><stop offset="1" stop-color="#40a8c8" stop-opacity="0.7"/></linearGradient></defs>
+    <g class="pop" style="animation-delay:1.21s"><g transform="translate(378 236)" fill="url(#g8)" stroke="#3a3a3a" stroke-width="2.5"><path transform="rotate(0)" d="M0.0 -36.0 L18.0 -18.0 L36.0 0.0 L18.0 18.0 L0.0 36.0 L-18.0 18.0 L-36.0 0.0 L-18.0 -18.0 Z"/></g>
+      <text x="378" y="292" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="14" font-weight="700" fill="#e6e9ff" text-anchor="middle">Importaciones</text>
+      
+      <path class="destello" style="animation-delay:4.76s" d="M402 202 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 z" fill="#ffffff"/>
+    </g>
+    <defs><linearGradient id="g9" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.25" stop-color="#8878d8"/><stop offset="1" stop-color="#8878d8" stop-opacity="0.7"/></linearGradient></defs>
+    <g class="pop" style="animation-delay:1.33s"><g transform="translate(522 236)" fill="url(#g9)" stroke="#3a3a3a" stroke-width="2.5"><path transform="rotate(30)" d="M0.0 -34.0 L14.7 -25.5 L29.4 -17.0 L29.4 0.0 L29.4 17.0 L14.7 25.5 L0.0 34.0 L-14.7 25.5 L-29.4 17.0 L-29.4 0.0 L-29.4 -17.0 L-14.7 -25.5 Z"/></g>
+      <text x="522" y="292" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="14" font-weight="700" fill="#e6e9ff" text-anchor="middle">Posible</text>
+      
+      <path class="destello" style="animation-delay:5.13s" d="M546 202 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 z" fill="#ffffff"/>
+    </g>
+    <defs><linearGradient id="g10" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.25" stop-color="#c89838"/><stop offset="1" stop-color="#c89838" stop-opacity="0.7"/></linearGradient></defs>
+    <g class="pop" style="animation-delay:1.45s"><g transform="translate(666 236)" fill="url(#g10)" stroke="#3a3a3a" stroke-width="2.5"><path d="M0 -34 L30 -22 L26 12 C22 26 10 32 0 36 C-10 32 -22 26 -26 12 L-30 -22 Z"/></g>
+      <text x="666" y="292" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="14" font-weight="700" fill="#e6e9ff" text-anchor="middle">Fichas</text>
+      
+      <path class="destello" style="animation-delay:5.50s" d="M690 202 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 z" fill="#ffffff"/>
+    </g>
+    <defs><linearGradient id="g11" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.25" stop-color="#e8b820"/><stop offset="1" stop-color="#e8b820" stop-opacity="0.7"/></linearGradient></defs>
+    <g class="pop" style="animation-delay:1.57s"><g transform="translate(810 236)" fill="url(#g11)" stroke="#3a3a3a" stroke-width="2.5"><path d="M0.0 -36.0 L9.4 -12.9 L34.2 -11.1 L15.2 4.9 L21.2 29.1 L0.0 16.0 L-21.2 29.1 L-15.2 4.9 L-34.2 -11.1 L-9.4 -12.9 Z"/></g>
+      <text x="810" y="292" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="14" font-weight="700" fill="#e6e9ff" text-anchor="middle">Asistente</text>
+      
+      <path class="destello" style="animation-delay:5.87s" d="M834 202 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 z" fill="#ffffff"/>
+    </g>
+</svg>

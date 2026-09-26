@@ -2,22 +2,10 @@
 
 <img src="docs/assets/banner.svg" alt="PokeScript: aprende a programar, ¡atrápalos a todos!" width="100%">
 
-<br>
-
-<img src="https://img.shields.io/badge/Go-backend-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go">
+<img src="https://img.shields.io/badge/Go-compilador-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go">
 <img src="https://img.shields.io/badge/Wails-escritorio-DF0000?style=for-the-badge&logo=wails&logoColor=white" alt="Wails">
 <img src="https://img.shields.io/badge/Svelte-interfaz-FF3E00?style=for-the-badge&logo=svelte&logoColor=white" alt="Svelte">
 <img src="https://img.shields.io/badge/CodeMirror-6-D30707?style=for-the-badge&logo=codemirror&logoColor=white" alt="CodeMirror 6">
-<br>
-<img src="https://img.shields.io/badge/estado-en%20entrenamiento-FFCB05?style=flat-square" alt="Estado: en entrenamiento">
-<img src="https://img.shields.io/badge/idioma-espa%C3%B1ol-3D7DCA?style=flat-square" alt="Idioma: español">
-<img src="https://img.shields.io/badge/commits-PKS%20convencional-78C850?style=flat-square" alt="Commits: PKS convencional">
-
-<br><br>
-
-<b>Un lenguaje de programación pedagógico con temática Pokémon,<br>con su propio IDE de escritorio y un asistente que te enseña mientras programas.</b>
-
-<br><br>
 
 <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/137.gif" alt="Porygon" height="56">
 <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/25.gif" alt="Pikachu" height="56">
@@ -28,48 +16,42 @@
 
 </div>
 
-<img src="docs/assets/divisor.svg" alt="separador" width="100%">
+<img src="docs/assets/pokedex.svg" alt="Entrada de Pokédex: PokeScript, un lenguaje en español para aprender a programar" width="100%">
 
-## 📖 Contenido
+PokeScript es un lenguaje de programación en español para quien está empezando. Las palabras salen de los juegos de Pokémon: un programa arranca con `combate`, las funciones son movimientos y para mostrar algo en pantalla se usa `gritar`.
 
-- [¿Qué es PokeScript?](#-qué-es-pokescript)
-- [Así se ve](#-así-se-ve)
-- [Los tipos del lenguaje](#-los-tipos-del-lenguaje)
-- [Guía rápida](#-guía-rápida)
-- [Ejemplos completos](#-ejemplos-completos)
-- [Características](#-características)
-- [Mensajes que enseñan](#-mensajes-que-enseñan)
-- [Arquitectura](#-arquitectura)
-- [Hoja de ruta](#-hoja-de-ruta)
-- [Cómo empezar](#-cómo-empezar)
-- [Cómo contribuir](#-cómo-contribuir)
-- [Aviso](#-aviso)
+Debajo de eso hay un lenguaje de verdad. Cada dato tiene un tipo, el compilador revisa el programa completo antes de correrlo y, cuando algo falla, lo explica en español y propone cómo arreglarlo.
 
-<img src="docs/assets/divisor.svg" alt="separador" width="100%">
+Trae su propio editor de escritorio. Mientras lo terminamos, los programas ya corren desde la terminal.
 
-## 🔴 ¿Qué es PokeScript?
+<sub>Proyecto del curso Paradigmas de Programación · Universidad Nacional · II ciclo 2026</sub>
 
-<img align="right" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/137.gif" alt="Porygon, la mascota del compilador" height="96">
+<img src="docs/assets/divisor.svg" alt="" width="100%">
 
-**PokeScript** es un lenguaje de programación en **español** hecho para quienes están aprendiendo a programar. Las palabras clave vienen del mundo Pokémon: los programas arrancan con `combate`, las funciones son `movimiento`s, las constantes son `medalla`s y para mostrar algo en pantalla… se usa `gritar`.
+## Contenido
 
-Detrás del tema hay un lenguaje serio: **tipado estático**, análisis semántico completo, coincidencia de patrones **exhaustiva** y proyectos de varios archivos. Todo eso corre dentro de un IDE de escritorio con un **asistente pedagógico** que no solo te dice qué salió mal, sino **por qué** y **cómo arreglarlo**.
+- [El editor](#el-editor)
+- [Tipos](#tipos)
+- [Lo básico](#lo-básico)
+- [Programas completos](#programas-completos)
+- [Por dentro](#por-dentro)
+- [Medallas](#medallas)
+- [Probarlo](#probarlo)
+- [Contribuir](#contribuir)
 
-> Proyecto del curso **Paradigmas de Programación**, Universidad Nacional (UNA), II ciclo 2026.
+<img src="docs/assets/divisor.svg" alt="" width="100%">
 
-<img src="docs/assets/divisor.svg" alt="separador" width="100%">
+## El editor
 
-## ✨ Así se ve
+Así va a verse el IDE: el código, el asistente al lado y la salida abajo.
 
-<div align="center">
-<img src="docs/assets/editor.svg" alt="Editor de PokeScript con un programa de ejemplo, el asistente y la salida" width="100%">
-</div>
+<img src="docs/assets/editor.svg" alt="Editor de PokeScript con un programa, el asistente y la salida" width="100%">
 
-<img src="docs/assets/divisor.svg" alt="separador" width="100%">
+<img src="docs/assets/divisor.svg" alt="" width="100%">
 
-## 🧬 Los tipos del lenguaje
+## Tipos
 
-Cada tipo de dato es un tipo de Pokémon. Y como en los combates, **no todos los tipos se llevan bien**: las conversiones siguen una _tabla de efectividades_.
+Cada tipo de dato es un tipo de Pokémon.
 
 <div align="center">
 
@@ -86,23 +68,56 @@ Cada tipo de dato es un tipo de Pokémon. Y como en los combates, **no todos los
 
 </div>
 
-### ⚔️ La tabla de efectividades
+Y como en los combates, no todos se llevan bien. La tabla de efectividades dice qué se convierte solo, qué necesita `convertir` y qué no se puede hacer.
 
-¿Se puede guardar un `roca` en un `agua`? Sí, es automático. ¿Un `planta` en un `roca`? Solo con `convertir`. ¿Un `electrico` en un `fuego`? Eso no es muy efectivo… y el compilador te lo dice antes de ejecutar.
+<img src="docs/assets/efectividades.svg" alt="Tabla de efectividades entre los tipos" width="100%">
 
-<div align="center">
-<img src="docs/assets/efectividades.svg" alt="Tabla de efectividades: conversiones entre tipos" width="100%">
-</div>
+Si un programa mezcla dos tipos que no se llevan, no llega a ejecutarse:
 
-<img src="docs/assets/divisor.svg" alt="separador" width="100%">
+<img src="docs/assets/combate.svg" alt="ROCA usa + contra ELECTRICO: no es muy efectivo" width="100%">
 
-## 📘 Guía rápida
+Por ejemplo, este programa:
 
-Todo lo esencial del lenguaje, en pedacitos.
+```text
+combate
+    roca x = 1 + verdadero
+fin
+```
 
-### 👋 Hola mundo
+recibe esta respuesta:
 
-Todo programa arranca en el bloque `combate`:
+```text
+No es muy efectivo…
+Tipo de error: semántico
+Archivo: principal.pks
+Línea: 2
+Columna: 14
+Descripción: no es posible sumar un valor de tipo roca con uno de tipo electrico.
+Posible causa: la combinación de estos dos tipos no tiene efecto según la tabla de efectividades.
+Sugerencia: consultar la tabla de efectividades desde el menú del entorno.
+```
+
+Cada clase de problema tiene su encabezado:
+
+| Encabezado                     | Cuándo aparece                                                         |
+| ------------------------------ | ---------------------------------------------------------------------- |
+| ¡Es superefectivo!             | El programa compiló sin errores                                        |
+| No es muy efectivo…            | Tipos que no se llevan o una regla del lenguaje que no se cumple       |
+| ¡Se escapó!                    | Algo mal escrito, como un bloque sin su `fin`                          |
+| ¡No pasó nada!                 | Un nombre que no existe o un dato que se usa antes de tener valor      |
+| No se encontró la ruta         | Un problema al importar otro archivo                                   |
+| ¡Falló el ataque!              | El programa se cayó mientras corría, por ejemplo al dividir entre cero |
+| ¿Seguro que quieres hacer eso? | Un aviso: el programa corre, pero algo se ve raro                      |
+
+<img src="docs/assets/divisor.svg" alt="" width="100%">
+
+## Lo básico
+
+Lo necesario para leer y escribir PokeScript. Cada bloque se puede copiar tal cual.
+
+### Hola, mundo
+
+El programa empieza en `combate` y termina en su `fin`.
 
 ```text
 combate
@@ -110,9 +125,9 @@ combate
 fin
 ```
 
-### 📦 Datos y medallas
+### Datos y medallas
 
-Los datos se declaran con su tipo. Una `medalla` es una constante: nunca cambia.
+Cada dato se declara con su tipo. Una medalla no cambia nunca; por eso se escribe en mayúsculas.
 
 ```text
 medalla roca NIVEL_MAXIMO = 100
@@ -129,9 +144,9 @@ combate
 fin
 ```
 
-### 🔀 Condicionales
+### Decisiones
 
-La condición siempre es un `electrico`. No hay "verdad implícita": `si vida` no compila, `si vida > 0` sí.
+La condición de un `si` tiene que dar `verdadero` o `falso`. `si vida` no compila; `si vida > 0` sí.
 
 ```text
 si vida > 50
@@ -143,7 +158,7 @@ sino
 fin
 ```
 
-Para elegir entre muchos casos está `segun`. Si el valor es `roca`, `agua`, `fuego` o `planta`, la rama `otro` es obligatoria:
+Para muchos casos está `segun`. Si elige entre números o textos necesita la rama `otro`, porque esos valores no se acaban nunca:
 
 ```text
 segun ataque
@@ -153,7 +168,7 @@ segun ataque
 fin
 ```
 
-### 🔁 Ciclos
+### Ciclos
 
 ```text
 // De un número a otro (ambos incluidos)
@@ -178,11 +193,11 @@ mientras vida > 0
 fin
 ```
 
-`siguiente` salta a la próxima vuelta y `huir` sale del ciclo.
+`siguiente` pasa a la vuelta que sigue y `huir` sale del ciclo.
 
-### ⚡ Movimientos (funciones)
+### Movimientos
 
-Un movimiento puede **entregar** un valor, o solo hacer algo:
+Son las funciones del lenguaje. Unos entregan un valor y otros solo hacen algo:
 
 ```text
 movimiento roca calcular_dano(roca ataque, roca defensa)
@@ -200,9 +215,9 @@ combate
 fin
 ```
 
-### 🎒 Colecciones
+### Equipo y mochila
 
-`equipo` es una lista y `mochila` es un diccionario. Los índices empiezan en **1**.
+Un `equipo` es una lista y una `mochila` guarda valores por clave. Se cuenta desde 1, como el primer Pokémon de tu equipo.
 
 ```text
 equipo de planta equipo_ash = ["Pikachu", "Charizard"]
@@ -218,9 +233,9 @@ si objetos contiene "Pokébola"
 fin
 ```
 
-### 🧬 Especies y fichas
+### Especies y fichas
 
-Una `especie` define una lista cerrada de valores; una `ficha` agrupa datos con nombre.
+Una `especie` es una lista cerrada de valores. Una `ficha` junta varios datos bajo un mismo nombre.
 
 ```text
 especie Clima
@@ -240,7 +255,7 @@ combate
 fin
 ```
 
-### 🔄 Conversiones y utilidades
+### Conversiones
 
 ```text
 planta texto = "25"
@@ -251,31 +266,29 @@ roca redondo = redondear(7.5)
 roca dado = aleatorio(1, 6)
 ```
 
-`convertir(agua) a roca` **corta** los decimales; `redondear` redondea.
+Ojo: `convertir(agua) a roca` corta los decimales. Para redondear está `redondear`.
 
-### 📂 Varios archivos
+### Varios archivos
 
-Con `enseñar … desde` traes movimientos, especies, fichas y medallas de otro archivo del proyecto:
+Un archivo usa lo que declara otro con `enseñar … desde`:
 
 ```text
 enseñar calcular_dano desde "operaciones.pks"
 enseñar Estado, Pokemon desde "tipos.pks"
 ```
 
-<img src="docs/assets/divisor.svg" alt="separador" width="100%">
+## Programas completos
 
-## 🎮 Ejemplos completos
+Cada animación es un programa real con su salida real. Están en [`ejemplos/`](ejemplos) y las pruebas del proyecto los ejecutan.
 
-Programas enteros, con lo que muestran en pantalla. Cada uno trae su código listo para copiar.
-
-### 🎒 Entrenamiento: equipo, mochila y ciclos
+### Entrenamiento
 
 <div align="center">
 <img src="docs/assets/ejemplo-colecciones.svg" alt="Programa con equipo, mochila, recorrer y mientras, y su salida" width="100%">
 </div>
 
 <details>
-<summary><b>📋 Ver el código</b></summary>
+<summary>Ver el código</summary>
 
 ```text
 // entrenamiento.pks · equipo, mochila y ciclos
@@ -302,14 +315,14 @@ fin
 
 </details>
 
-### 🧪 Estados: especie, ficha, `segun` y movimientos
+### Estados alterados
 
 <div align="center">
 <img src="docs/assets/ejemplo-especies.svg" alt="Programa con especie, ficha, segun exhaustivo y movimientos, y su salida" width="100%">
 </div>
 
 <details>
-<summary><b>📋 Ver el código</b></summary>
+<summary>Ver el código</summary>
 
 ```text
 // estados.pks · especie, ficha, segun y movimientos
@@ -344,16 +357,16 @@ fin
 
 </details>
 
-### 🎯 Centro Pokémon: entrada del usuario
+### Centro Pokémon
 
-`capturar` espera a que escribas algo. Si lo que escribes no encaja con el tipo del dato, te lo explica y vuelve a preguntar.
+`capturar` se queda esperando lo que escribas. Si la respuesta no sirve para ese dato, lo explica y vuelve a preguntar.
 
 <div align="center">
 <img src="docs/assets/ejemplo-captura.svg" alt="Programa que pide datos con capturar y valida la entrada" width="100%">
 </div>
 
 <details>
-<summary><b>📋 Ver el código</b></summary>
+<summary>Ver el código</summary>
 
 ```text
 // centro.pks · capturar, contiene y sino si
@@ -381,20 +394,20 @@ fin
 
 </details>
 
-### 🚨 Cuando algo sale mal
+### Cuando falta un `fin`
 
-El diagnóstico estrella: si olvidas un `fin`, PokeScript no se queda en "error en la última línea". Te dice **qué bloque** quedó abierto, **dónde** lo abriste y, por la sangría, **cuál** es el que probablemente olvidaste cerrar.
+Es el error más común al empezar. PokeScript dice qué bloque quedó abierto y en qué línea empezó y, mirando la sangría, señala cuál es el que probablemente se quedó sin cerrar.
 
 <div align="center">
 <img src="docs/assets/ejemplo-error.svg" alt="PokeScript detecta un bloque sin cerrar y explica dónde se abrió" width="100%">
 </div>
 
-### 🏆 Proyecto completo: combate por turnos
+### Combate por turnos
 
-Un proyecto de cuatro archivos que usa casi todo el lenguaje: importaciones, medallas, especies, fichas, `capturar`, `segun` exhaustivo, ciclos, condicionales y movimientos con y sin valor de retorno.
+El programa de la especificación: cuatro archivos que se importan entre sí y usan casi todo el lenguaje.
 
 <details>
-<summary><b>📄 constantes.pks</b></summary>
+<summary>constantes.pks</summary>
 
 ```text
 medalla roca VIDA_MAXIMA = 100
@@ -404,7 +417,7 @@ medalla roca NIVEL       = 25
 </details>
 
 <details>
-<summary><b>📄 tipos.pks</b></summary>
+<summary>tipos.pks</summary>
 
 ```text
 especie Estado
@@ -421,7 +434,7 @@ fin
 </details>
 
 <details>
-<summary><b>📄 operaciones.pks</b></summary>
+<summary>operaciones.pks</summary>
 
 ```text
 enseñar NIVEL desde "constantes.pks"
@@ -438,7 +451,7 @@ fin
 </details>
 
 <details>
-<summary><b>📄 principal.pks</b></summary>
+<summary>principal.pks</summary>
 
 ```text
 enseñar calcular_dano desde "operaciones.pks"
@@ -490,148 +503,29 @@ fin
 
 </details>
 
-<img src="docs/assets/divisor.svg" alt="separador" width="100%">
+<img src="docs/assets/divisor.svg" alt="" width="100%">
 
-## ⚡ Características
+## Por dentro
 
-<table>
-<tr>
-<td width="50%" valign="top">
+Un programa pasa por cuatro etapas antes de mostrar algo. Si el analizador encuentra un nombre que no existe, el asistente busca qué quisiste escribir.
 
-### 🎓 Pensado para aprender
+<img src="docs/assets/recorrido.svg" alt="El recorrido de un programa por el compilador" width="100%">
 
-- Palabras clave **en español** y con sentido
-- **Una instrucción por línea**, sin `;` ni llaves
-- Índices que empiezan en **1**
-- Sin veracidad implícita: los `si` piden un `electrico`
-- Todo se pasa **por valor**: sin efectos colaterales sorpresa
+El compilador y el intérprete están escritos en Go. El editor usa Svelte y CodeMirror 6, y Wails los junta en una aplicación de escritorio. Las reglas completas del lenguaje están en la [especificación](docs/PokeScript_Especificacion_Implementacion.md).
 
-</td>
-<td width="50%" valign="top">
+<img src="docs/assets/divisor.svg" alt="" width="100%">
 
-### 🛡️ Un compilador que te cuida
+## Medallas
 
-- **Tipado estático** con tabla de efectividades
-- Revisa que ningún dato se lea **antes de tener valor**
-- `segun` **exhaustivo**: te dice qué casos faltan
-- Prohíbe cambiar una `medalla` o una colección mientras la recorres
-- Te dice **en qué línea abriste** el bloque que no cerraste
+Cada hito de la especificación es una medalla de gimnasio. Falta una: el resaltado de colores dentro del editor.
 
-</td>
-</tr>
-<tr>
-<td width="50%" valign="top">
+<img src="docs/assets/medallas.svg" alt="Medallas: 11 de 12 hitos ganados" width="100%">
 
-### 🧩 Proyectos de verdad
+<img src="docs/assets/divisor.svg" alt="" width="100%">
 
-- Varios archivos `.pks` con `enseñar … desde`
-- Detecta **importaciones circulares** y muestra la cadena completa
-- `ficha` para registros, `especie` para enumeraciones
-- `equipo` y `mochila` para colecciones
+## Probarlo
 
-</td>
-<td width="50%" valign="top">
-
-### 🤖 Asistente pedagógico
-
-- Explica cada error **con palabras simples**
-- Sugiere el nombre correcto cuando te equivocas al escribir (distancia de edición)
-- Propone **arreglos que se aplican con un clic**
-- Funciona sin conexión y sin servicios externos
-
-</td>
-</tr>
-</table>
-
-<img src="docs/assets/divisor.svg" alt="separador" width="100%">
-
-## 💬 Mensajes que enseñan
-
-Los diagnósticos llevan encabezados que cualquier entrenador reconoce:
-
-| Situación                             | Mensaje                            |
-| ------------------------------------- | ---------------------------------- |
-| ✅ Compilación exitosa                | **¡Es superefectivo!**             |
-| ❌ Error de tipos                     | **No es muy efectivo…**            |
-| 🧱 Error de sintaxis o bloque abierto | **¡Se escapó!**                    |
-| 👻 Dato sin valor o no declarado      | **¡No pasó nada!**                 |
-| 💥 Error en ejecución                 | **¡Falló el ataque!**              |
-| 🧭 Problema de importación            | **No se encontró la ruta**         |
-| ⚠️ Advertencia                        | **¿Seguro que quieres hacer eso?** |
-
-Un error completo se ve así:
-
-```text
-No es muy efectivo…
-Tipo de error: semántico
-Archivo: principal.pks
-Línea: 12
-Columna: 13
-Descripción: no es posible sumar un valor de tipo roca con uno de tipo electrico.
-Posible causa: la combinación de estos dos tipos no tiene efecto según la tabla de efectividades.
-Sugerencia: consultar la tabla de efectividades desde el menú del entorno.
-```
-
-<img src="docs/assets/divisor.svg" alt="separador" width="100%">
-
-## 🔧 Arquitectura
-
-```mermaid
-flowchart LR
-    subgraph UI["🖥️ Svelte"]
-        E["Editor<br/>CodeMirror 6"]
-        S["Salida"]
-        A["Asistente"]
-    end
-    subgraph GO["⚙️ Go"]
-        L["Lexer"] --> P["Parser"] --> AN["Analizador"] --> I["Intérprete"]
-    end
-    E -- "código .pks" --> L
-    AN -- "diagnósticos" --> A
-    I -- "eventos (gritar / capturar)" --> S
-    S -- "entrada" --> I
-```
-
-| Capa       | Tecnología                                  |
-| ---------- | ------------------------------------------- |
-| Escritorio | [Wails](https://wails.io)                   |
-| Compilador | Go: lexer, parser, analizador e intérprete  |
-| Interfaz   | Svelte + CodeMirror 6                       |
-| Extras     | Howler.js (audio) · PixiJS (salida gráfica) |
-
-<img src="docs/assets/divisor.svg" alt="separador" width="100%">
-
-## 🧭 Hoja de ruta
-
-Cada hito es una medalla de gimnasio 🏅
-
-- [ ] **1.** Lexer completo y resaltado en el editor (lexer listo; falta el editor)
-- [x] **2.** Parser de expresiones: `2 + 3 * 4`
-- [x] **3.** Parser de instrucciones y bloques
-- [x] **4.** Intérprete: `gritar`, variables, `si`, `mientras`: **¡el primer programa corriendo!** (en consola; falta el IDE)
-- [x] **5.** Tabla de símbolos y chequeo de tipos
-- [x] **6.** Movimientos, parámetros y retorno
-- [x] **7.** Colecciones: `equipo` y `mochila`
-- [x] **8.** `especie` y `segun` exhaustivo
-- [x] **9.** Importaciones y grafo de dependencias
-- [x] **10.** Datos opcionales con `posible`
-- [x] **11.** `ficha`
-- [x] **12.** Asistente pedagógico (sugerencias y lecciones; falta el panel del IDE)
-
-<img src="docs/assets/divisor.svg" alt="separador" width="100%">
-
-## 🚀 Cómo empezar
-
-### Requisitos
-
-| Herramienta                                                    | Versión         |
-| -------------------------------------------------------------- | --------------- |
-| [Go](https://go.dev/dl/)                                       | 1.23 o superior |
-| [Node.js](https://nodejs.org)                                  | 22 o superior   |
-| [pnpm](https://pnpm.io/installation)                           | 10 o superior   |
-| [Wails CLI](https://wails.io/docs/gettingstarted/installation) | v2              |
-
-### Pasos
+Hace falta [Go](https://go.dev/dl/) 1.23 o más nuevo. Para trabajar en el proyecto también [Node.js](https://nodejs.org) 22 y [pnpm](https://pnpm.io/installation) 10; npm no sirve aquí.
 
 ```bash
 git clone https://github.com/keylorpineda/PokeScript.git
@@ -640,62 +534,38 @@ pnpm install
 git config commit.template .gitmessage
 ```
 
-`pnpm install` activa los hooks de Git (Husky) que revisan el formato, la ortografía y los mensajes de commit.
-
-### Correr un programa
-
-El IDE todavía está en camino, pero los programas ya corren desde la terminal:
+Para correr un programa:
 
 ```bash
 go run ./cmd/pks ejemplos/hola.pks
 ```
 
+Y el combate por turnos, que tiene cuatro archivos:
+
 ```bash
 go run ./cmd/pks ejemplos/combate
 ```
 
-El segundo es el proyecto completo de combate por turnos, con cuatro archivos. En [`ejemplos/`](ejemplos) están también los programas de esta página.
-
-> 🥚 El IDE (`wails dev`) se agrega cuando esté el proyecto Wails.
-
-### Estructura
-
 ```text
 PokeScript/
-├── internal/          ← compilador e intérprete en Go (sin dependencias de la interfaz)
-├── frontend/          ← interfaz en Svelte
-├── docs/              ← especificación del lenguaje y recursos del README
-├── .github/workflows/ ← pipeline de CI
-└── CONTRIBUTING.md    ← estándares del equipo
+├── internal/   compilador, intérprete y asistente
+├── cmd/pks/    el comando para la terminal
+├── ejemplos/   los programas de este README
+└── docs/       especificación, plan del equipo y animaciones
 ```
 
-La especificación completa del lenguaje está en [`docs/PokeScript_Especificacion_Implementacion.md`](docs/PokeScript_Especificacion_Implementacion.md).
+<img src="docs/assets/divisor.svg" alt="" width="100%">
 
-<img src="docs/assets/divisor.svg" alt="separador" width="100%">
+## Contribuir
 
-## 🤝 Cómo contribuir
+Los commits van en inglés con el formato `PKS type(scope): description`, y cada cambio entra a `dev` por un pull request. Los detalles están en [CONTRIBUTING.md](CONTRIBUTING.md) y el reparto de tareas en [docs/PLAN.md](docs/PLAN.md).
 
-Los commits siguen el formato **PKS convencional**, en inglés:
-
-```text
-PKS feat(lexer): recognize sino si as a single SINO_SI token
-PKS fix(parser): report the line where an unclosed block was opened
-```
-
-Husky los valida al hacer commit y el CI los vuelve a revisar en cada push. Todos los detalles (tipos, alcances, herramientas y flujo de ramas) están en [CONTRIBUTING.md](CONTRIBUTING.md).
-
-<img src="docs/assets/divisor.svg" alt="separador" width="100%">
-
-## 📜 Aviso
-
-Proyecto académico sin fines de lucro. Pokémon y todos los nombres relacionados son marcas de Nintendo, Game Freak y The Pokémon Company. Los sprites vienen de [PokeAPI](https://github.com/PokeAPI/sprites). Este proyecto no está afiliado ni respaldado por ellos.
+<img src="docs/assets/divisor.svg" alt="" width="100%">
 
 <div align="center">
 
-<br>
-
 <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/25.gif" alt="Pikachu" height="40">
 
-<sub>Hecho con ⚡ en la UNA · 2026</sub>
+<sub>Proyecto académico sin fines de lucro. Pokémon y sus nombres son marcas de Nintendo, Game Freak y The Pokémon Company; este proyecto no está afiliado a ellas. Sprites de <a href="https://github.com/PokeAPI/sprites">PokeAPI</a>.</sub>
 
 </div>

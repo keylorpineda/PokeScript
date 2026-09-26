@@ -47,6 +47,7 @@ Los tipos, los alcances y los ejemplos están en `CONTRIBUTING.md`.
 
 - El compilador y el intérprete viven en `internal/` (por ejemplo `internal/lexer`, `internal/parser`, `internal/analizador`, `internal/interprete`, `internal/asistente`). Esos paquetes **no** importan Wails, así que se prueban sin interfaz.
 - En la raíz quedan solo `main.go` y `app.go` de Wails, que hacen de puente.
+- `internal/servicio` une todas las fases: `Compilar`, `Ejecutar`, la `Sesion` con streaming y el `Entorno` con los métodos de la sección 9. `app.go` solo envuelve al `Entorno`, al gestor (`internal/proyecto/gestor.go`) y al menú de consulta (`internal/consulta`); la lógica no va en `app.go`.
 - Las pruebas usan `testing` de la librería estándar, en archivos `*_test.go` al lado del código, con estilo de tabla.
 - Los programas `.pks` de prueba van en `testdata/` dentro de cada paquete.
 - Para correrlas: `go test ./internal/... ./cmd/...`

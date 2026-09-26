@@ -605,18 +605,18 @@ flowchart LR
 
 Cada hito es una medalla de gimnasio 🏅
 
-- [ ] **1.** Lexer completo y resaltado en el editor
+- [ ] **1.** Lexer completo y resaltado en el editor (lexer listo; falta el editor)
 - [x] **2.** Parser de expresiones: `2 + 3 * 4`
 - [x] **3.** Parser de instrucciones y bloques
 - [x] **4.** Intérprete: `gritar`, variables, `si`, `mientras`: **¡el primer programa corriendo!** (en consola; falta el IDE)
-- [ ] **5.** Tabla de símbolos y chequeo de tipos
-- [ ] **6.** Movimientos, parámetros y retorno
-- [ ] **7.** Colecciones: `equipo` y `mochila`
-- [ ] **8.** `especie` y `segun` exhaustivo
-- [ ] **9.** Importaciones y grafo de dependencias
-- [ ] **10.** Datos opcionales con `posible`
-- [ ] **11.** `ficha`
-- [ ] **12.** Asistente pedagógico
+- [x] **5.** Tabla de símbolos y chequeo de tipos
+- [x] **6.** Movimientos, parámetros y retorno
+- [x] **7.** Colecciones: `equipo` y `mochila`
+- [x] **8.** `especie` y `segun` exhaustivo
+- [x] **9.** Importaciones y grafo de dependencias
+- [x] **10.** Datos opcionales con `posible`
+- [x] **11.** `ficha`
+- [x] **12.** Asistente pedagógico (sugerencias y lecciones; falta el panel del IDE)
 
 <img src="docs/assets/divisor.svg" alt="separador" width="100%">
 

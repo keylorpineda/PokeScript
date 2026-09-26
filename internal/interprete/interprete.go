@@ -11,8 +11,8 @@ import (
 
 // Interprete ejecuta un programa recorriendo su AST.
 //
-// Por ahora ejecuta un solo archivo; los proyectos con importaciones llegan
-// con internal/proyecto (hito 9). Supone un AST ya validado: lo que el
+// Ejecuta un archivo suelto o un proyecto de varios archivos con sus
+// importaciones (EjecutarProyecto). Supone un AST ya validado: lo que el
 // analizador debería rechazar se reporta como error interno.
 type Interprete struct {
 	// ES recibe lo que escribe gritar y responde a capturar.
@@ -21,9 +21,15 @@ type Interprete struct {
 	// fija para que la salida sea siempre la misma.
 	Azar *rand.Rand
 
-	archivo     string
-	ctx         context.Context
-	global      *Entorno                       // medallas del archivo
+	// archivo es el que se está ejecutando, para los errores de ejecución.
+	archivo string
+	ctx     context.Context
+	// alcances tiene, por archivo, sus medallas y las que importa.
+	alcances map[string]*Entorno
+	// medallasDe dice en qué archivo se declara cada medalla.
+	medallasDe map[string]string
+	// origen dice en qué archivo se declara cada movimiento.
+	origen      map[*ast.DeclMovimiento]string
 	movimientos map[string]*ast.DeclMovimiento // por nombre
 	fichas      map[string]*ast.DeclFicha      // por nombre del tipo
 	especies    map[string]*ast.DeclEspecie    // por nombre del tipo
@@ -38,16 +44,32 @@ func Nuevo(es ES) *Interprete {
 	return &Interprete{ES: es, Azar: rand.New(rand.NewPCG(semilla, semilla>>1))}
 }
 
-// Ejecutar corre el programa: evalúa las medallas del archivo en orden de
-// aparición, registra especies, fichas y movimientos, y ejecuta combate
-// (sección 6).
+// Ejecutar corre un programa de un solo archivo. Es EjecutarProyecto con
+// una lista de un archivo.
+func (in *Interprete) Ejecutar(ctx context.Context, prog *ast.Programa) error {
+	return in.EjecutarProyecto(ctx, []*ast.Programa{prog})
+}
+
+// EjecutarProyecto corre un proyecto de varios archivos (sección 6):
+// registra especies, fichas y movimientos de todos los archivos, evalúa las
+// medallas archivo por archivo y ejecuta combate.
+//
+// archivos va en el orden de internal/proyecto: cada archivo después de los
+// que importa y el principal al final. Ese es también el orden en que se
+// evalúan las medallas (decisión H8), así una medalla importada ya tiene
+// valor cuando otro archivo la usa.
+//
+// Cada archivo tiene su propio alcance con sus medallas y las que importa;
+// un movimiento se ejecuta en el alcance de su archivo, y un error de
+// ejecución señala el archivo donde ocurrió.
 //
 // Devuelve nil si el programa terminó, un *ErrorEjecucion si falló, o el
 // error de ctx o ErrEntradaCerrada si se detuvo desde afuera.
-func (in *Interprete) Ejecutar(ctx context.Context, prog *ast.Programa) error {
+func (in *Interprete) EjecutarProyecto(ctx context.Context, archivos []*ast.Programa) error {
 	in.ctx = ctx
-	in.archivo = prog.Archivo
-	in.global = NuevoEntorno(nil)
+	in.alcances = map[string]*Entorno{}
+	in.medallasDe = map[string]string{}
+	in.origen = map[*ast.DeclMovimiento]string{}
 	in.movimientos = map[string]*ast.DeclMovimiento{}
 	in.fichas = map[string]*ast.DeclFicha{}
 	in.especies = map[string]*ast.DeclEspecie{}
@@ -55,44 +77,85 @@ func (in *Interprete) Ejecutar(ctx context.Context, prog *ast.Programa) error {
 	in.profundidad = 0
 
 	var combate *ast.Combate
-	for _, d := range prog.Declaraciones {
-		switch x := d.(type) {
-		case *ast.DeclEspecie:
-			in.especies[x.Nombre.Nombre] = x
-			for _, v := range x.Valores {
-				in.valores[v.Nombre] = EspecieVal{Tipo: x.Nombre.Nombre, Valor: v.Nombre}
+	var archivoCombate string
+	for _, prog := range archivos {
+		in.archivo = prog.Archivo
+		for _, d := range prog.Declaraciones {
+			switch x := d.(type) {
+			case *ast.DeclEspecie:
+				in.especies[x.Nombre.Nombre] = x
+				for _, v := range x.Valores {
+					in.valores[v.Nombre] = EspecieVal{Tipo: x.Nombre.Nombre, Valor: v.Nombre}
+				}
+			case *ast.DeclFicha:
+				in.fichas[x.Nombre.Nombre] = x
+			case *ast.DeclMovimiento:
+				in.movimientos[x.Nombre.Nombre] = x
+				in.origen[x] = prog.Archivo
+			case *ast.DeclMedalla:
+				in.medallasDe[x.Nombre.Nombre] = prog.Archivo
+			case *ast.Combate:
+				if combate != nil {
+					return in.interno(x, "hay más de un bloque combate")
+				}
+				combate, archivoCombate = x, prog.Archivo
 			}
-		case *ast.DeclFicha:
-			in.fichas[x.Nombre.Nombre] = x
-		case *ast.DeclMovimiento:
-			in.movimientos[x.Nombre.Nombre] = x
-		case *ast.Combate:
-			if combate != nil {
-				return in.interno(x, "hay más de un bloque combate")
-			}
-			combate = x
 		}
 	}
 
 	// Las medallas se evalúan después de registrar todo lo demás, porque su
 	// valor puede usar valores de especie.
-	for _, d := range prog.Declaraciones {
-		if m, ok := d.(*ast.DeclMedalla); ok {
-			if err := in.declarar(m, m.Nombre, m.Tipo, m.Valor, true, in.global); err != nil {
-				return err
-			}
+	for _, prog := range archivos {
+		if err := in.prepararArchivo(prog); err != nil {
+			return err
 		}
 	}
 
 	if combate == nil {
+		in.archivo = ""
+		if len(archivos) > 0 {
+			in.archivo = archivos[len(archivos)-1].Archivo
+		}
 		return in.interno(ast.Pos{Line: 1, Col: 1, Len: 1}, "el programa no tiene bloque combate")
 	}
-	s, err := in.ejecutarBloque(combate.Cuerpo, NuevoEntorno(in.global))
+	in.archivo = archivoCombate
+	s, err := in.ejecutarBloque(combate.Cuerpo, NuevoEntorno(in.alcances[archivoCombate]))
 	if err != nil {
 		return err
 	}
 	if s != normal {
 		return in.interno(combate, "huir, siguiente o entregar quedó fuera de su lugar")
+	}
+	return nil
+}
+
+// prepararArchivo arma el alcance de un archivo: primero las medallas que
+// importa (la misma variable que en su archivo de origen), después las
+// propias en orden de aparición.
+func (in *Interprete) prepararArchivo(prog *ast.Programa) error {
+	in.archivo = prog.Archivo
+	alcance := NuevoEntorno(nil)
+	in.alcances[prog.Archivo] = alcance
+	for _, im := range prog.Importaciones {
+		origen := in.alcances[im.Ruta]
+		if origen == nil {
+			continue
+		}
+		for _, n := range im.Nombres {
+			if in.medallasDe[n.Nombre] != im.Ruta {
+				continue // no es una medalla de ese archivo
+			}
+			if v := origen.vars[n.Nombre]; v != nil {
+				alcance.Declarar(n.Nombre, v)
+			}
+		}
+	}
+	for _, d := range prog.Declaraciones {
+		if m, ok := d.(*ast.DeclMedalla); ok {
+			if err := in.declarar(m, m.Nombre, m.Tipo, m.Valor, true, alcance); err != nil {
+				return err
+			}
+		}
 	}
 	return nil
 }

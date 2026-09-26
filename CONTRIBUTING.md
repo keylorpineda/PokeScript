@@ -88,7 +88,7 @@ Las ramas salen de `dev` y se nombran **en inglés**, en minúsculas y con guion
 | `test/`    | Solo pruebas                  | `test/analyzer-cases`        |
 | `chore/`   | Configuración y mantenimiento | `chore/ci-cache`             |
 
-El ID de la tarea del plan (`T2.1`) va en el título del PR, no en el nombre de la rama. El flujo completo está en [docs/PLAN.md](docs/PLAN.md#-flujo-de-trabajo-en-git).
+El ID de la tarea del plan (`T2.1`) va en el título del PR, no en el nombre de la rama. Al integrar el PR, el commit de merge lleva ese título; commitlint no revisa los commits de merge, solo los de trabajo. El flujo completo está en [docs/PLAN.md](docs/PLAN.md#-flujo-de-trabajo-en-git).
 
 ## Hooks
 

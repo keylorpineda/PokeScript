@@ -36,6 +36,8 @@ Porygon
 Snorlax
 Squirtle
 tipado
+trillones
+únelas
 Unown
 
 # Nombres usados en los ejemplos
@@ -89,6 +91,7 @@ caracter
 categoria
 cientifica
 codigo
+cópialo
 colision
 codigos
 coleccion
@@ -110,6 +113,8 @@ implementacion
 importacion
 instruccion
 lexico
+leccion
+leida
 lexicos
 logica
 minimo

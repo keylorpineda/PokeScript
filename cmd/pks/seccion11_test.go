@@ -5,6 +5,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/keylorpineda/PokeScript/internal/servicio"
 )
 
 // TestCasosSeccion11 corre los casos de prueba prioritarios de la sección
@@ -85,10 +87,11 @@ func TestCasosSeccion11(t *testing.T) {
 					t.Fatal(err)
 				}
 			}
-			_, diags, err := cargar(dir)
+			compilado, err := servicio.Compilar(dir)
 			if err != nil {
 				t.Fatal(err)
 			}
+			diags := compilado.Diagnosticos
 			encontrado := false
 			var vistos []string
 			for _, d := range diags {

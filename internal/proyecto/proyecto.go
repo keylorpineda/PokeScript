@@ -36,6 +36,7 @@ type Proyecto struct {
 // Archivo es un .pks leído y analizado sintácticamente.
 type Archivo struct {
 	Nombre   string
+	Fuente   string // el texto del archivo, para leer lo que señala cada diagnóstico
 	Programa *ast.Programa
 	Sangrias map[int]int
 	// Dependencias son los archivos que este importa y que existen, sin
@@ -176,7 +177,7 @@ func (c *cargador) leer(n string) (*Archivo, error) {
 		return nil, fmt.Errorf("no se pudo leer %q: %w", n, err)
 	}
 	r := parser.Analizar(n, string(fuente))
-	a := &Archivo{Nombre: n, Programa: r.Programa, Sangrias: r.Sangrias}
+	a := &Archivo{Nombre: n, Fuente: string(fuente), Programa: r.Programa, Sangrias: r.Sangrias}
 	c.p.Archivos[n] = a
 	c.diags = append(c.diags, r.Diagnosticos...)
 	c.pendientes = append(c.pendientes, n)

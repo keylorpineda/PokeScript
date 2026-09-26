@@ -27,35 +27,37 @@ Este es el documento de coordinación del equipo: quién hace qué, en qué orde
 
 ## 📍 Estado actual
 
-> Última actualización: **2026-09-25**. Quien termine una tarea actualiza esta sección y marca la tarea con ✅ en su tabla, en el mismo PR.
+> Última actualización: **2026-09-26**. Quien termine una tarea actualiza esta sección y marca la tarea con ✅ en su tabla, en el mismo PR.
 
 ### Resumen
 
-| Sprint               | Estado        | Detalle                                                                                                     |
-| -------------------- | ------------- | ----------------------------------------------------------------------------------------------------------- |
-| **S0** · Preparación | 🟡 En curso   | Contratos listos. Faltan Wails, protección de ramas en GitHub y tablero.                                    |
-| **S1** · Hito 1      | 🟡 En curso   | Lexer y valores listos. Faltan el resaltado del editor y la maqueta del IDE (parte gráfica).                |
-| **S2** · Hitos 2 y 3 | ✅ Listo      | Parser completo con pila de bloques y recuperación de errores.                                              |
-| **S3** · Hito 4      | ✅ En consola | `go run ./cmd/pks ejemplos/combate` ejecuta el programa de la sección 10 desde los `.pks`. Falta el IDE.    |
-| **S4** en adelante   | 🟡 En curso   | `internal/tipos` listo. **Siguiente: analizador, proyecto e importaciones, y asistente**, repartidos abajo. |
+| Sprint               | Estado        | Detalle                                                                                                                                                                                            |
+| -------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **S0** · Preparación | 🟡 En curso   | Contratos listos. Faltan Wails, protección de ramas en GitHub y tablero.                                                                                                                           |
+| **S1** · Hito 1      | 🟡 En curso   | Lexer y valores listos. Faltan el resaltado del editor y la maqueta del IDE (parte gráfica).                                                                                                       |
+| **S2** · Hitos 2 y 3 | ✅ Listo      | Parser completo con pila de bloques y recuperación de errores.                                                                                                                                     |
+| **S3** · Hito 4      | ✅ En consola | `go run ./cmd/pks ejemplos/combate` ejecuta el programa de la sección 10 desde los `.pks`. Falta el IDE.                                                                                           |
+| **S4** en adelante   | 🟡 En curso   | Analizador completo (pasadas 1 y 2) y proyectos con importaciones. **Los 15 casos de la sección 11 pasan: listo para `v0.2`.** Siguen el asistente (K4), el servicio (K5) y las advertencias (K6). |
 
 **La parte gráfica (Wails, Svelte, CodeMirror) queda en pausa** hasta terminar el backend. Mientras tanto, todo se prueba con `cmd/pks`.
 
 ### ✅ Terminado
 
-| Tarea                      | Qué quedó                                                                                                                                      | Dónde                                                   |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| ✅ T0.3 – T0.6             | Módulo Go, tokens, diagnósticos, nodos del AST e interfaz `ES`                                                                                 | `internal/token`, `diag`, `ast`, `interprete/es.go`     |
-| ✅ T1.1 – T1.4             | Lexer completo con 10 tipos de error léxico en español; fuzzing sin fallos                                                                     | `internal/lexer`                                        |
-| ✅ T1.7, T2.6, T3.1 – T3.3 | Intérprete: valores, expresiones, instrucciones, `capturar` y errores de ejecución                                                             | `internal/interprete`                                   |
-| ✅ T2.1 – T2.5             | Parser: expresiones con precedencia, no encadenables, instrucciones, pila de bloques con pista de sangría, recuperación y límite de 20 errores | `internal/parser`                                       |
-| ✅ Hito 4                  | Comando de consola y ejemplos; la prueba de contrato garantiza que el parser produce el árbol de `astprueba.Seccion10()`                       | `cmd/pks`, `ejemplos/`                                  |
-| ✅ T4.1, T5.1, T7.3        | Tipos y tablas; ejecución de colecciones y conversiones                                                                                        | `internal/tipos`, `internal/interprete`                 |
-| ✅ K1 (T6.1, T6.2)         | Proyecto: `proyecto.json`, carga, validación de `enseñar` y ciclos con la cadena completa                                                      | `internal/proyecto`                                     |
-| ✅ K2 (T4.2)               | Pasada 1 y `analizador.Tabla`; punto de entrada `Analizar` con registro de verificaciones; `ast.Inspeccionar`                                  | `internal/analizador`, `internal/ast`                   |
-| ✅ J1 – J6 (en PR)         | Pasada 2: tipos de expresiones, literales `{ }`, flujo, `segun`, `posible` y estrechamiento; intérprete multiarchivo                           | `internal/analizador`, `internal/interprete`, `cmd/pks` |
+| Tarea                      | Qué quedó                                                                                                                                                                              | Dónde                                                   |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| ✅ T0.3 – T0.6             | Módulo Go, tokens, diagnósticos, nodos del AST e interfaz `ES`                                                                                                                         | `internal/token`, `diag`, `ast`, `interprete/es.go`     |
+| ✅ T1.1 – T1.4             | Lexer completo con 10 tipos de error léxico en español; fuzzing sin fallos                                                                                                             | `internal/lexer`                                        |
+| ✅ T1.7, T2.6, T3.1 – T3.3 | Intérprete: valores, expresiones, instrucciones, `capturar` y errores de ejecución                                                                                                     | `internal/interprete`                                   |
+| ✅ T2.1 – T2.5             | Parser: expresiones con precedencia, no encadenables, instrucciones, pila de bloques con pista de sangría, recuperación y límite de 20 errores                                         | `internal/parser`                                       |
+| ✅ Hito 4                  | Comando de consola y ejemplos; la prueba de contrato garantiza que el parser produce el árbol de `astprueba.Seccion10()`                                                               | `cmd/pks`, `ejemplos/`                                  |
+| ✅ T4.1, T5.1, T7.3        | Tipos y tablas; ejecución de colecciones y conversiones                                                                                                                                | `internal/tipos`, `internal/interprete`                 |
+| ✅ K1 (T6.1, T6.2)         | Proyecto: `proyecto.json`, carga, validación de `enseñar` y ciclos con la cadena completa                                                                                              | `internal/proyecto`                                     |
+| ✅ K2 (T4.2)               | Pasada 1 y `analizador.Tabla`; punto de entrada `Analizar` con registro de verificaciones; `ast.Inspeccionar`                                                                          | `internal/analizador`, `internal/ast`                   |
+| ✅ J1 – J6                 | Pasada 2: tipos de expresiones, literales `{ }`, flujo, `segun`, `posible` y estrechamiento; intérprete multiarchivo                                                                   | `internal/analizador`, `internal/interprete`, `cmd/pks` |
+| ✅ K3                      | Nombres y ámbitos: medalla reasignada o modificada, ocultamiento, `huir`/`siguiente` fuera de ciclo, colección modificada durante su recorrido y variable de recorrido de solo lectura | `internal/analizador/nombres.go`                        |
+| ✅ Sección 11              | Prueba de integración con los 15 casos, desde el `.pks` hasta el diagnóstico                                                                                                           | `cmd/pks/seccion11_test.go`                             |
 
-**Pruebas:** 11 paquetes en verde; 97 % de cobertura en el parser, 100 % en `ast`. golangci-lint sin problemas. Cubiertos de la sección 11: los 5 sintácticos y las importaciones 1, 2 y 4.
+**Pruebas:** 11 paquetes en verde; 94 % de cobertura en el analizador, 97 % en el parser, 100 % en `ast` y `lexer`. golangci-lint sin problemas. **Los 15 casos de la sección 11 pasan** (`TestCasosSeccion11` y `TestProyectoSeccion10`).
 
 ### 🟡 Parcial
 
@@ -75,7 +77,7 @@ Cada uno trabaja en **archivos o paquetes distintos** para avanzar al mismo tiem
 | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | -------------------------- |
 | ✅ K1 | Proyecto: `proyecto.json`, carga de `.pks`, `enseñar … desde`, ciclos con la cadena completa (T6.1, T6.2)                                                                           | `internal/proyecto`          | `feature/project-imports`  |
 | ✅ K2 | Pasada 1: tabla de símbolos, duplicados, un solo `combate`, valores de especie únicos (T4.2)                                                                                        | `analizador/recoleccion.go`  | `feature/analyzer-symbols` |
-| K3    | Nombres y ámbitos: medalla reasignada (7), ocultamiento (8), `huir`/`siguiente` fuera de ciclo (12), modificar la colección recorrida (13), asignar a la variable de recorrido (16) | `analizador/nombres.go`      | `feature/analyzer-names`   |
+| ✅ K3 | Nombres y ámbitos: medalla reasignada (7), ocultamiento (8), `huir`/`siguiente` fuera de ciclo (12), modificar la colección recorrida (13), asignar a la variable de recorrido (16) | `analizador/nombres.go`      | `feature/analyzer-names`   |
 | K4    | Asistente: Levenshtein, `Fix` y plantillas por `Category + Code` (T5.4)                                                                                                             | `internal/asistente`         | `feature/assistant`        |
 | K5    | Servicio `Compilar`/`Ejecutar` que une todo; `cmd/pks` lo usa y el futuro `app.go` será solo un puente                                                                              | `internal/servicio`          | `feature/compile-service`  |
 | K6    | Advertencias 20 a 23 (prescindibles)                                                                                                                                                | `analizador/advertencias.go` | al final                   |
@@ -126,12 +128,12 @@ Todo lo que necesita ya existe. Para cada tarea J:
 
 #### Puntos de encuentro
 
-| Cuándo         | Qué se integra                                            |
-| -------------- | --------------------------------------------------------- |
-| ✅ Día 1       | Contrato de `analizador.Tabla`                            |
-| ✅ K2 listo    | Jordy empieza J1 a J5 con la tabla real                   |
-| K1 y J6 listos | `cmd/pks ejemplos/combate` corre con importaciones reales |
-| Al final       | Los 15 casos de la sección 11 pasan → etiqueta `v0.2`     |
+| Cuándo            | Qué se integra                                            |
+| ----------------- | --------------------------------------------------------- |
+| ✅ Día 1          | Contrato de `analizador.Tabla`                            |
+| ✅ K2 listo       | Jordy empieza J1 a J5 con la tabla real                   |
+| ✅ K1 y J6 listos | `cmd/pks ejemplos/combate` corre con importaciones reales |
+| ✅ K3 listo       | Los 15 casos de la sección 11 pasan → etiqueta `v0.2`     |
 
 ### ⚠️ Pendientes de orden
 
@@ -140,7 +142,8 @@ Todo lo que necesita ya existe. Para cada tarea J:
 
 ### ⬜ Pendiente del plan
 
-- **Backend:** K3 a K6.
+- **Backend:** K4 (asistente), K5 (servicio) y K6 (advertencias 20 a 23).
+- **Etiqueta `v0.2`:** integrar `dev` en `main` con un PR y etiquetar.
 - **Parte gráfica (en pausa):** T0.2, T1.5, T1.6, T2.7, T3.4, T3.5 y el resto de la interfaz.
 - **S0:** T0.7, T0.8.
 - **Decisiones abiertas:** ninguna.
@@ -745,3 +748,6 @@ Todo lo que la especificación no define y el equipo decide. Formato: fecha, dec
 | 2026-09-26 | Asignación definida: un aviso por dato; las claves de un literal `{ }` no cuentan como lecturas; lo que sigue a `entregar`, `huir` o `siguiente` no se revisa                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Una clave puede ser el nombre de un campo; el código inalcanzable no lee nada                                                 |
 | 2026-09-26 | Códigos de la pasada 2 de Jordy: `nombre-no-declarado`, `no-es-un-valor`, `tipo-incompatible`, `asignacion-incompatible`, `condicion-no-electrico`, `no-es-movimiento`, `cantidad-de-argumentos`, `argumento-incompatible`, `movimiento-sin-valor`, `entrega-incompatible`, `no-es-ficha`, `campo-inexistente`, `conversion-imposible`, `division-entre-cero`, `capturar-invalido`, `sumar-invalido`, `quitar-invalido`, `recorrer-invalido`, `valor-descartado`, `literal-sin-tipo`, `literal-incompatible`, `campo-ajeno`, `campo-repetido-en-literal`, `clave-de-ficha-invalida`, `ficha-incompleta`, `dato-sin-valor`, `falta-entregar`, `entregar-con-valor`, `entregar-sin-valor`, `entregar-fuera-de-movimiento`, `segun-incompleto`, `segun-sin-otro`, `segun-tipo-invalido`, `rama-inalcanzable`, `patron-incompatible`, `patron-no-constante`, `posible-sin-comprobar` | Claves estables para las plantillas del asistente (K4)                                                                        |
 | 2026-09-26 | J6: `interprete.EjecutarProyecto` recibe los archivos en el orden de `internal/proyecto`; cada archivo tiene su alcance con sus medallas y las que importa, y un error de ejecución señala el archivo del movimiento donde ocurrió. `cmd/pks` ya lo usa                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Corrección C1: no existe un alcance global único                                                                              |
+| 2026-09-26 | Un dato local no puede repetir el nombre de otro dato visible (de un bloque de afuera, un parámetro o una variable de recorrido) ni el de algo declarado fuera de los bloques; los bloques hermanos sí pueden repetir nombres                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Aplica la validación 8 sin excepciones; sin ocultamiento, cada uso de un nombre se refiere a una sola cosa                    |
+| 2026-09-26 | Modificar una colección durante su recorrido incluye `sumar`, `quitar`, asignar a un elemento y asignar la colección entera, también desde un recorrido de adentro                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Validación 13: cualquier cambio deja indefinido qué elementos quedan por visitar                                              |
+| 2026-09-26 | `huir` y `siguiente` dentro de un movimiento cuentan solo los ciclos del propio movimiento, aunque se lo llame desde un ciclo                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | El análisis es por texto: un movimiento no sabe desde dónde lo llaman                                                         |

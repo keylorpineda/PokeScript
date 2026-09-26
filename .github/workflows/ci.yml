@@ -25,13 +25,13 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Validar commits del PR
         if: github.event_name == 'pull_request'
-        run: pnpm exec commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
+        run: sh scripts/validar-commits.sh ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
       - name: Validar commits del push
         if: github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000'
-        run: pnpm exec commitlint --from ${{ github.event.before }} --to ${{ github.sha }} --verbose
+        run: sh scripts/validar-commits.sh ${{ github.event.before }} ${{ github.sha }}
       - name: Validar último commit (primer push de la rama)
         if: github.event_name == 'push' && github.event.before == '0000000000000000000000000000000000000000'
-        run: pnpm exec commitlint --last --verbose
+        run: git log -1 --no-merges --format=%B | pnpm exec commitlint --verbose
 
   standards:
     name: Formato, markdown y ortografía

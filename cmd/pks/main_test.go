@@ -129,3 +129,17 @@ func TestErroresDelAnalizador(t *testing.T) {
 		}
 	}
 }
+
+func TestLasAdvertenciasNoImpidenEjecutar(t *testing.T) {
+	ruta := filepath.Join(t.TempDir(), "aviso.pks")
+	if err := os.WriteFile(ruta, []byte("combate\n    roca sobra = 1\n    gritar \"hola\"\nfin\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	codigo, salida, errores := ejecutarPrueba(t, ruta, "")
+	if codigo != salidaOK || salida != "hola\n" {
+		t.Errorf("código %d, salida %q", codigo, salida)
+	}
+	if !strings.Contains(errores, "¿Seguro que quieres hacer eso?") || !strings.Contains(errores, "«sobra»") {
+		t.Errorf("la advertencia debe mostrarse:\n%s", errores)
+	}
+}

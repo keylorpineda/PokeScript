@@ -38,9 +38,35 @@ func recolectar(t *testing.T, archivos map[string]string) Resultado {
 //
 //	r := analizar(t, map[string]string{"principal.pks": "combate\n    …\nfin\n"})
 //	if got := codigos(r.Diagnosticos); …
+//
+// Deja afuera las advertencias de estilo 20 a 23 (advertencias.go): los
+// fragmentos de prueba declaran datos solo para revisar otra regla, y avisar
+// que no se usan sería ruido. Esas advertencias se prueban con
+// analizarConAdvertencias.
 func analizar(t *testing.T, archivos map[string]string) Resultado {
 	t.Helper()
+	r := analizarConAdvertencias(t, archivos)
+	var ds []diag.Diagnostic
+	for _, d := range r.Diagnosticos {
+		if !advertenciasDeEstilo[d.Code] {
+			ds = append(ds, d)
+		}
+	}
+	r.Diagnosticos = ds
+	return r
+}
+
+// analizarConAdvertencias corre las dos pasadas y devuelve todo.
+func analizarConAdvertencias(t *testing.T, archivos map[string]string) Resultado {
+	t.Helper()
 	return Analizar(cargarProyecto(t, archivos))
+}
+
+var advertenciasDeEstilo = map[string]bool{
+	"dato-sin-usar":         true,
+	"ciclo-sin-cambio":      true,
+	"sangria-inconsistente": true,
+	"convencion-de-nombres": true,
 }
 
 // programa arma un proyecto de un solo archivo con el cuerpo dentro de combate.

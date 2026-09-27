@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" width="900" height="220" role="img" aria-label="Dragonite: Cada hito es una medalla: primero los ocho gimnasios de Kanto y después el Alto Mando. Falta la Medalla Roca, que llega con los colores del editor.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" width="900" height="220" role="img" aria-label="Dragonite: Cada hito es una medalla: primero los ocho gimnasios de Kanto y después el Alto Mando. ¡Las doce están ganadas, incluido el IDE con sus colores!">
   <defs>
     <linearGradient id="cielo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffdca0"/><stop offset="1" stop-color="#d89030"/></linearGradient>
     <radialGradient id="brillo" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/><stop offset="0.5" stop-color="#d89030" stop-opacity="0.45"/><stop offset="1" stop-color="#d89030" stop-opacity="0"/></radialGradient>
@@ -9,7 +9,7 @@
     @keyframes entra { from { opacity: 0; transform: translateX(-70px); } to { opacity: 1; transform: none; } }
     .sombra { transform-box: fill-box; transform-origin: center; animation: sombra 2.6s ease-in-out 0.7s infinite; }
     @keyframes sombra { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.88); } }
-    .flecha { opacity: 0; animation: flecha 0.9s steps(1) 5.15s infinite; }
+    .flecha { opacity: 0; animation: flecha 0.9s steps(1) 5.06s infinite; }
     @keyframes flecha { 0% { opacity: 1; } 50% { opacity: 0; } }
     .respira { animation: respira 2.6s ease-in-out 0.7s infinite; }
     @keyframes respira { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
@@ -48,8 +48,8 @@
     .pluma { opacity: 0; animation: pluma 3.2s ease-in-out infinite; }
     @keyframes pluma { 0% { opacity: 0; transform: translate(0, 0) rotate(0); } 15% { opacity: 1; } 50% { transform: translate(14px, 80px) rotate(30deg); } 100% { opacity: 0; transform: translate(-6px, 170px) rotate(-20deg); } }
     @keyframes l0 { to { transform: translateX(554px); } }
-    @keyframes l1 { to { transform: translateX(574px); } }
-    @keyframes l2 { to { transform: translateX(334px); } }
+    @keyframes l1 { to { transform: translateX(554px); } }
+    @keyframes l2 { to { transform: translateX(324px); } }
   </style>
   <rect width="900" height="220" rx="16" fill="url(#cielo)"/>
   <g opacity="0.5">
@@ -75,10 +75,10 @@
   <g clip-path="url(#dialogo)">
     <text x="262" y="82" font-family="Consolas, 'Courier New', monospace" font-size="17" font-weight="400" fill="#2d2d3a" textLength="550" lengthAdjust="spacingAndGlyphs">Cada hito es una medalla: primero los ocho gimnasios de</text>
     <rect x="260" y="65" width="556" height="25" fill="#ffffff" style="animation: l0 1.65s steps(55, end) 0.80s both"/>
-    <text x="262" y="112" font-family="Consolas, 'Courier New', monospace" font-size="17" font-weight="400" fill="#2d2d3a" textLength="570" lengthAdjust="spacingAndGlyphs">Kanto y después el Alto Mando. Falta la Medalla Roca, que</text>
-    <rect x="260" y="95" width="576" height="25" fill="#ffffff" style="animation: l1 1.71s steps(57, end) 2.45s both"/>
-    <text x="262" y="142" font-family="Consolas, 'Courier New', monospace" font-size="17" font-weight="400" fill="#2d2d3a" textLength="330" lengthAdjust="spacingAndGlyphs">llega con los colores del editor.</text>
-    <rect x="260" y="125" width="336" height="25" fill="#ffffff" style="animation: l2 0.99s steps(33, end) 4.16s both"/>
+    <text x="262" y="112" font-family="Consolas, 'Courier New', monospace" font-size="17" font-weight="400" fill="#2d2d3a" textLength="550" lengthAdjust="spacingAndGlyphs">Kanto y después el Alto Mando. ¡Las doce están ganadas,</text>
+    <rect x="260" y="95" width="556" height="25" fill="#ffffff" style="animation: l1 1.65s steps(55, end) 2.45s both"/>
+    <text x="262" y="142" font-family="Consolas, 'Courier New', monospace" font-size="17" font-weight="400" fill="#2d2d3a" textLength="320" lengthAdjust="spacingAndGlyphs">incluido el IDE con sus colores!</text>
+    <rect x="260" y="125" width="326" height="25" fill="#ffffff" style="animation: l2 0.96s steps(32, end) 4.10s both"/>
   </g>
   <path class="flecha" d="M842 172 h18 l-9 10 z" fill="#e8603a"/>
 </svg>

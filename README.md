@@ -20,7 +20,7 @@
 
 <img src="docs/assets/guias/charizard.svg" alt="Charizard: ¡Hola, entrenador! PokeScript es un lenguaje en español para aprender a programar. Los datos tienen tipo, las funciones son movimientos y los errores se explican en tu idioma." width="100%">
 
-Trae su propio editor de escritorio. Mientras lo terminamos, los programas ya corren desde la terminal.
+Trae su propio IDE de escritorio, hecho en Go con Wails, y los programas también corren desde la terminal.
 
 <sub>Proyecto del curso Paradigmas de Programación · Universidad Nacional · II ciclo 2026</sub>
 
@@ -41,7 +41,7 @@ Trae su propio editor de escritorio. Mientras lo terminamos, los programas ya co
 
 ## El editor
 
-<img src="docs/assets/guias/rotom.svg" alt="Rotom: Así va a verse el IDE: el código, el asistente al lado y la salida abajo. Si escribes curra en vez de curar, el asistente te ofrece el arreglo." width="100%">
+<img src="docs/assets/guias/rotom.svg" alt="Rotom: Este es el IDE: el código, el asistente al lado y la salida abajo. Si escribes curra en vez de curar, el asistente te ofrece el arreglo." width="100%">
 
 <img src="docs/assets/editor.svg" alt="Editor de PokeScript con un programa, el asistente y la salida" width="100%">
 
@@ -521,26 +521,39 @@ El compilador y el intérprete están escritos en Go. El editor usa Svelte y Cod
 
 ## Medallas
 
-<img src="docs/assets/guias/dragonite.svg" alt="Dragonite: Cada hito es una medalla: primero los ocho gimnasios de Kanto y después el Alto Mando. Falta la Medalla Roca, que llega con los colores del editor." width="100%">
+<img src="docs/assets/guias/dragonite.svg" alt="Dragonite: Cada hito es una medalla: primero los ocho gimnasios de Kanto y después el Alto Mando. ¡Las doce están ganadas, incluido el IDE con sus colores!" width="100%">
 
-<img src="docs/assets/medallas.svg" alt="Estuche de medallas: los ocho gimnasios de Kanto y el Alto Mando, 11 de 12" width="100%">
+<img src="docs/assets/medallas.svg" alt="Estuche de medallas: los ocho gimnasios de Kanto y el Alto Mando, 12 de 12" width="100%">
 
 <img src="docs/assets/divisor.svg" alt="" width="100%">
 
 ## Probarlo
 
-<img src="docs/assets/guias/snorlax.svg" alt="Snorlax: Para despertarme hace falta Go 1.23 o más nuevo. Si vas a trabajar en el proyecto, también Node.js 22 y pnpm 10. Con npm no me muevo." width="100%">
+<img src="docs/assets/guias/snorlax.svg" alt="Snorlax: Para despertarme hace falta Go 1.25 o más nuevo. Para el IDE, también Node.js 22, pnpm 10 y la herramienta de Wails. Con npm no me muevo." width="100%">
 
-Descargas: [Go](https://go.dev/dl/) · [Node.js](https://nodejs.org) · [pnpm](https://pnpm.io/installation)
+Descargas: [Go 1.25+](https://go.dev/dl/) · [Node.js 22+](https://nodejs.org) · [pnpm 10+](https://pnpm.io/installation) · [Wails](https://wails.io/docs/gettingstarted/installation)
 
 ```bash
 git clone https://github.com/keylorpineda/PokeScript.git
 cd PokeScript
 pnpm install
 git config commit.template .gitmessage
+go install github.com/wailsapp/wails/v2/cmd/wails@latest
 ```
 
-Para correr un programa:
+Para abrir el IDE mientras se trabaja en él (se recarga solo con cada cambio):
+
+```bash
+wails dev
+```
+
+Para armar el ejecutable, que queda en `build/bin/PokeScript.exe`:
+
+```bash
+wails build
+```
+
+Para correr un programa desde la terminal, sin el IDE:
 
 ```bash
 go run ./cmd/pks ejemplos/hola.pks
@@ -554,10 +567,12 @@ go run ./cmd/pks ejemplos/combate
 
 ```text
 PokeScript/
-├── internal/   compilador, intérprete y asistente
-├── cmd/pks/    el comando para la terminal
-├── ejemplos/   los programas de este README
-└── docs/       especificación, plan del equipo y animaciones
+├── main.go, app.go   la app de escritorio (Wails)
+├── frontend/         la interfaz del IDE (Svelte + CodeMirror)
+├── internal/         compilador, intérprete, asistente y explorador
+├── cmd/pks/          el comando para la terminal
+├── ejemplos/         los programas de este README
+└── docs/             especificación, plan del equipo y animaciones
 ```
 
 <img src="docs/assets/divisor.svg" alt="" width="100%">

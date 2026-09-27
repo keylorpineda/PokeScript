@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" width="900" height="220" role="img" aria-label="Rotom: Así va a verse el IDE: el código, el asistente al lado y la salida abajo. Si escribes curra en vez de curar, el asistente te ofrece el arreglo.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" width="900" height="220" role="img" aria-label="Rotom: Este es el IDE: el código, el asistente al lado y la salida abajo. Si escribes curra en vez de curar, el asistente te ofrece el arreglo.">
   <defs>
     <linearGradient id="cielo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff2a8"/><stop offset="1" stop-color="#e0a820"/></linearGradient>
     <radialGradient id="brillo" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/><stop offset="0.5" stop-color="#e0a820" stop-opacity="0.45"/><stop offset="1" stop-color="#e0a820" stop-opacity="0"/></radialGradient>
@@ -9,7 +9,7 @@
     @keyframes entra { from { opacity: 0; transform: translateX(-70px); } to { opacity: 1; transform: none; } }
     .sombra { transform-box: fill-box; transform-origin: center; animation: sombra 2.6s ease-in-out 0.7s infinite; }
     @keyframes sombra { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.88); } }
-    .flecha { opacity: 0; animation: flecha 0.9s steps(1) 5.03s infinite; }
+    .flecha { opacity: 0; animation: flecha 0.9s steps(1) 4.82s infinite; }
     @keyframes flecha { 0% { opacity: 1; } 50% { opacity: 0; } }
     .respira { animation: respira 2.6s ease-in-out 0.7s infinite; }
     @keyframes respira { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
@@ -47,8 +47,8 @@
     @keyframes piedra { 0% { opacity: 0; transform: translateY(0) rotate(0); } 10% { opacity: 1; } 80% { opacity: 1; transform: translateY(170px) rotate(90deg); } 100% { opacity: 0; transform: translateY(170px) rotate(90deg); } }
     .pluma { opacity: 0; animation: pluma 3.2s ease-in-out infinite; }
     @keyframes pluma { 0% { opacity: 0; transform: translate(0, 0) rotate(0); } 15% { opacity: 1; } 50% { transform: translate(14px, 80px) rotate(30deg); } 100% { opacity: 0; transform: translate(-6px, 170px) rotate(-20deg); } }
-    @keyframes l0 { to { transform: translateX(564px); } }
-    @keyframes l1 { to { transform: translateX(544px); } }
+    @keyframes l0 { to { transform: translateX(524px); } }
+    @keyframes l1 { to { transform: translateX(514px); } }
     @keyframes l2 { to { transform: translateX(314px); } }
   </style>
   <rect width="900" height="220" rx="16" fill="url(#cielo)"/>
@@ -73,12 +73,12 @@
   <rect x="256" y="18" width="95" height="32" rx="8" fill="#2d2d3a"/>
   <text x="273" y="40" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="16" font-weight="900" letter-spacing="1" fill="#ffffff">ROTOM</text>
   <g clip-path="url(#dialogo)">
-    <text x="262" y="82" font-family="Consolas, 'Courier New', monospace" font-size="17" font-weight="400" fill="#2d2d3a" textLength="560" lengthAdjust="spacingAndGlyphs">Así va a verse el IDE: el código, el asistente al lado y</text>
-    <rect x="260" y="65" width="566" height="25" fill="#ffffff" style="animation: l0 1.68s steps(56, end) 0.80s both"/>
-    <text x="262" y="112" font-family="Consolas, 'Courier New', monospace" font-size="17" font-weight="400" fill="#2d2d3a" textLength="540" lengthAdjust="spacingAndGlyphs">la salida abajo. Si escribes <tspan fill="#2458c8" font-weight="700">curra</tspan> en vez de <tspan fill="#2458c8" font-weight="700">curar</tspan>, el</text>
-    <rect x="260" y="95" width="546" height="25" fill="#ffffff" style="animation: l1 1.62s steps(54, end) 2.48s both"/>
+    <text x="262" y="82" font-family="Consolas, 'Courier New', monospace" font-size="17" font-weight="400" fill="#2d2d3a" textLength="520" lengthAdjust="spacingAndGlyphs">Este es el IDE: el código, el asistente al lado y la</text>
+    <rect x="260" y="65" width="526" height="25" fill="#ffffff" style="animation: l0 1.56s steps(52, end) 0.80s both"/>
+    <text x="262" y="112" font-family="Consolas, 'Courier New', monospace" font-size="17" font-weight="400" fill="#2d2d3a" textLength="510" lengthAdjust="spacingAndGlyphs">salida abajo. Si escribes <tspan fill="#2458c8" font-weight="700">curra</tspan> en vez de <tspan fill="#2458c8" font-weight="700">curar</tspan>, el</text>
+    <rect x="260" y="95" width="516" height="25" fill="#ffffff" style="animation: l1 1.53s steps(51, end) 2.36s both"/>
     <text x="262" y="142" font-family="Consolas, 'Courier New', monospace" font-size="17" font-weight="400" fill="#2d2d3a" textLength="310" lengthAdjust="spacingAndGlyphs">asistente te ofrece el arreglo.</text>
-    <rect x="260" y="125" width="316" height="25" fill="#ffffff" style="animation: l2 0.93s steps(31, end) 4.10s both"/>
+    <rect x="260" y="125" width="316" height="25" fill="#ffffff" style="animation: l2 0.93s steps(31, end) 3.89s both"/>
   </g>
   <path class="flecha" d="M842 172 h18 l-9 10 z" fill="#e8603a"/>
 </svg>

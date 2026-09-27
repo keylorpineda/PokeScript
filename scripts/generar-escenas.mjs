@@ -488,7 +488,7 @@ ${fase2.svg}      </g>
   };
 
   const hitos = [
-    ['Roca', 'Lexer', roca, false],
+    ['Roca', 'Lexer', roca, true],
     ['Cascada', 'Expresiones', cascada, true],
     ['Trueno', 'Bloques', trueno, true],
     ['Arcoíris', 'Primer programa', arcoiris, true],
@@ -527,7 +527,7 @@ ${fase2.svg}      </g>
 ${ganada ? `    <path class="destello" style="animation-delay:${(1.8 + i * 0.37).toFixed(2)}s" d="M${x + 26} ${y - 36} l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 z" fill="#ffffff"/>\n` : ''}`;
   });
 
-  const s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Estuche de medallas: ${ganadas} de 12. Las ocho medallas de Kanto y el Alto Mando, una por hito; falta la Medalla Roca, el editor del hito 1">
+  const s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Estuche de medallas: ${ganadas} de 12. Las ocho medallas de Kanto y el Alto Mando, una por hito">
   <style>
     .pop { opacity: 0; transform-box: fill-box; transform-origin: center; animation: pop 0.45s cubic-bezier(.34,1.56,.64,1) both; }
     @keyframes pop { from { opacity: 0; transform: scale(0.3); } to { opacity: 1; transform: scale(1); } }
@@ -620,7 +620,7 @@ const GUIAS = [
     'Rotom',
     ['#fff2a8', '#e0a820'],
     ['chispas', 'flota'],
-    'Así va a verse el IDE: el código, el asistente al lado y la salida abajo. Si escribes `curra` en vez de `curar`, el asistente te ofrece el arreglo.',
+    'Este es el IDE: el código, el asistente al lado y la salida abajo. Si escribes `curra` en vez de `curar`, el asistente te ofrece el arreglo.',
   ],
   [
     'pikachu',
@@ -772,7 +772,7 @@ const GUIAS = [
     'Dragonite',
     ['#ffdca0', '#d89030'],
     ['flota', 'estrellas'],
-    'Cada hito es una medalla: primero los ocho gimnasios de Kanto y después el Alto Mando. Falta la Medalla Roca, que llega con los colores del editor.',
+    'Cada hito es una medalla: primero los ocho gimnasios de Kanto y después el Alto Mando. ¡Las doce están ganadas, incluido el IDE con sus colores!',
   ],
   [
     'snorlax',
@@ -780,7 +780,7 @@ const GUIAS = [
     'Snorlax',
     ['#c8dce4', '#58788a'],
     ['zzz'],
-    'Para despertarme hace falta Go 1.23 o más nuevo. Si vas a trabajar en el proyecto, también Node.js 22 y pnpm 10. Con npm no me muevo.',
+    'Para despertarme hace falta Go 1.25 o más nuevo. Para el IDE, también Node.js 22, pnpm 10 y la herramienta de Wails. Con npm no me muevo.',
   ],
   [
     'pidgeot',

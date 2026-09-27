@@ -12,6 +12,8 @@
     borrarArchivo,
     marcarPrincipal,
     duplicarArchivo,
+    abrirCarpeta,
+    decir,
   } from '../lib/acciones.js';
   import { PLANTILLAS, tipoDeArchivo } from '../lib/plantillas.js';
 
@@ -105,6 +107,7 @@
   <div class="bolsillo">
     <img class="pixel" src={objeto('exp-share')} alt="" />
     <span>MOCHILA</span>
+    <button class="mas" onclick={abrirCarpeta} title="Abrir otra carpeta">ABRIR</button>
     <button class="mas" class:abierto={eligiendo} onclick={empezarNuevo} title="Nuevo archivo"
       >NUEVO</button
     >
@@ -149,7 +152,7 @@
   {/if}
 
   <div class="arbol">
-    <button class="carpeta" onclick={() => (abierta = !abierta)}>
+    <button class="carpeta" onclick={() => (abierta = !abierta)} title={ide.proyecto?.ruta}>
       <span class="flechita" class:abierta></span>
       <svg
         class="icono-carpeta"
@@ -223,6 +226,29 @@
           </li>
         {/each}
       </ul>
+
+      {#if ide.proyecto?.otros?.length}
+        <p class="otros-titulo" title="PokeScript solo abre archivos .pks">
+          OTROS ARCHIVOS · {ide.proyecto.otros.length}
+        </p>
+        <ul class="otros">
+          {#each ide.proyecto.otros as otro (otro)}
+            <li>
+              <button
+                class="fila"
+                onclick={() =>
+                  decir(
+                    `«${otro}» no es un archivo de PokeScript, así que no se abre aquí. Puedes abrirlo con otro programa.`,
+                    'normal',
+                  )}
+              >
+                <span class="hoja" aria-hidden="true"></span>
+                <span class="nombre">{otro}</span>
+              </button>
+            </li>
+          {/each}
+        </ul>
+      {/if}
     {/if}
   </div>
 
@@ -678,5 +704,30 @@
   .pista code {
     font-family: var(--codigo);
     color: var(--palabra);
+  }
+  .bolsillo .mas + .mas {
+    margin-left: 4px;
+  }
+  .otros-titulo {
+    margin: 12px 4px 4px 12px;
+    font-family: var(--titulo);
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--texto-suave);
+  }
+  .otros .fila {
+    font-size: 15px;
+    color: var(--texto-suave);
+    opacity: 0.75;
+  }
+  .hoja {
+    position: relative;
+    width: 16px;
+    height: 20px;
+    flex: none;
+    margin: 0 4px;
+    background: var(--panel-2);
+    border: 2px solid var(--texto-suave);
+    clip-path: polygon(0 0, 65% 0, 100% 30%, 100% 100%, 0 100%);
   }
 </style>

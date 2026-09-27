@@ -65,6 +65,7 @@ export const ide = $state({
   asistente: { animo: 'feliz', texto: '', invitado: null, vez: 0 },
   transicion: 0, // sube cada vez que empieza un combate
   pokedex: false, // la Pokédex de consulta está abierta
+  guardado: 0, // cuándo se guardó por última vez
   ir: null, // { archivo, linea, col, len }: el editor salta ahí
   arreglo: null, // { archivo, line, col, len, replacement }: el editor lo aplica
   // Oak aparece encima de todo cuando hay algo importante que decir.

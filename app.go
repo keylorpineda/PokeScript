@@ -95,6 +95,12 @@ func (a *App) CrearProyecto(padre, nombre string) (ProyectoAbierto, error) {
 // LeerProyecto devuelve el nombre, el principal y los archivos.
 func (a *App) LeerProyecto(ruta string) (proyecto.Info, error) { return proyecto.Leer(ruta) }
 
+// OtrosArchivos lista lo que hay en la carpeta que no es .pks.
+func (a *App) OtrosArchivos(ruta string) ([]string, error) { return proyecto.Otros(ruta) }
+
+// PlantillaPrincipal es el contenido con que empieza un principal.pks nuevo.
+func (a *App) PlantillaPrincipal() string { return proyecto.PlantillaPrincipal }
+
 // LeerArchivo devuelve el contenido de un .pks.
 func (a *App) LeerArchivo(ruta, archivo string) (string, error) {
 	return proyecto.LeerArchivo(ruta, archivo)

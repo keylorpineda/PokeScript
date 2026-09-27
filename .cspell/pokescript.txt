@@ -260,6 +260,7 @@ sniglet
 snorlax
 spanish
 squirtle
+subcarpeta
 subcarpetas
 subcódigo
 superball

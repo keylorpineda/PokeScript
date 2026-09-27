@@ -49,22 +49,97 @@ export async function abrirProyecto(ruta) {
     salida: [],
     esperandoEntrada: null,
   });
-  for (const archivo of info.archivos) {
+  // Una carpeta sin ningún .pks: se le deja un principal.pks para empezar.
+  if (!info.archivos.length) {
+    await api.nuevoArchivo(ruta, info.principal);
+    await api.guardarArchivo(ruta, info.principal, await api.plantillaPrincipal());
+    ide.proyecto = { ruta, ...(await api.leerProyecto(ruta)) };
+    oak(
+      'Esta carpeta no tenía archivos de PokeScript.',
+      `Te dejé un ${info.principal} con un combate de saludo para empezar. ¡Adelante!`,
+    );
+  }
+  try {
+    ide.proyecto.otros = await api.otrosArchivos(ruta);
+  } catch {
+    ide.proyecto.otros = [];
+  }
+  for (const archivo of ide.proyecto.archivos) {
     ide.contenidos[archivo] = await api.leerArchivo(ruta, archivo);
   }
-  ide.archivoActivo = info.principal;
-  recordar(ruta, info.nombre);
-  decir(
-    `¡Hola, ${perfil.nombre}! Estoy listo. Escribe tu programa y presiona ANALIZAR cuando quieras que lo revise.`,
-    'feliz',
-  );
+  const { archivos, principal } = ide.proyecto;
+  ide.archivoActivo = archivos.includes(principal) ? principal : archivos[0];
+  recordar(ruta, ide.proyecto.nombre);
+  if (!archivos.includes(principal)) {
+    decir(
+      `No encuentro ${principal}, el archivo principal. Haz clic derecho en el archivo que tiene el combate y elige «Hacer principal».`,
+      'triste',
+      'psyduck',
+    );
+  } else {
+    decir(
+      `¡Hola, ${perfil.nombre}! Estoy listo. Mientras escribes voy guardando y revisando tu código.`,
+      'feliz',
+    );
+  }
+  revisar();
 }
 
+// guardarTodo escribe los archivos con cambios. Si mientras se guardaba el
+// archivo siguió cambiando, queda marcado para el próximo guardado.
 export async function guardarTodo() {
+  const ruta = RUTA_ACTUAL();
   for (const archivo of Object.keys(ide.sucios)) {
-    await api.guardarArchivo(RUTA_ACTUAL(), archivo, ide.contenidos[archivo]);
+    const texto = ide.contenidos[archivo];
+    await api.guardarArchivo(ruta, archivo, texto);
+    if (ide.contenidos[archivo] === texto) delete ide.sucios[archivo];
   }
-  ide.sucios = {};
+  ide.guardado = Date.now();
+}
+
+// Guardado automático: un momento después de dejar de escribir se guarda y
+// el compilador revisa todo el proyecto, sin animaciones ni sonidos.
+let temporizador = null;
+export function programarGuardado() {
+  clearTimeout(temporizador);
+  temporizador = setTimeout(async () => {
+    await guardarTodo();
+    await revisar();
+  }, 900);
+}
+
+// guardarAhora es Ctrl+S.
+export async function guardarAhora() {
+  clearTimeout(temporizador);
+  await guardarTodo();
+  sonar('elegir');
+  await revisar();
+}
+
+// revisar compila en silencio para marcar los errores mientras se escribe.
+export async function revisar() {
+  if (ide.compilando || !ide.proyecto) return;
+  try {
+    const r = await api.compilar(RUTA_ACTUAL());
+    ide.resultado = r;
+    ide.diagnosticos = r.diagnosticos ?? [];
+  } catch {
+    // Si el proyecto no se puede armar (por ejemplo, falta el principal), se
+    // verá al presionar ANALIZAR.
+  }
+}
+
+// abrirCarpeta abre cualquier carpeta del disco como proyecto.
+export async function abrirCarpeta() {
+  const ruta = await buscarProyecto();
+  if (!ruta) {
+    if (!api.enWails())
+      decir('Abrir carpetas del disco funciona en la app de escritorio.', 'normal');
+    return;
+  }
+  await guardarTodo();
+  navegacion.ruta = ruta;
+  navegacion.pantalla = 'carga';
 }
 
 function reaccionar(r) {

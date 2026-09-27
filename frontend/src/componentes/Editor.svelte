@@ -18,7 +18,7 @@
   import { lintGutter, setDiagnostics } from '@codemirror/lint';
   import { pokescript, desplazamiento, completar } from '../lib/pokescript.js';
   import { ide } from '../lib/estado.svelte.js';
-  import { compilar, ejecutar } from '../lib/acciones.js';
+  import { compilar, ejecutar, programarGuardado, guardarAhora } from '../lib/acciones.js';
   import { sonar } from '../lib/sonido.js';
 
   let contenedor;
@@ -45,6 +45,7 @@
         keymap.of([
           { key: 'F5', run: () => (ejecutar(), true) },
           { key: 'Mod-Enter', run: () => (compilar(), true) },
+          { key: 'Mod-s', preventDefault: true, run: () => (guardarAhora(), true) },
           ...completionKeymap,
           ...defaultKeymap,
           ...historyKeymap,
@@ -55,6 +56,7 @@
           if (u.docChanged) {
             ide.contenidos[archivo] = u.state.doc.toString();
             ide.sucios[archivo] = true;
+            programarGuardado();
           }
           if (u.selectionSet || u.docChanged) {
             const pos = u.state.selection.main.head;

@@ -94,6 +94,12 @@ const simulado = {
   async ObtenerTablaEfectividades() {
     return CONSULTA.efectividades;
   },
+  async OtrosArchivos(ruta) {
+    return ruta === 'centro_pokemon' ? ['notas.txt', 'portada.png'] : [];
+  },
+  async PlantillaPrincipal() {
+    return '// principal.pks · aquí empieza tu programa\ncombate\n    gritar "¡Hola, mundo Pokémon!"\nfin\n';
+  },
   async ElegirCarpeta() {
     return null; // Sin Wails no hay diálogo de carpetas.
   },
@@ -288,6 +294,8 @@ export const api = {
   // Abre el diálogo de carpetas del sistema; null si se cancela o sin Wails.
   elegirCarpeta: () => llamar('ElegirCarpeta'),
   leerProyecto: (ruta) => llamar('LeerProyecto', ruta),
+  otrosArchivos: (ruta) => llamar('OtrosArchivos', ruta),
+  plantillaPrincipal: () => llamar('PlantillaPrincipal'),
   palabrasReservadas: () => llamar('ObtenerPalabrasReservadas'),
   tablaEfectividades: () => llamar('ObtenerTablaEfectividades'),
   leerArchivo: (ruta, archivo) => llamar('LeerArchivo', ruta, archivo),

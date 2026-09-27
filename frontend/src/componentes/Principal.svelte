@@ -14,7 +14,7 @@
   import { ide, perfil, navegacion } from '../lib/estado.svelte.js';
   import { temaActual } from '../lib/temas.js';
   import { objeto, sprite } from '../lib/pokemon.js';
-  import { abrirProyecto, escucharEjecucion } from '../lib/acciones.js';
+  import { abrirProyecto, escucharEjecucion, guardarAhora } from '../lib/acciones.js';
   import { sonar, volumenGeneral } from '../lib/sonido.js';
 
   let { ruta } = $props();
@@ -89,7 +89,14 @@
           <span class="miga">{ide.proyecto?.nombre ?? ''}</span>
           <span class="sep"></span>
           <b>{ide.archivoActivo ?? ''}</b>
-          <span class="der"></span>
+          <button
+            class="estado-guardado der"
+            class:pendiente={Object.keys(ide.sucios).length}
+            onclick={guardarAhora}
+            title="Guardar ahora (Ctrl+S)"
+          >
+            {Object.keys(ide.sucios).length ? 'SIN GUARDAR' : 'GUARDADO'}
+          </button>
           <span class="lenguaje">POKESCRIPT</span>
         </div>
         <div class="codigo">
@@ -285,5 +292,18 @@
       left: 0;
       transform: scaleX(1);
     }
+  }
+  .estado-guardado {
+    padding: 0 6px;
+    font-family: var(--titulo);
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--exito);
+    background: none;
+    border: 2px solid currentColor;
+    cursor: pointer;
+  }
+  .estado-guardado.pendiente {
+    color: var(--aviso);
   }
 </style>

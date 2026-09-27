@@ -1,0 +1,307 @@
+{
+  "palabras": [
+    {
+      "palabra": "especie",
+      "grupo": "Declaración de tipos",
+      "descripcion": "Declara una lista cerrada de valores posibles, como los estados de un Pokémon.",
+      "ejemplo": "especie Estado\n    SANO, DORMIDO\nfin"
+    },
+    {
+      "palabra": "ficha",
+      "grupo": "Declaración de tipos",
+      "descripcion": "Declara un registro: un tipo que agrupa varios datos con nombre.",
+      "ejemplo": "ficha Pokemon\n    planta nombre\n    roca   vida\nfin"
+    },
+    {
+      "palabra": "medalla",
+      "grupo": "Declaración de tipos",
+      "descripcion": "Declara un valor constante: una vez dado, no cambia nunca.",
+      "ejemplo": "medalla roca VIDA_MAXIMA = 100"
+    },
+    {
+      "palabra": "roca",
+      "grupo": "Tipos",
+      "descripcion": "Números enteros, sin decimales.",
+      "ejemplo": "roca vida = 100"
+    },
+    {
+      "palabra": "agua",
+      "grupo": "Tipos",
+      "descripcion": "Números con decimales.",
+      "ejemplo": "agua precision = 0.95"
+    },
+    {
+      "palabra": "fuego",
+      "grupo": "Tipos",
+      "descripcion": "Un solo carácter, entre comillas simples.",
+      "ejemplo": "fuego inicial = 'P'"
+    },
+    {
+      "palabra": "planta",
+      "grupo": "Tipos",
+      "descripcion": "Texto, entre comillas dobles.",
+      "ejemplo": "planta nombre = \"Pikachu\""
+    },
+    {
+      "palabra": "electrico",
+      "grupo": "Tipos",
+      "descripcion": "Verdadero o falso.",
+      "ejemplo": "electrico listo = verdadero"
+    },
+    {
+      "palabra": "equipo",
+      "grupo": "Tipos",
+      "descripcion": "Una lista de valores del mismo tipo; las posiciones empiezan en 1.",
+      "ejemplo": "equipo de roca niveles = [5, 12, 8]"
+    },
+    {
+      "palabra": "mochila",
+      "grupo": "Tipos",
+      "descripcion": "Un diccionario: guarda valores por clave, en el orden en que se agregaron.",
+      "ejemplo": "mochila de planta a roca bolsa = {\"Poción\": 3}"
+    },
+    {
+      "palabra": "posible",
+      "grupo": "Tipos",
+      "descripcion": "Marca un dato que puede no tener valor (fantasma). Hay que comprobarlo antes de usarlo.",
+      "ejemplo": "posible planta rival = fantasma"
+    },
+    {
+      "palabra": "de",
+      "grupo": "Conectores de tipo",
+      "descripcion": "Une una colección con el tipo de lo que guarda, y marca el inicio de un rango.",
+      "ejemplo": "equipo de planta nombres = []"
+    },
+    {
+      "palabra": "a",
+      "grupo": "Conectores de tipo",
+      "descripcion": "Separa la clave del valor en una mochila; también dice a qué tipo se convierte y a qué equipo se suma.",
+      "ejemplo": "mochila de planta a roca bolsa = {}"
+    },
+    {
+      "palabra": "verdadero",
+      "grupo": "Literales",
+      "descripcion": "El valor electrico que dice que algo se cumple.",
+      "ejemplo": "electrico listo = verdadero"
+    },
+    {
+      "palabra": "falso",
+      "grupo": "Literales",
+      "descripcion": "El valor electrico que dice que algo no se cumple.",
+      "ejemplo": "electrico brillante = falso"
+    },
+    {
+      "palabra": "fantasma",
+      "grupo": "Literales",
+      "descripcion": "La ausencia de valor. Solo se guarda en un dato posible.",
+      "ejemplo": "posible planta rival = fantasma"
+    },
+    {
+      "palabra": "combate",
+      "grupo": "Estructura",
+      "descripcion": "El bloque donde empieza el programa. Hay uno solo, en el archivo principal.",
+      "ejemplo": "combate\n    gritar \"¡Hola!\"\nfin"
+    },
+    {
+      "palabra": "movimiento",
+      "grupo": "Estructura",
+      "descripcion": "Declara una función: un bloque con nombre que recibe parámetros y puede entregar un valor.",
+      "ejemplo": "movimiento roca doble(roca x)\n    entregar x * 2\nfin"
+    },
+    {
+      "palabra": "entregar",
+      "grupo": "Estructura",
+      "descripcion": "Termina un movimiento y devuelve su valor.",
+      "ejemplo": "entregar x * 2"
+    },
+    {
+      "palabra": "fin",
+      "grupo": "Estructura",
+      "descripcion": "Cierra el bloque que se abrió más recientemente.",
+      "ejemplo": "si vida > 0\n    gritar \"sigue\"\nfin"
+    },
+    {
+      "palabra": "enseñar",
+      "grupo": "Estructura",
+      "descripcion": "Trae movimientos, especies, fichas o medallas de otro archivo del proyecto.",
+      "ejemplo": "enseñar calcular_dano desde \"operaciones.pks\""
+    },
+    {
+      "palabra": "desde",
+      "grupo": "Estructura",
+      "descripcion": "Indica de qué archivo se importa.",
+      "ejemplo": "enseñar Estado, Pokemon desde \"tipos.pks\""
+    },
+    {
+      "palabra": "si",
+      "grupo": "Control",
+      "descripcion": "Ejecuta un bloque solo si la condición es verdadera.",
+      "ejemplo": "si vida > 50\n    gritar \"en forma\"\nfin"
+    },
+    {
+      "palabra": "sino",
+      "grupo": "Control",
+      "descripcion": "La alternativa de un si. Dentro de una expresión, da un valor de respaldo para un posible.",
+      "ejemplo": "gritar rival sino \"nadie\""
+    },
+    {
+      "palabra": "sino si",
+      "grupo": "Control",
+      "descripcion": "Otra condición que se prueba si las anteriores fueron falsas.",
+      "ejemplo": "si vida > 50\n    gritar 1\nsino si vida > 0\n    gritar 2\nfin"
+    },
+    {
+      "palabra": "segun",
+      "grupo": "Control",
+      "descripcion": "Elige qué hacer según el valor de un dato, entre varios casos.",
+      "ejemplo": "segun estado\n    SANO entonces gritar \"bien\"\n    otro entonces gritar \"mal\"\nfin"
+    },
+    {
+      "palabra": "entonces",
+      "grupo": "Control",
+      "descripcion": "Separa los casos de un segun de lo que se hace en cada uno.",
+      "ejemplo": "SANO entonces gritar \"bien\""
+    },
+    {
+      "palabra": "otro",
+      "grupo": "Control",
+      "descripcion": "El caso de un segun que atrapa todos los valores no nombrados.",
+      "ejemplo": "otro entonces gritar \"otro caso\""
+    },
+    {
+      "palabra": "mientras",
+      "grupo": "Control",
+      "descripcion": "Repite un bloque mientras la condición sea verdadera.",
+      "ejemplo": "mientras vida > 0\n    vida = vida - 10\nfin"
+    },
+    {
+      "palabra": "recorrer",
+      "grupo": "Control",
+      "descripcion": "Repite un bloque por cada elemento de una colección o por cada número de un rango.",
+      "ejemplo": "recorrer n de 1 hasta 5\n    gritar n\nfin"
+    },
+    {
+      "palabra": "en",
+      "grupo": "Control",
+      "descripcion": "Indica qué colección recorre un recorrer.",
+      "ejemplo": "recorrer pokemon en equipo_ash\n    gritar pokemon\nfin"
+    },
+    {
+      "palabra": "hasta",
+      "grupo": "Control",
+      "descripcion": "Marca el final (incluido) de un rango.",
+      "ejemplo": "recorrer n de 1 hasta 10\n    gritar n\nfin"
+    },
+    {
+      "palabra": "huir",
+      "grupo": "Control",
+      "descripcion": "Sale del ciclo más cercano.",
+      "ejemplo": "si n igual 5\n    huir\nfin"
+    },
+    {
+      "palabra": "siguiente",
+      "grupo": "Control",
+      "descripcion": "Salta a la próxima vuelta del ciclo más cercano.",
+      "ejemplo": "si n igual 2\n    siguiente\nfin"
+    },
+    {
+      "palabra": "gritar",
+      "grupo": "E/S y datos",
+      "descripcion": "Muestra valores en la salida y salta de línea.",
+      "ejemplo": "gritar \"Vida: \", vida"
+    },
+    {
+      "palabra": "capturar",
+      "grupo": "E/S y datos",
+      "descripcion": "Pide un dato al usuario y lo guarda. Si no es del tipo correcto, vuelve a preguntar.",
+      "ejemplo": "capturar(nombre, \"¿Cómo se llama? \")"
+    },
+    {
+      "palabra": "convertir",
+      "grupo": "E/S y datos",
+      "descripcion": "Pasa un valor de un tipo a otro cuando la tabla de efectividades lo permite.",
+      "ejemplo": "roca n = convertir(texto) a roca"
+    },
+    {
+      "palabra": "tamaño",
+      "grupo": "E/S y datos",
+      "descripcion": "Cuántos elementos tiene un equipo o una mochila, o cuántas letras un texto.",
+      "ejemplo": "gritar tamaño(equipo_ash)"
+    },
+    {
+      "palabra": "aleatorio",
+      "grupo": "E/S y datos",
+      "descripcion": "Un roca al azar entre dos extremos, ambos incluidos.",
+      "ejemplo": "roca dado = aleatorio(1, 6)"
+    },
+    {
+      "palabra": "redondear",
+      "grupo": "E/S y datos",
+      "descripcion": "Redondea un agua al roca más cercano.",
+      "ejemplo": "roca redondo = redondear(7.5)"
+    },
+    {
+      "palabra": "sumar",
+      "grupo": "E/S y datos",
+      "descripcion": "Agrega un valor al final de un equipo.",
+      "ejemplo": "sumar \"Bulbasaur\" a equipo_ash"
+    },
+    {
+      "palabra": "quitar",
+      "grupo": "E/S y datos",
+      "descripcion": "Saca un elemento de un equipo por su posición, o de una mochila por su clave.",
+      "ejemplo": "quitar equipo_ash[2]"
+    },
+    {
+      "palabra": "contiene",
+      "grupo": "E/S y datos",
+      "descripcion": "Dice si un equipo tiene un valor, si una mochila tiene una clave o si un texto contiene otro.",
+      "ejemplo": "si equipo_ash contiene \"Pikachu\"\n    gritar \"¡Ahí está!\"\nfin"
+    },
+    {
+      "palabra": "resto",
+      "grupo": "Operadores palabra",
+      "descripcion": "El residuo de una división entera.",
+      "ejemplo": "gritar 10 resto 3"
+    },
+    {
+      "palabra": "igual",
+      "grupo": "Operadores palabra",
+      "descripcion": "Compara si dos valores son iguales.",
+      "ejemplo": "si vida igual 0\n    gritar \"debilitado\"\nfin"
+    },
+    {
+      "palabra": "diferente",
+      "grupo": "Operadores palabra",
+      "descripcion": "Compara si dos valores son distintos.",
+      "ejemplo": "si rival diferente fantasma\n    gritar rival\nfin"
+    },
+    {
+      "palabra": "y",
+      "grupo": "Operadores palabra",
+      "descripcion": "Verdadero si las dos condiciones lo son.",
+      "ejemplo": "si vida > 0 y nivel > 5\n    gritar \"listo\"\nfin"
+    },
+    {
+      "palabra": "o",
+      "grupo": "Operadores palabra",
+      "descripcion": "Verdadero si al menos una de las condiciones lo es.",
+      "ejemplo": "si vida igual 0 o dormido\n    gritar \"no puede atacar\"\nfin"
+    },
+    {
+      "palabra": "no",
+      "grupo": "Operadores palabra",
+      "descripcion": "Invierte una condición.",
+      "ejemplo": "si no listo\n    gritar \"espera\"\nfin"
+    }
+  ],
+  "efectividades": [
+    ["Origen \\ Destino", "roca", "agua", "fuego", "planta", "electrico", "especie"],
+    ["roca", "MT", "EF", "SE", "RC", "SE", "SE"],
+    ["agua", "RC", "MT", "SE", "RC", "SE", "SE"],
+    ["fuego", "SE", "SE", "MT", "RC", "SE", "SE"],
+    ["planta", "RC", "RC", "SE", "MT", "SE", "SE"],
+    ["electrico", "SE", "SE", "SE", "RC", "MT", "SE"],
+    ["especie", "SE", "SE", "SE", "RC", "SE", "MT"]
+  ]
+}

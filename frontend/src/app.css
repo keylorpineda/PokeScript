@@ -58,9 +58,9 @@ button {
   padding: 0 8px;
   min-height: 40px;
   font-family: var(--titulo);
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 0;
   color: var(--texto);
   background: none;
   border: 9px solid transparent;

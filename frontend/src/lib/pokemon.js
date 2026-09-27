@@ -17,6 +17,16 @@ export const POKEMON = {
   chansey: { nombre: 'Chansey', tipo: 'normal', color: '#f0a0c0' },
   snorlax: { nombre: 'Snorlax', tipo: 'normal', color: '#5a7890' },
   porygon: { nombre: 'Porygon', tipo: 'normal', color: '#58b8d0' },
+  lapras: { nombre: 'Lapras', tipo: 'agua', color: '#6890f0' },
+  geodude: { nombre: 'Geodude', tipo: 'roca', color: '#b8a038' },
+  onix: { nombre: 'Onix', tipo: 'roca', color: '#b8a038' },
+  kangaskhan: { nombre: 'Kangaskhan', tipo: 'normal', color: '#a8a878' },
+  unown: { nombre: 'Unown', tipo: 'psíquico', color: '#f85888' },
+  ditto: { nombre: 'Ditto', tipo: 'normal', color: '#a890f0' },
+  machamp: { nombre: 'Machamp', tipo: 'lucha', color: '#c03028' },
+  tauros: { nombre: 'Tauros', tipo: 'normal', color: '#a8a878' },
+  alakazam: { nombre: 'Alakazam', tipo: 'psíquico', color: '#f85888' },
+  slowpoke: { nombre: 'Slowpoke', tipo: 'agua', color: '#6890f0' },
 };
 
 // Los que Oak ofrece en su laboratorio.

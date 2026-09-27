@@ -1,7 +1,12 @@
 // PokeScript para CodeMirror 6: resaltado (cada tipo con el color de su tipo
 // Pokémon), tema del editor con las variables del tema del IDE,
 // autocompletado y conversión de posiciones de los diagnósticos.
-import { StreamLanguage, HighlightStyle, syntaxHighlighting } from '@codemirror/language';
+import {
+  StreamLanguage,
+  StringStream,
+  HighlightStyle,
+  syntaxHighlighting,
+} from '@codemirror/language';
 import { Tag, tags as t } from '@lezer/highlight';
 import { EditorView } from '@codemirror/view';
 
@@ -68,7 +73,7 @@ export const RESERVADAS = [
   ...LITERALES,
 ];
 
-const lenguaje = StreamLanguage.define({
+const analizador = {
   name: 'pokescript',
   token(stream) {
     if (stream.eatSpace()) return null;
@@ -113,7 +118,8 @@ const lenguaje = StreamLanguage.define({
     character: t.character,
   },
   languageData: { commentTokens: { line: '//' } },
-});
+};
+const lenguaje = StreamLanguage.define(analizador);
 
 // Cada tipo de dato se pinta con el color de su tipo Pokémon.
 const chip = (color) => ({ color: `var(${color})`, fontWeight: '700' });
@@ -254,4 +260,41 @@ export function completar(simbolos) {
     ];
     return { from: palabra.from, options: opciones, validFor: /^[\p{L}\p{Nd}_]*$/u };
   };
+}
+
+// colorear parte un código en trozos con su clase de color, usando el mismo
+// lexer del editor. Lo usa la Pokédex para mostrar los ejemplos.
+const CLASES = {
+  roca: 't-roca',
+  agua: 't-agua',
+  fuego: 't-fuego',
+  planta: 't-planta',
+  electrico: 't-electrico',
+  coleccion: 'coleccion',
+  estructura: 'estructura',
+  control: 'control',
+  funcion: 'funcion',
+  constante: 'constante',
+  tipoNombrado: 'tipo-nombrado',
+  operatorKeyword: 'control',
+  bool: 'numero',
+  number: 'numero',
+  string: 'texto',
+  character: 'texto',
+  comment: 'comentario',
+  operator: 'suave',
+  punctuation: 'suave',
+};
+
+export function colorear(codigo) {
+  return codigo.split('\n').map((linea) => {
+    const s = new StringStream(linea, 4, 4);
+    const trozos = [];
+    while (!s.eol()) {
+      const t = analizador.token(s);
+      trozos.push({ texto: s.current(), clase: t ? (CLASES[t] ?? '') : '' });
+      s.start = s.pos;
+    }
+    return trozos;
+  });
 }

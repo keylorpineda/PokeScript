@@ -10,6 +10,7 @@
   import Companero from './Companero.svelte';
   import Transicion from './Transicion.svelte';
   import OakAviso from './OakAviso.svelte';
+  import Pokedex from './Pokedex.svelte';
   import { ide, perfil, navegacion } from '../lib/estado.svelte.js';
   import { temaActual } from '../lib/temas.js';
   import { objeto, sprite } from '../lib/pokemon.js';
@@ -114,6 +115,7 @@
 </div>
 
 {#if combate}<Transicion alTerminar={() => (combate = false)} />{/if}
+{#if ide.pokedex}<Pokedex />{/if}
 <OakAviso />
 
 <style>
@@ -143,7 +145,7 @@
   main {
     position: relative;
     display: grid;
-    grid-template-columns: 270px 1fr 330px;
+    grid-template-columns: minmax(200px, 260px) minmax(0, 1fr) minmax(270px, 340px);
     gap: 14px;
     padding: 14px;
     min-height: 0;

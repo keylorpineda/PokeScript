@@ -1,13 +1,22 @@
 // Genera las escenas animadas del README: la Pokédex, el combate de tipos,
-// las medallas de la hoja de ruta y el recorrido de un programa por el
-// compilador. Uso: pnpm docs:svg (escribe en docs/assets/).
-import { writeFileSync } from 'node:fs';
+// las medallas de la hoja de ruta, el recorrido de un programa por el
+// compilador y los Pokémon que explican cada sección.
+// Uso: pnpm docs:svg (escribe en docs/assets/).
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const OUT = process.argv[2] ?? fileURLToPath(new URL('../docs/assets/', import.meta.url));
 const MONO = "Consolas, 'Courier New', monospace";
 const SANS = "'Trebuchet MS', 'Segoe UI', Verdana, sans-serif";
+
+// El arte de PokeAPI se incrusta en base64: GitHub no deja que un SVG cargue
+// imágenes externas. Se descarga con scripts/descargar-sprites.mjs.
+const FUENTES = fileURLToPath(new URL('../docs/assets/fuentes/', import.meta.url));
+const incrustar = (archivo, tipo) =>
+  `data:${tipo};base64,${readFileSync(join(FUENTES, archivo)).toString('base64')}`;
+const pokemon = (id) => incrustar(`pokemon/${id}.svg`, 'image/svg+xml');
+const medalla = (n) => incrustar(`medallas/${n}.png`, 'image/png');
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const largo = (s) => [...s].length;
@@ -20,13 +29,25 @@ function escritor(prefijo) {
   let svg = '';
   let n = 0;
   return {
-    linea(x, y, texto, { cw = 10, fs = 17, color, fondo, t, vel = 0.035, peso = 400 }) {
-      const chars = largo(texto);
+    linea(
+      x,
+      y,
+      texto,
+      { cw = 10, fs = 17, color, fondo, t, vel = 0.035, peso = 400, codigo = '#2458c8' },
+    ) {
+      // Lo que va entre comillas invertidas se pinta como código.
+      const partes = texto.split('`');
+      const contenido = partes
+        .map((p, i) =>
+          i % 2 ? `<tspan fill="${codigo}" font-weight="700">${esc(p)}</tspan>` : esc(p),
+        )
+        .join('');
+      const chars = largo(partes.join(''));
       const ancho = chars * cw;
       const dur = Math.max(0.2, chars * vel);
       const id = `${prefijo}${n++}`;
       css += `    @keyframes ${id} { to { transform: translateX(${ancho + 4}px); } }\n`;
-      svg += `    <text x="${x}" y="${y}" font-family="${MONO}" font-size="${fs}" font-weight="${peso}" fill="${color}" textLength="${ancho}" lengthAdjust="spacingAndGlyphs">${esc(texto)}</text>\n`;
+      svg += `    <text x="${x}" y="${y}" font-family="${MONO}" font-size="${fs}" font-weight="${peso}" fill="${color}" textLength="${ancho}" lengthAdjust="spacingAndGlyphs">${contenido}</text>\n`;
       svg += `    <rect x="${x - 2}" y="${y - fs}" width="${ancho + 6}" height="${fs + 8}" fill="${fondo}" style="animation: ${id} ${dur.toFixed(2)}s steps(${chars}, end) ${t.toFixed(2)}s both"/>\n`;
       return t + dur;
     },
@@ -184,113 +205,44 @@ ${fase2.svg}      </g>
 }
 
 // ─── 3. Medallas: la hoja de ruta ──────────────────────────────────────────
-// Los doce hitos son las ocho medallas de Kanto (Rojo Fuego) y los cuatro
-// del Alto Mando, en el orden en que se ganan en el juego.
+// Los doce hitos son las ocho medallas de Kanto, con su dibujo del juego, y
+// los cuatro del Alto Mando con su Pokémon más conocido.
 {
   const W = 900;
   const H = 380;
-  const punto = (r, a) => `${(r * Math.cos(a)).toFixed(1)} ${(r * Math.sin(a)).toFixed(1)}`;
-  const estrella = (puntas, r1, r2, giro = -Math.PI / 2) => {
-    let d = '';
-    for (let i = 0; i < puntas * 2; i++) {
-      d += `${i ? 'L' : 'M'}${punto(i % 2 ? r2 : r1, (Math.PI * i) / puntas + giro)} `;
-    }
-    return `${d}Z`;
-  };
-  const poligono = (lados, r, giro = -Math.PI / 2) => {
-    let d = '';
-    for (let i = 0; i < lados; i++) d += `${i ? 'L' : 'M'}${punto(r, (2 * Math.PI * i) / lados + giro)} `;
-    return `${d}Z`;
-  };
-  const borde = 'stroke="#2a2a2a" stroke-width="2.5" stroke-linejoin="round"';
-  const brillo = '<ellipse cx="-10" cy="-14" rx="8" ry="4.5" fill="#ffffff" opacity="0.6" transform="rotate(-35 -10 -14)"/>';
-
-  // Cada dibujo va centrado en (0, 0) con radio ~34.
-  const roca = () => {
-    const g = Math.PI / 8;
-    let facetas = '';
-    for (let i = 0; i < 8; i++) {
-      const a = (2 * Math.PI * i) / 8 + g;
-      facetas += `<path d="M${punto(33, a)} L${punto(17, a)}" stroke="#5a5a62" stroke-width="1.5"/>`;
-    }
-    return `<path d="${poligono(8, 33, g)}" fill="#a4a4ae" ${borde}/><path d="${poligono(8, 17, g)}" fill="#d4d4dc" stroke="#5a5a62" stroke-width="1.5"/>${facetas}${brillo}`;
-  };
-  const cascada = () =>
-    `<path d="M0 -36 C14 -16 25 -2 25 11 A25 25 0 0 1 -25 11 C-25 -2 -14 -16 0 -36 Z" fill="#4f9ee8" ${borde}/><path d="M0 -18 C7 -8 12 0 12 9 A12 12 0 0 1 -12 9 C-12 0 -7 -8 0 -18 Z" fill="#9fd0ff"/>${brillo}`;
-  const trueno = () =>
-    `<path d="${estrella(8, 35, 25)}" fill="#f08a24" ${borde}/><path d="${poligono(8, 17, -Math.PI / 8)}" fill="#ffd33d" stroke="#b86a10" stroke-width="1.5"/>${brillo}`;
-  const arcoiris = () => {
-    const colores = ['#e84040', '#f08030', '#f8d030', '#78c850', '#40a0e0', '#6060d0', '#a050c0', '#e060a0'];
-    const petalos = colores
-      .map((c, i) => {
-        const a = (2 * Math.PI * i) / 8;
-        return `<ellipse cx="${punto(20, a).split(' ')[0]}" cy="${punto(20, a).split(' ')[1]}" rx="13" ry="9" transform="rotate(${(i * 45).toFixed(0)} ${punto(20, a)})" fill="${c}" ${borde}/>`;
-      })
-      .join('');
-    return `${petalos}<circle r="11" fill="#fff4b0" ${borde}/>`;
-  };
-  const corazon = 'M0 30 C-42 4 -30 -32 0 -13 C30 -32 42 4 0 30 Z';
-  const alma = () =>
-    `<path d="${corazon}" fill="#e8559a" ${borde}/><path d="${corazon}" transform="scale(0.5) translate(0 4)" fill="#ffa6cf"/>${brillo}`;
-  const pantano = () =>
-    `<circle r="33" fill="#d9a520" ${borde}/><circle r="23" fill="#f5d468" stroke="#a87c10" stroke-width="2"/><circle r="12" fill="#d9a520" stroke="#a87c10" stroke-width="2"/>${brillo}`;
-  const llama = 'M0 -36 C12 -22 28 -8 24 12 A24 24 0 0 1 -24 12 C-28 -6 -14 -14 -8 -26 C-4 -14 4 -14 0 -36 Z';
-  const volcan = () =>
-    `<path d="${llama}" fill="#e03a28" ${borde}/><path d="${llama}" transform="translate(0 10) scale(0.5)" fill="#ffa040"/>`;
-  const hoja = 'M0 -35 Q12 -12 34 0 Q12 12 0 35 Q-12 12 -34 0 Q-12 -12 0 -35 Z';
-  const tierra = () =>
-    `<path d="${hoja}" fill="#48a848" ${borde}/><path d="${hoja}" transform="scale(0.45)" fill="#a8e088"/>${brillo}`;
-
-  // El Alto Mando: un emblema redondo del color de su tipo.
-  const emblema = (color, dibujo) =>
-    `<circle r="33" fill="${color}" ${borde}/><circle r="26" fill="none" stroke="#ffffff" stroke-opacity="0.55" stroke-width="2"/>${dibujo}`;
-  const hielo = () => {
-    let copo = '';
-    for (let i = 0; i < 3; i++) {
-      copo += `<g transform="rotate(${i * 60})" stroke="#ffffff" stroke-width="3" stroke-linecap="round"><path d="M0 -17 V17 M-5 -12 L0 -8 L5 -12 M-5 12 L0 8 L5 12"/></g>`;
-    }
-    return emblema('#58b8d8', copo);
-  };
-  const lucha = () =>
-    emblema('#b04a30', `<path d="${estrella(6, 18, 8)}" fill="#ffffff"/>`);
-  const fantasma = () =>
-    emblema(
-      '#6a4a9a',
-      '<path d="M-14 16 V-2 A14 14 0 0 1 14 -2 V16 L9 11 L4 16 L0 11 L-4 16 L-9 11 Z" fill="#ffffff"/><circle cx="-5" cy="-2" r="3" fill="#6a4a9a"/><circle cx="5" cy="-2" r="3" fill="#6a4a9a"/>',
-    );
-  const dragon = () =>
-    emblema('#5a5ad8', '<path d="M0 -4 L-20 -14 L-14 4 L-6 2 L0 16 L6 2 L14 4 L20 -14 Z" fill="#ffffff"/>');
-
   const hitos = [
-    ['Roca', 'Lexer', roca, false],
-    ['Cascada', 'Expresiones', cascada, true],
-    ['Trueno', 'Bloques', trueno, true],
-    ['Arcoíris', 'Primer programa', arcoiris, true],
-    ['Alma', 'Tipos', alma, true],
-    ['Pantano', 'Movimientos', pantano, true],
-    ['Volcán', 'Colecciones', volcan, true],
-    ['Tierra', 'Segun', tierra, true],
-    ['Lorelei', 'Importaciones', hielo, true],
-    ['Bruno', 'Posible', lucha, true],
-    ['Agatha', 'Fichas', fantasma, true],
-    ['Lance', 'Asistente', dragon, true],
+    ['Roca', 'Lexer', medalla(1), false],
+    ['Cascada', 'Expresiones', medalla(2), true],
+    ['Trueno', 'Bloques', medalla(3), true],
+    ['Arcoíris', 'Primer programa', medalla(4), true],
+    ['Alma', 'Tipos', medalla(5), true],
+    ['Pantano', 'Movimientos', medalla(6), true],
+    ['Volcán', 'Colecciones', medalla(7), true],
+    ['Tierra', 'Segun', medalla(8), true],
+    ['Lorelei', 'Importaciones', pokemon(131), true, '#58b8d8'],
+    ['Bruno', 'Posible', pokemon(68), true, '#b04a30'],
+    ['Agatha', 'Fichas', pokemon(94), true, '#6a4a9a'],
+    ['Lance', 'Asistente', pokemon(149), true, '#5a5ad8'],
   ];
   const ganadas = hitos.filter((h) => h[3]).length;
 
   let cuerpo = '';
-  hitos.forEach(([nombre, hito, dibujo, ganada], i) => {
+  hitos.forEach(([nombre, hito, imagen, ganada, color], i) => {
     const enCaja = i < 8;
     const x = enCaja ? 102 + (i % 4) * 132 : 680 + ((i - 8) % 2) * 130;
     const y = 150 + Math.floor((enCaja ? i : i - 8) / (enCaja ? 4 : 2)) * 118;
     const d = (0.25 + i * 0.12).toFixed(2);
-    const hueco = `<circle cx="${x}" cy="${y}" r="42" fill="${enCaja ? '#6e1d1d' : '#262a4a'}"/>`;
+    const lado = enCaja ? 70 : 64;
+    const img = `<image x="${x - lado / 2}" y="${y - lado / 2}" width="${lado}" height="${lado}" href="${imagen}"${ganada ? '' : ' filter="url(#silueta)"'}/>`;
+    const fondo = enCaja
+      ? `<circle cx="${x}" cy="${y}" r="42" fill="#6e1d1d"/>`
+      : `<circle cx="${x}" cy="${y}" r="42" fill="${color}" stroke="#141630" stroke-width="3"/><circle cx="${x}" cy="${y}" r="36" fill="none" stroke="#ffffff" stroke-opacity="0.5" stroke-width="2"/>`;
     const figura = ganada
-      ? `<g class="pop" style="animation-delay:${d}s"><g transform="translate(${x} ${y})">${dibujo()}</g></g>`
-      : `<g transform="translate(${x} ${y})" opacity="0.45"><g fill="#000000" stroke="#000000">${dibujo().replace(/fill="[^"]*"/g, 'fill="#1a1a1a"').replace(/stroke="[^"]*"/g, 'stroke="#555555"')}</g></g>
-      <circle cx="${x}" cy="${y}" r="42" fill="none" stroke="#e6e9ff" stroke-opacity="0.5" stroke-width="2" stroke-dasharray="6 5"/>`;
+      ? `<g class="pop" style="animation-delay:${d}s">${img}</g>`
+      : `${img}<circle cx="${x}" cy="${y}" r="42" fill="none" stroke="#ffe9c8" stroke-opacity="0.6" stroke-width="2" stroke-dasharray="6 5"/>`;
     const claro = enCaja ? '#ffe9c8' : '#e6e9ff';
     const tenue = enCaja ? '#e6a88c' : '#8b90c0';
-    cuerpo += `    ${hueco}
+    cuerpo += `    ${fondo}
     ${figura}
     <text x="${x}" y="${y + 60}" font-family="${SANS}" font-size="14" font-weight="700" fill="${claro}" text-anchor="middle">${nombre}</text>
     <text x="${x}" y="${y + 76}" font-family="${SANS}" font-size="11" fill="${tenue}" text-anchor="middle">${ganada ? `${i + 1} · ${hito}` : 'falta el editor'}</text>
@@ -298,6 +250,9 @@ ${ganada ? `    <path class="destello" style="animation-delay:${(1.8 + i * 0.37)
   });
 
   const s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Estuche de medallas: ${ganadas} de 12. Las ocho medallas de Kanto y el Alto Mando, una por hito; falta la Medalla Roca, el editor del hito 1">
+  <defs>
+    <filter id="silueta"><feColorMatrix type="matrix" values="0 0 0 0 0.12  0 0 0 0 0.05  0 0 0 0 0.05  0 0 0 0.7 0"/></filter>
+  </defs>
   <style>
     .pop { opacity: 0; transform-box: fill-box; transform-origin: center; animation: pop 0.45s cubic-bezier(.34,1.56,.64,1) both; }
     @keyframes pop { from { opacity: 0; transform: scale(0.3); } to { opacity: 1; transform: scale(1); } }
@@ -368,6 +323,221 @@ ${nodos}  <g class="viaje"><g class="rueda">${pokebola(xs[0], Y + 52, 13, '#ee15
 </svg>
 `;
   writeFileSync(join(OUT, 'recorrido.svg'), s);
+}
+
+// ─── 5. Guías: un Pokémon explica cada sección del README ──────────────────
+// Cada escena tiene al Pokémon respirando sobre su plataforma y un cuadro de
+// diálogo como el de los juegos, que se escribe letra por letra.
+const GUIAS = [
+  [
+    'charizard',
+    6,
+    'Charizard',
+    ['#ffc58a', '#e8603a'],
+    '¡Hola, entrenador! PokeScript es un lenguaje en español para aprender a programar. Los datos tienen tipo, las funciones son movimientos y los errores se explican en tu idioma.',
+  ],
+  [
+    'rotom',
+    479,
+    'Rotom',
+    ['#fff2a8', '#e0a820'],
+    'Así va a verse el IDE: el código, el asistente al lado y la salida abajo. Si escribes `curra` en vez de `curar`, el asistente te ofrece el arreglo.',
+  ],
+  [
+    'pikachu',
+    25,
+    'Pikachu',
+    ['#fff2a8', '#e8b820'],
+    'Cada tipo de dato es un tipo de Pokémon. El mío es `electrico`: solo sé decir `verdadero` o `falso`, pero sin mí no hay `si` ni `mientras`.',
+  ],
+  [
+    'charmander',
+    4,
+    'Charmander',
+    ['#ffc58a', '#e8603a'],
+    'Todo programa empieza en `combate` y termina en su `fin`. Lo de adentro corre de arriba abajo, una instrucción por línea.',
+  ],
+  [
+    'onix',
+    95,
+    'Onix',
+    ['#e0d4a0', '#9a8448'],
+    'Cada dato se declara con su tipo. Una `medalla` es un valor que no cambia nunca, duro como la roca. Por eso va en mayúsculas.',
+  ],
+  [
+    'psyduck',
+    54,
+    'Psyduck',
+    ['#b0dcff', '#4a88d8'],
+    'Aquí no hay «más o menos»: la condición de un `si` da `verdadero` o `falso`. `si vida` no compila; `si vida > 0` sí.',
+  ],
+  [
+    'tauros',
+    128,
+    'Tauros',
+    ['#e8dcc0', '#a08858'],
+    '`mientras` embiste una y otra vez hasta que la condición deja de cumplirse. `recorrer` pasa por un rango o por un equipo. `huir` sale del ciclo y `siguiente` salta a la otra vuelta.',
+  ],
+  [
+    'machamp',
+    68,
+    'Machamp',
+    ['#f4b8a0', '#c04a38'],
+    'Los movimientos son las funciones. Unos devuelven un valor con `entregar`; otros solo hacen algo, como gritar un mensaje. ¡Cuatro brazos, cero efectos colaterales!',
+  ],
+  [
+    'kangaskhan',
+    115,
+    'Kangaskhan',
+    ['#e8dcc0', '#a08858'],
+    'Un `equipo` es una lista. Una `mochila` guarda cada cosa con su clave, como mi bolsa, y recuerda el orden. Se cuenta desde 1, como el primer Pokémon de tu equipo.',
+  ],
+  [
+    'eevee',
+    133,
+    'Eevee',
+    ['#f0dcc0', '#b08050'],
+    'Una `especie` es una lista cerrada de valores, como mis evoluciones: no hay más que esas. Una `ficha` junta varios datos bajo un mismo nombre.',
+  ],
+  [
+    'ditto',
+    132,
+    'Ditto',
+    ['#ecd0f4', '#a070c0'],
+    'Cambiar de forma es lo mío, pero aquí se pide con `convertir`. Ojo: `convertir(agua) a roca` corta los decimales; para redondear está `redondear`.',
+  ],
+  [
+    'abra',
+    63,
+    'Abra',
+    ['#ffc0d8', '#d85890'],
+    'Con `enseñar … desde` un archivo se teletransporta lo que declara otro: movimientos, especies, fichas y medallas.',
+  ],
+  [
+    'machop',
+    66,
+    'Machop',
+    ['#f4b8a0', '#c04a38'],
+    'Un equipo de niveles, una mochila de objetos y varios ciclos para entrenar. ¡A sudar!',
+  ],
+  [
+    'gengar',
+    94,
+    'Gengar',
+    ['#cbb4ec', '#6a4a9a'],
+    'Una `especie` con los estados alterados, un `segun` que los cubre todos y movimientos que dicen qué le pasa a cada Pokémon. Je, je.',
+  ],
+  [
+    'chansey',
+    113,
+    'Chansey',
+    ['#ffd4e2', '#e0789a'],
+    '`capturar` se queda esperando lo que escribas. Si la respuesta no sirve, lo explica y vuelve a preguntar, con la paciencia de un Centro Pokémon.',
+  ],
+  [
+    'magikarp',
+    129,
+    'Magikarp',
+    ['#b0dcff', '#4a88d8'],
+    'Olvidar un `fin` es el error más común al empezar. El mensaje dice qué bloque quedó abierto, en qué línea empezó y cuál es el que falta cerrar.',
+  ],
+  [
+    'blastoise',
+    9,
+    'Blastoise',
+    ['#b0dcff', '#3a70c0'],
+    'El programa de la especificación: cuatro archivos que se importan entre sí. Tu Pokémon contra Bulbi, veinte turnos como máximo.',
+  ],
+  [
+    'porygon',
+    137,
+    'Porygon',
+    ['#b4ecf4', '#3a98b8'],
+    'Un programa pasa por cuatro etapas antes de mostrar algo. Si el analizador no encuentra un nombre, el asistente busca qué quisiste escribir.',
+  ],
+  [
+    'dragonite',
+    149,
+    'Dragonite',
+    ['#ffdca0', '#d89030'],
+    'Cada hito es una medalla: primero los ocho gimnasios de Kanto y después el Alto Mando. Falta la Medalla Roca, que llega con los colores del editor.',
+  ],
+  [
+    'snorlax',
+    143,
+    'Snorlax',
+    ['#c8dce4', '#58788a'],
+    'Para despertarme hace falta Go 1.23 o más nuevo. Si vas a trabajar en el proyecto, también Node.js 22 y pnpm 10. Con npm no me muevo. Zzz…',
+  ],
+];
+
+// envolver parte el texto en líneas de hasta max letras sin cortar el código.
+function envolver(texto, max) {
+  const lineas = [''];
+  for (const pal of texto.match(/(?:[^\s`]*`[^`]*`)+[^\s`]*|\S+/g)) {
+    const actual = lineas[lineas.length - 1];
+    const junto = actual ? `${actual} ${pal}` : pal;
+    if (largo(junto.replace(/`/g, '')) > max && actual) lineas.push(pal);
+    else lineas[lineas.length - 1] = junto;
+  }
+  return lineas;
+}
+
+{
+  const W = 900;
+  const H = 220;
+  mkdirSync(join(OUT, 'guias'), { recursive: true });
+  for (const [archivo, id, nombre, [claro, oscuro], texto] of GUIAS) {
+    const lineas = envolver(texto, 58);
+    if (lineas.length > 4) throw new Error(`${archivo}: el texto no cabe en el cuadro`);
+    const e = escritor('l');
+    let t = 0.8;
+    lineas.forEach((l, i) => {
+      t = e.linea(262, 82 + i * 30, l, { color: '#2d2d3a', fondo: '#ffffff', t, vel: 0.03 });
+    });
+    const burbujas = [30, 70, 120, 160, 190, 55]
+      .map(
+        (x, i) =>
+          `<circle class="burbuja" cx="${x}" cy="${200 - (i % 3) * 12}" r="${3 + (i % 3)}" fill="#ffffff" style="animation-delay:${(i * 0.9).toFixed(1)}s"/>`,
+      )
+      .join('\n    ');
+    const s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${nombre}: ${esc(texto.replace(/`/g, ''))}">
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${claro}"/><stop offset="1" stop-color="${oscuro}"/></linearGradient>
+    <clipPath id="dialogo"><rect x="241" y="42" width="628" height="148"/></clipPath>
+  </defs>
+  <style>
+    .entra { animation: entra 0.7s cubic-bezier(.34,1.56,.64,1) both; }
+    @keyframes entra { from { opacity: 0; transform: translateX(-70px); } to { opacity: 1; transform: none; } }
+    .respira { animation: respira 2.6s ease-in-out 0.7s infinite; }
+    @keyframes respira { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+    .sombra { transform-box: fill-box; transform-origin: center; animation: sombra 2.6s ease-in-out 0.7s infinite; }
+    @keyframes sombra { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.88); } }
+    .burbuja { opacity: 0; animation: burbuja 5.4s ease-out infinite; }
+    @keyframes burbuja { 0% { opacity: 0; transform: translateY(0); } 15% { opacity: 0.7; } 100% { opacity: 0; transform: translateY(-170px); } }
+    .flecha { opacity: 0; animation: flecha 0.9s steps(1) ${t.toFixed(2)}s infinite; }
+    @keyframes flecha { 0% { opacity: 1; } 50% { opacity: 0; } }
+${e.css}  </style>
+  <rect width="${W}" height="${H}" rx="16" fill="url(#cielo)"/>
+  <g opacity="0.55">
+    ${burbujas}
+  </g>
+  <ellipse cx="118" cy="192" rx="92" ry="18" fill="${oscuro}" opacity="0.55"/>
+  <ellipse class="sombra" cx="118" cy="190" rx="62" ry="9" fill="#000000" opacity="0.18"/>
+  <g class="entra"><g class="respira">
+    <image x="28" y="14" width="180" height="176" href="${pokemon(id)}"/>
+  </g></g>
+  <rect x="235" y="36" width="640" height="160" rx="12" fill="#ffffff" stroke="#2d2d3a" stroke-width="5"/>
+  <rect x="242" y="43" width="626" height="146" rx="8" fill="none" stroke="#c8ccd8" stroke-width="2"/>
+  <rect x="256" y="18" width="${largo(nombre) * 13 + 30}" height="32" rx="8" fill="#2d2d3a"/>
+  <text x="${256 + 17}" y="40" font-family="${SANS}" font-size="16" font-weight="900" letter-spacing="1" fill="#ffffff">${nombre.toUpperCase()}</text>
+  <g clip-path="url(#dialogo)">
+${e.svg}  </g>
+  <path class="flecha" d="M842 172 h18 l-9 10 z" fill="#e8603a"/>
+</svg>
+`;
+    writeFileSync(join(OUT, 'guias', `${archivo}.svg`), s);
+  }
 }
 
 console.log('escenas listas');

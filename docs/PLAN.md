@@ -1,4 +1,4 @@
-# 🗺️ Plan de implementación de PokeScript
+| ✅ T8.3 || ✅ T7.5 || ✅ T7.4 || ✅ T6.6 || ✅ T5.5 || ✅ T4.6 || ✅ T3.5 || ✅ T3.4 || ✅ T2.7 || ✅ T1.6 || ✅ T1.5 || ✅ T0.2 |# 🗺️ Plan de implementación de PokeScript
 
 Este es el documento de coordinación del equipo: quién hace qué, en qué orden, cómo se integra y cuándo algo se da por terminado. La especificación del lenguaje ([`PokeScript_Especificacion_Implementacion.md`](PokeScript_Especificacion_Implementacion.md)) dice **qué** construir; este plan dice **cómo** lo construimos entre los tres.
 
@@ -27,17 +27,17 @@ Este es el documento de coordinación del equipo: quién hace qué, en qué orde
 
 ## 📍 Estado actual
 
-> Última actualización: **2026-09-26**. Quien termine una tarea actualiza esta sección y marca la tarea con ✅ en su tabla, en el mismo PR.
+> Última actualización: **2026-09-27**. Quien termine una tarea actualiza esta sección y marca la tarea con ✅ en su tabla, en el mismo PR.
 
 ### Resumen
 
-| Sprint               | Estado        | Detalle                                                                                                                                                                                                                                              |
-| -------------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **S0** · Preparación | 🟡 En curso   | Contratos listos. Faltan Wails, protección de ramas en GitHub y tablero.                                                                                                                                                                             |
-| **S1** · Hito 1      | 🟡 En curso   | Lexer y valores listos. Faltan el resaltado del editor y la maqueta del IDE (parte gráfica).                                                                                                                                                         |
-| **S2** · Hitos 2 y 3 | ✅ Listo      | Parser completo con pila de bloques y recuperación de errores.                                                                                                                                                                                       |
-| **S3** · Hito 4      | ✅ En consola | `go run ./cmd/pks ejemplos/combate` ejecuta el programa de la sección 10 desde los `.pks`. Falta el IDE.                                                                                                                                             |
-| **S4** en adelante   | 🟡 En curso   | Analizador completo (pasadas 1 y 2) y proyectos con importaciones. **Los 15 casos de la sección 11 pasan: listo para `v0.2`.** Asistente (K4) y servicio (K5) listos. K6 (advertencias) listo: **el backend está completo**. Sigue la parte gráfica. |
+| Sprint               | Estado      | Detalle                                                                                                                                                                                                                                              |
+| -------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **S0** · Preparación | 🟡 En curso | Contratos y Wails listos. Faltan la protección de ramas en GitHub y el tablero.                                                                                                                                                                      |
+| **S1** · Hito 1      | ✅ Listo    | Lexer, valores y resaltado en el editor del IDE.                                                                                                                                                                                                     |
+| **S2** · Hitos 2 y 3 | ✅ Listo    | Parser completo con pila de bloques y recuperación de errores.                                                                                                                                                                                       |
+| **S3** · Hito 4      | ✅ Listo    | El programa de la sección 10 corre en la consola (`go run ./cmd/pks ejemplos/combate`) y en el IDE.                                                                                                                                                  |
+| **S4** en adelante   | 🟡 En curso | Analizador completo (pasadas 1 y 2) y proyectos con importaciones. **Los 15 casos de la sección 11 pasan: listo para `v0.2`.** Asistente (K4) y servicio (K5) listos. K6 (advertencias) listo: **el backend está completo**. Sigue la parte gráfica. |
 
 **El IDE ya corre como app de escritorio** (rama `feature/ide-frontend`): Wails abre `frontend/` (Svelte 5 + CodeMirror 6) y `app.go` le expone el backend real. Tiene portada con menú de proyectos, presentación del Profesor Oak, editor con resaltado por tipo, guardado automático, revisión del código mientras se escribe, mochila de archivos (los que no son `.pks` se muestran aparte y no se abren), salida con `capturar`, Pokédex de errores, Pokédex de consulta con todo el lenguaje y ocho temas. Para trabajar en él: `wails dev` (ventana de escritorio y, en el navegador, `http://localhost:34115`). Para el ejecutable: `wails build` → `build/bin/PokeScript.exe`. Sin Wails, `pnpm --dir frontend dev` usa un backend simulado.
 
@@ -148,7 +148,8 @@ Todo lo que necesita ya existe. Para cada tarea J:
 
 - **Backend:** completo.
 - **Etiqueta `v0.2`:** integrar `dev` en `main` con un PR y etiquetar.
-- **Parte gráfica (en pausa):** T0.2, T1.5, T1.6, T2.7, T3.4, T3.5 y el resto de la interfaz.
+- **Parte gráfica:** hecha en `feature/ide-frontend`. Queda probar el `.exe` en otra máquina (T8.5) y el manual de usuario (T8.4).
+- **Etiquetas:** `v0.2`, `v0.3` y `v1.0` en `main`.
 - **S0:** T0.7, T0.8.
 - **Decisiones abiertas:** ninguna.
 

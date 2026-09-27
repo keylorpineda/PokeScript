@@ -16,7 +16,7 @@
 
 </div>
 
-<img src="docs/assets/pokedex.svg" alt="Entrada de Pokédex: PokeScript, un lenguaje en español para aprender a programar" width="100%">
+<img src="docs/assets/pokedex.svg" alt="Pokédex abierta: escanea a Mewtwo y muestra la entrada de PokeScript, un lenguaje en español para aprender a programar" width="100%">
 
 <img src="docs/assets/guias/charizard.svg" alt="Charizard: ¡Hola, entrenador! PokeScript es un lenguaje en español para aprender a programar. Los datos tienen tipo, las funciones son movimientos y los errores se explican en tu idioma." width="100%">
 
@@ -70,9 +70,9 @@ Y como en los combates, no todos se llevan bien. La tabla de efectividades dice 
 
 <img src="docs/assets/efectividades.svg" alt="Tabla de efectividades entre los tipos" width="100%">
 
-Si un programa mezcla dos tipos que no se llevan, no llega a ejecutarse:
+<img src="docs/assets/guias/mewtwo.svg" alt="Mewtwo: Leo tu programa entero antes de que corra. Si dos tipos no se llevan, lo sé antes que tú, y te digo en qué línea y por qué." width="100%">
 
-<img src="docs/assets/combate.svg" alt="ROCA usa + contra ELECTRICO: no es muy efectivo" width="100%">
+<img src="docs/assets/combate.svg" alt="Geodude, de tipo roca, usa + contra Pikachu, de tipo electrico: no es muy efectivo" width="100%">
 
 Por ejemplo, este programa:
 
@@ -277,7 +277,9 @@ enseñar Estado, Pokemon desde "tipos.pks"
 
 ## Programas completos
 
-Cada animación es un programa real con su salida real. Están en [`ejemplos/`](ejemplos) y las pruebas del proyecto los ejecutan.
+<img src="docs/assets/guias/mew.svg" alt="Mew: Cada animación de aquí abajo es un programa de verdad, con su salida de verdad. Están en la carpeta ejemplos y las pruebas los ejecutan." width="100%">
+
+Código: [`ejemplos/`](ejemplos)
 
 ### Entrenamiento
 
@@ -527,7 +529,7 @@ El compilador y el intérprete están escritos en Go. El editor usa Svelte y Cod
 
 ## Probarlo
 
-<img src="docs/assets/guias/snorlax.svg" alt="Snorlax: Para despertarme hace falta Go 1.23 o más nuevo. Si vas a trabajar en el proyecto, también Node.js 22 y pnpm 10. Con npm no me muevo. Zzz…" width="100%">
+<img src="docs/assets/guias/snorlax.svg" alt="Snorlax: Para despertarme hace falta Go 1.23 o más nuevo. Si vas a trabajar en el proyecto, también Node.js 22 y pnpm 10. Con npm no me muevo." width="100%">
 
 Descargas: [Go](https://go.dev/dl/) · [Node.js](https://nodejs.org) · [pnpm](https://pnpm.io/installation)
 
@@ -562,7 +564,9 @@ PokeScript/
 
 ## Contribuir
 
-Los commits van en inglés con el formato `PKS type(scope): description`, y cada cambio entra a `dev` por un pull request. Los detalles están en [CONTRIBUTING.md](CONTRIBUTING.md) y el reparto de tareas en [docs/PLAN.md](docs/PLAN.md).
+<img src="docs/assets/guias/pidgeot.svg" alt="Pidgeot: Llevo tus cambios a dev: commits en inglés con el formato PKS y siempre por pull request. Nada vuela directo a main." width="100%">
+
+Detalles: [CONTRIBUTING.md](CONTRIBUTING.md) · reparto de tareas: [docs/PLAN.md](docs/PLAN.md)
 
 <img src="docs/assets/divisor.svg" alt="" width="100%">
 

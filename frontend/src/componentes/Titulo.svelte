@@ -18,6 +18,7 @@
   import { crearProyecto, buscarProyecto, proyectosConocidos } from '../lib/acciones.js';
   import { api } from '../lib/api.js';
   import { sonar } from '../lib/sonido.js';
+  import { alternarPantallaCompleta } from '../lib/ventana.js';
 
   // alContinuar recibe { ruta } para abrir un proyecto o { accion: 'oak' }.
   let { alContinuar, conMenu = false } = $props();
@@ -55,6 +56,7 @@
       return [
         { id: 'tema', texto: `TEMA: ${TEMAS[perfil.tema].nombre.toUpperCase()}` },
         { id: 'sonido', texto: `SONIDOS: ${perfil.sonido ? 'SÍ' : 'NO'}` },
+        { id: 'pantalla', texto: 'PANTALLA COMPLETA (F11)' },
         { id: 'oak', texto: 'VER A OAK OTRA VEZ' },
         { id: 'volver', texto: 'VOLVER' },
       ];
@@ -110,6 +112,8 @@
         return cambiarTema(temas[(temas.indexOf(perfil.tema) + 1) % temas.length]);
       case 'sonido':
         return cambiarSonido(!perfil.sonido);
+      case 'pantalla':
+        return alternarPantallaCompleta();
       case 'oak':
         return alContinuar({ accion: 'oak' });
     }
@@ -496,5 +500,45 @@
   }
   .mascota :global(.sombra) {
     margin-top: -20px;
+  }
+  @media (max-height: 720px) {
+    .logo {
+      top: 4vh;
+    }
+    .logo.arriba {
+      top: 2vh;
+    }
+    h1 {
+      font-size: clamp(48px, 8vw, 96px);
+    }
+    .mascota img {
+      zoom: 2.2;
+    }
+    .menu {
+      top: 28vh;
+    }
+    .opcion {
+      padding-top: 3px;
+      padding-bottom: 3px;
+      font-size: 21px;
+    }
+  }
+  @media (max-width: 820px) {
+    .menu {
+      left: 4vw;
+      right: 4vw;
+      width: auto;
+    }
+    .mascota {
+      right: 3vw;
+      bottom: 3vh;
+      opacity: 0.85;
+    }
+    .mascota img {
+      zoom: 2;
+    }
+    .presiona {
+      font-size: 16px;
+    }
   }
 </style>

@@ -178,4 +178,12 @@
       transform: translateY(4px);
     }
   }
+  @media (max-height: 740px), (max-width: 820px) {
+    .dialogo {
+      min-height: 90px;
+    }
+    .texto {
+      font-size: 20px;
+    }
+  }
 </style>

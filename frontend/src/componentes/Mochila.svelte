@@ -107,9 +107,11 @@
   <div class="bolsillo">
     <img class="pixel" src={objeto('exp-share')} alt="" />
     <span>MOCHILA</span>
-    <button class="mas" onclick={abrirCarpeta} title="Abrir otra carpeta">ABRIR</button>
+  </div>
+  <div class="acciones-mochila">
+    <button class="mas" onclick={abrirCarpeta} title="Abrir otra carpeta">ABRIR CARPETA</button>
     <button class="mas" class:abierto={eligiendo} onclick={empezarNuevo} title="Nuevo archivo"
-      >NUEVO</button
+      >NUEVO ARCHIVO</button
     >
   </div>
 
@@ -303,6 +305,7 @@
 
 <style>
   .mochila {
+    container-type: inline-size;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -326,8 +329,16 @@
   .bolsillo img {
     width: 30px;
   }
+  .acciones-mochila {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .acciones-mochila .mas {
+    flex: 1;
+    padding: 3px 4px;
+  }
   .mas {
-    margin-left: auto;
     padding: 1px 6px;
     font-family: var(--titulo);
     font-size: 12px;
@@ -705,9 +716,6 @@
     font-family: var(--codigo);
     color: var(--palabra);
   }
-  .bolsillo .mas + .mas {
-    margin-left: 4px;
-  }
   .otros-titulo {
     margin: 12px 4px 4px 12px;
     font-family: var(--titulo);
@@ -729,5 +737,11 @@
     background: var(--panel-2);
     border: 2px solid var(--texto-suave);
     clip-path: polygon(0 0, 65% 0, 100% 30%, 100% 100%, 0 100%);
+  }
+  /* Columna angosta: la Master Ball ya dice cuál es el principal. */
+  @container (max-width: 250px) {
+    .chip {
+      display: none;
+    }
   }
 </style>

@@ -277,6 +277,7 @@ tipado
 transicion
 trillones
 unconvert
+unfullscreen
 unown
 usernamehw
 vacia

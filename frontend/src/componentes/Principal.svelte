@@ -20,6 +20,21 @@
   let { ruta } = $props();
 
   let listo = $state(false);
+
+  // Diseño adaptable: en ventanas medianas el compañero pasa a un cajón a la
+  // derecha y en las chicas la mochila también, a la izquierda.
+  let ancho = $state(window.innerWidth);
+  let verCompanero = $state(false);
+  let verMochila = $state(false);
+  const cajonCompanero = $derived(ancho < 1150);
+  const cajonMochila = $derived(ancho < 820);
+  const errores = $derived(ide.diagnosticos.filter((d) => d.severity === 'error').length);
+
+  // Al abrir un archivo desde el cajón, el cajón se cierra solo.
+  $effect(() => {
+    ide.archivoActivo;
+    verMochila = false;
+  });
   let combate = $state(false);
   let ultima = 0;
 
@@ -52,6 +67,8 @@
   });
 </script>
 
+<svelte:window bind:innerWidth={ancho} />
+
 <div class="ide">
   <div
     class="lugar"
@@ -61,8 +78,8 @@
 
   <BarraSuperior />
 
-  <main>
-    <Mochila />
+  <main class:sin-companero={cajonCompanero} class:solo-centro={cajonMochila}>
+    {#if !cajonMochila}<Mochila />{/if}
 
     <section class="centro">
       <div class="pestanas">
@@ -107,8 +124,42 @@
       <Salida />
     </section>
 
-    <Companero />
+    {#if !cajonCompanero}<Companero />{/if}
+
+    {#if cajonMochila}
+      <button class="pestana-cajon izq" onclick={() => (verMochila = !verMochila)} title="Mochila">
+        <img class="pixel" src={objeto('exp-share')} alt="" /><span>MOCHILA</span>
+      </button>
+    {/if}
+    {#if cajonCompanero}
+      <button
+        class="pestana-cajon der"
+        onclick={() => (verCompanero = !verCompanero)}
+        title="Compañero y errores"
+      >
+        <img class="sprite" src={sprite(perfil.companero ?? 'pikachu')} alt="" />
+        {#if errores}<span class="cuenta">{errores}</span>{/if}
+      </button>
+    {/if}
   </main>
+
+  {#if (cajonMochila && verMochila) || (cajonCompanero && verCompanero)}
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    <!-- svelte-ignore a11y_no_static_element_interactions -->
+    <div
+      class="velo-cajon"
+      onclick={() => {
+        verMochila = false;
+        verCompanero = false;
+      }}
+    ></div>
+  {/if}
+  {#if cajonMochila && verMochila}
+    <div class="cajon izq"><Mochila /></div>
+  {/if}
+  {#if cajonCompanero && verCompanero}
+    <div class="cajon der"><Companero /></div>
+  {/if}
 
   <footer>
     <span>Línea {ide.cursor.linea}, columna {ide.cursor.col}</span>
@@ -116,8 +167,8 @@
     <span class="paseo" aria-hidden="true">
       <img class="sprite" src={sprite(perfil.companero ?? 'pikachu')} alt="" />
     </span>
-    <span class="der">Tema: {temaActual(perfil.tema).nombre}</span>
-    <span>Entrenador: {perfil.nombre}</span>
+    <span class="der ancho">Tema: {temaActual(perfil.tema).nombre}</span>
+    <span class="ancho">Entrenador: {perfil.nombre}</span>
   </footer>
 </div>
 
@@ -157,9 +208,16 @@
     padding: 14px;
     min-height: 0;
   }
+  main.sin-companero {
+    grid-template-columns: minmax(190px, 240px) minmax(0, 1fr);
+  }
+  main.solo-centro {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 10px 44px 10px 44px;
+  }
   .centro {
     display: grid;
-    grid-template-rows: auto 1fr 210px;
+    grid-template-rows: auto 1fr clamp(130px, 24vh, 210px);
     min-height: 0;
     min-width: 0;
   }
@@ -167,6 +225,12 @@
     display: flex;
     gap: 4px;
     padding-left: 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .pestana {
+    flex: none;
+    white-space: nowrap;
   }
   .pestana {
     position: relative;
@@ -305,5 +369,109 @@
   }
   .estado-guardado.pendiente {
     color: var(--aviso);
+  }
+  /* Cajones laterales para ventanas angostas. */
+  .pestana-cajon {
+    position: absolute;
+    top: 50%;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 4px;
+    font-family: var(--titulo);
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--acento-texto);
+    background: var(--acento);
+    border: 3px solid var(--borde);
+    cursor: pointer;
+    transform: translateY(-50%);
+  }
+  .pestana-cajon.izq {
+    left: 0;
+    border-left: 0;
+    border-radius: 0 10px 10px 0;
+  }
+  .pestana-cajon.der {
+    right: 0;
+    border-right: 0;
+    border-radius: 10px 0 0 10px;
+  }
+  .pestana-cajon span {
+    writing-mode: vertical-rl;
+  }
+  .pestana-cajon img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+  }
+  .pestana-cajon .cuenta {
+    writing-mode: horizontal-tb;
+    min-width: 20px;
+    padding: 0 4px;
+    font-size: 12px;
+    color: #fff;
+    background: var(--error);
+    border: 2px solid var(--borde);
+  }
+  .velo-cajon {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    background: rgba(8, 6, 16, 0.45);
+  }
+  .cajon {
+    position: fixed;
+    top: 70px;
+    bottom: 40px;
+    z-index: 31;
+    display: flex;
+    width: min(360px, 88vw);
+    padding: 8px;
+    background: var(--fondo);
+    border: 4px solid var(--borde);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    animation: deslizar 0.2s steps(4) both;
+  }
+  .cajon > :global(*) {
+    flex: 1;
+    min-width: 0;
+  }
+  .cajon.izq {
+    left: 0;
+    border-left: 0;
+    border-radius: 0 12px 12px 0;
+    --desde: -100%;
+  }
+  .cajon.der {
+    right: 0;
+    border-right: 0;
+    border-radius: 12px 0 0 12px;
+    --desde: 100%;
+  }
+  @keyframes deslizar {
+    from {
+      transform: translateX(var(--desde));
+    }
+  }
+  @media (max-width: 1000px) {
+    .ancho {
+      display: none;
+    }
+    footer {
+      gap: 14px;
+      font-size: 12px;
+    }
+  }
+  @media (max-height: 640px) {
+    main {
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+    .hoja {
+      margin-bottom: 8px;
+    }
   }
 </style>

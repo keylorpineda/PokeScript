@@ -7,6 +7,7 @@
   import Principal from './componentes/Principal.svelte';
   import Explorador from './componentes/Explorador.svelte';
   import { navegacion, explorador } from './lib/estado.svelte.js';
+  import { alternarPantallaCompleta } from './lib/ventana.js';
 
   // Lo que eligió el menú antes de pasar por Oak.
   let pendiente = null;
@@ -31,6 +32,15 @@
     }
   }
 </script>
+
+<svelte:window
+  onkeydown={(e) => {
+    if (e.key === 'F11') {
+      e.preventDefault();
+      alternarPantallaCompleta();
+    }
+  }}
+/>
 
 {#if navegacion.pantalla === 'titulo' || navegacion.pantalla === 'menu'}
   {#key navegacion.pantalla}

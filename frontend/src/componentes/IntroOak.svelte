@@ -467,4 +467,38 @@
   .en-fila :global(.sombra) {
     margin-top: -22px;
   }
+  @media (max-height: 740px) {
+    .escenario {
+      inset: 0 0 150px;
+    }
+    .oak {
+      zoom: 2.4;
+    }
+    .en-fila img,
+    .duo .sprite {
+      zoom: 1.8;
+    }
+    .aparece img {
+      zoom: 2;
+    }
+    .vitrina {
+      min-height: 170px;
+    }
+  }
+  @media (max-width: 820px) {
+    .desfile {
+      gap: 10px;
+    }
+    .en-fila img {
+      zoom: 1.5;
+    }
+    .mesa {
+      gap: 10px;
+      padding: 14px 18px 20px;
+    }
+    .vitrina {
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
 </style>

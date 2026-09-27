@@ -86,7 +86,7 @@
   }
   .habitat {
     position: relative;
-    height: 230px;
+    height: clamp(170px, 27vh, 230px);
     flex: none;
     overflow: hidden;
     border-image-source: var(--marco-oscuro);

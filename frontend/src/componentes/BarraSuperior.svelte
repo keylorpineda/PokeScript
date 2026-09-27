@@ -8,6 +8,7 @@
   import { POKEMON, sprite, objeto } from '../lib/pokemon.js';
   import { compilar, ejecutar, detener, salirAlMenu, oak } from '../lib/acciones.js';
   import { sonar } from '../lib/sonido.js';
+  import { alternarPantallaCompleta } from '../lib/ventana.js';
 
   let abierto = $state(false);
   const nivel = $derived(5 + Math.floor((perfil.exp ?? 0) / 3));
@@ -53,7 +54,7 @@
       <Pokebola escala={0.85} /><span>¡COMBATE!</span>
     </button>
     <button class="boton" onclick={detener} disabled={!ide.ejecutando} title="Detener">
-      <span>HUIR</span>
+      <span class="siempre">HUIR</span>
     </button>
   </nav>
 
@@ -100,6 +101,9 @@
           <button class="fila" onclick={() => cambiarSonido(!perfil.sonido)}>
             <span class="luz" class:on={perfil.sonido}></span>
             Efectos de sonido: {perfil.sonido ? 'sí' : 'no'}
+          </button>
+          <button class="fila" onclick={alternarPantallaCompleta}>
+            <span class="marco-pantalla" aria-hidden="true"></span>Pantalla completa (F11)
           </button>
           <button class="fila" onclick={salirAlMenu}>
             <img class="pixel" src={objeto('poke-ball')} alt="" />Volver a la portada
@@ -307,6 +311,24 @@
   @media (max-width: 1100px) {
     .derecha .boton span:not(.quien),
     .tarjeta .quien {
+      display: none;
+    }
+  }
+  .marco-pantalla {
+    width: 18px;
+    height: 13px;
+    border: 3px solid var(--texto);
+    border-radius: 2px;
+  }
+  @media (max-width: 820px) {
+    .barra {
+      gap: 8px;
+      padding: 6px 8px;
+    }
+    .acciones .boton span:not(.siempre) {
+      display: none;
+    }
+    .logo :global(img) {
       display: none;
     }
   }

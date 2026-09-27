@@ -10,25 +10,34 @@
 # Si cspell marca una palabra válida, agrégala aquí (orden alfabético).
 # Técnicos
 Aranja
+Blastoise
 Bulbasaur
 Bulbi
+Chansey
 Charizard
 Charmander
 CodeMirror
+Dragonite
 EBNF
 Eevee
 Fira
+Gengar
 Geodude
 Hidrobomba
 Howler
 Interp
+Kangaskhan
+Kanto
 Lanzallamas
 Levenshtein
 Lugia
+Machamp
+Machop
 Magikarp
 Meloc
 Menlo
 Mewtwo
+Onix
 Pikachu
 PixiJS
 Placaje
@@ -39,7 +48,9 @@ Pokébolas
 Pokédex
 Pokémon
 Porygon
+Psyduck
 Rayquaza
+Rotom
 Segoe
 Snorlax
 Squirtle
@@ -49,6 +60,7 @@ Wails
 Zreza
 accion
 ambitos
+arcoiris
 aritmetica
 asignacion
 astprueba
@@ -70,6 +82,7 @@ commitlint
 compilacion
 condicion
 convencion
+corazon
 cortocircuito
 cópialo
 dano
@@ -143,6 +156,7 @@ operandos
 parametro
 parametros
 parsear
+petalos
 pks
 pokebola
 pokedex
@@ -183,6 +197,7 @@ vacios
 variacion
 verificacion
 vivaxy
+volcan
 wailsapp
 wailsjs
 webkit

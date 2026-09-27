@@ -184,81 +184,134 @@ ${fase2.svg}      </g>
 }
 
 // ─── 3. Medallas: la hoja de ruta ──────────────────────────────────────────
+// Los doce hitos son las ocho medallas de Kanto (Rojo Fuego) y los cuatro
+// del Alto Mando, en el orden en que se ganan en el juego.
 {
   const W = 900;
-  const H = 330;
-  // Formas de medalla, dibujadas alrededor de (0, 0) con radio ~34.
-  const estrella = (puntas, r1, r2) => {
+  const H = 380;
+  const punto = (r, a) => `${(r * Math.cos(a)).toFixed(1)} ${(r * Math.sin(a)).toFixed(1)}`;
+  const estrella = (puntas, r1, r2, giro = -Math.PI / 2) => {
     let d = '';
     for (let i = 0; i < puntas * 2; i++) {
-      const r = i % 2 ? r2 : r1;
-      const a = (Math.PI * i) / puntas - Math.PI / 2;
-      d += `${i ? 'L' : 'M'}${(r * Math.cos(a)).toFixed(1)} ${(r * Math.sin(a)).toFixed(1)} `;
+      d += `${i ? 'L' : 'M'}${punto(i % 2 ? r2 : r1, (Math.PI * i) / puntas + giro)} `;
     }
-    return `<path d="${d}Z"/>`;
+    return `${d}Z`;
   };
-  const poligono = (lados, r, giro = 0) =>
-    estrella(lados, r, r * Math.cos(Math.PI / lados)).replace(
-      '<path',
-      `<path transform="rotate(${giro})"`,
+  const poligono = (lados, r, giro = -Math.PI / 2) => {
+    let d = '';
+    for (let i = 0; i < lados; i++) d += `${i ? 'L' : 'M'}${punto(r, (2 * Math.PI * i) / lados + giro)} `;
+    return `${d}Z`;
+  };
+  const borde = 'stroke="#2a2a2a" stroke-width="2.5" stroke-linejoin="round"';
+  const brillo = '<ellipse cx="-10" cy="-14" rx="8" ry="4.5" fill="#ffffff" opacity="0.6" transform="rotate(-35 -10 -14)"/>';
+
+  // Cada dibujo va centrado en (0, 0) con radio ~34.
+  const roca = () => {
+    const g = Math.PI / 8;
+    let facetas = '';
+    for (let i = 0; i < 8; i++) {
+      const a = (2 * Math.PI * i) / 8 + g;
+      facetas += `<path d="M${punto(33, a)} L${punto(17, a)}" stroke="#5a5a62" stroke-width="1.5"/>`;
+    }
+    return `<path d="${poligono(8, 33, g)}" fill="#a4a4ae" ${borde}/><path d="${poligono(8, 17, g)}" fill="#d4d4dc" stroke="#5a5a62" stroke-width="1.5"/>${facetas}${brillo}`;
+  };
+  const cascada = () =>
+    `<path d="M0 -36 C14 -16 25 -2 25 11 A25 25 0 0 1 -25 11 C-25 -2 -14 -16 0 -36 Z" fill="#4f9ee8" ${borde}/><path d="M0 -18 C7 -8 12 0 12 9 A12 12 0 0 1 -12 9 C-12 0 -7 -8 0 -18 Z" fill="#9fd0ff"/>${brillo}`;
+  const trueno = () =>
+    `<path d="${estrella(8, 35, 25)}" fill="#f08a24" ${borde}/><path d="${poligono(8, 17, -Math.PI / 8)}" fill="#ffd33d" stroke="#b86a10" stroke-width="1.5"/>${brillo}`;
+  const arcoiris = () => {
+    const colores = ['#e84040', '#f08030', '#f8d030', '#78c850', '#40a0e0', '#6060d0', '#a050c0', '#e060a0'];
+    const petalos = colores
+      .map((c, i) => {
+        const a = (2 * Math.PI * i) / 8;
+        return `<ellipse cx="${punto(20, a).split(' ')[0]}" cy="${punto(20, a).split(' ')[1]}" rx="13" ry="9" transform="rotate(${(i * 45).toFixed(0)} ${punto(20, a)})" fill="${c}" ${borde}/>`;
+      })
+      .join('');
+    return `${petalos}<circle r="11" fill="#fff4b0" ${borde}/>`;
+  };
+  const corazon = 'M0 30 C-42 4 -30 -32 0 -13 C30 -32 42 4 0 30 Z';
+  const alma = () =>
+    `<path d="${corazon}" fill="#e8559a" ${borde}/><path d="${corazon}" transform="scale(0.5) translate(0 4)" fill="#ffa6cf"/>${brillo}`;
+  const pantano = () =>
+    `<circle r="33" fill="#d9a520" ${borde}/><circle r="23" fill="#f5d468" stroke="#a87c10" stroke-width="2"/><circle r="12" fill="#d9a520" stroke="#a87c10" stroke-width="2"/>${brillo}`;
+  const llama = 'M0 -36 C12 -22 28 -8 24 12 A24 24 0 0 1 -24 12 C-28 -6 -14 -14 -8 -26 C-4 -14 4 -14 0 -36 Z';
+  const volcan = () =>
+    `<path d="${llama}" fill="#e03a28" ${borde}/><path d="${llama}" transform="translate(0 10) scale(0.5)" fill="#ffa040"/>`;
+  const hoja = 'M0 -35 Q12 -12 34 0 Q12 12 0 35 Q-12 12 -34 0 Q-12 -12 0 -35 Z';
+  const tierra = () =>
+    `<path d="${hoja}" fill="#48a848" ${borde}/><path d="${hoja}" transform="scale(0.45)" fill="#a8e088"/>${brillo}`;
+
+  // El Alto Mando: un emblema redondo del color de su tipo.
+  const emblema = (color, dibujo) =>
+    `<circle r="33" fill="${color}" ${borde}/><circle r="26" fill="none" stroke="#ffffff" stroke-opacity="0.55" stroke-width="2"/>${dibujo}`;
+  const hielo = () => {
+    let copo = '';
+    for (let i = 0; i < 3; i++) {
+      copo += `<g transform="rotate(${i * 60})" stroke="#ffffff" stroke-width="3" stroke-linecap="round"><path d="M0 -17 V17 M-5 -12 L0 -8 L5 -12 M-5 12 L0 8 L5 12"/></g>`;
+    }
+    return emblema('#58b8d8', copo);
+  };
+  const lucha = () =>
+    emblema('#b04a30', `<path d="${estrella(6, 18, 8)}" fill="#ffffff"/>`);
+  const fantasma = () =>
+    emblema(
+      '#6a4a9a',
+      '<path d="M-14 16 V-2 A14 14 0 0 1 14 -2 V16 L9 11 L4 16 L0 11 L-4 16 L-9 11 Z" fill="#ffffff"/><circle cx="-5" cy="-2" r="3" fill="#6a4a9a"/><circle cx="5" cy="-2" r="3" fill="#6a4a9a"/>',
     );
-  const formas = [
-    poligono(8, 34, 22.5), // roca
-    '<path d="M0 -36 C18 -12 26 2 26 12 A26 26 0 0 1 -26 12 C-26 2 -18 -12 0 -36 Z"/>', // gota
-    estrella(8, 36, 18), // trueno
-    '<g><circle cx="0" cy="-17" r="16"/><circle cx="17" cy="0" r="16"/><circle cx="0" cy="17" r="16"/><circle cx="-17" cy="0" r="16"/></g>', // flor
-    '<path d="M0 30 C-40 4 -30 -30 0 -14 C30 -30 40 4 0 30 Z"/>', // corazón
-    '<g><circle r="34"/><circle r="22" fill-opacity="0.55"/><circle r="10"/></g>', // círculos
-    '<path d="M0 -36 C14 -20 26 -8 22 12 A22 22 0 0 1 -22 12 C-26 -6 -12 -14 -6 -26 C-2 -14 6 -12 0 -36 Z"/>', // llama
-    '<path d="M-30 30 C-30 -10 0 -34 32 -32 C34 0 10 30 -30 30 Z"/>', // hoja
-    poligono(4, 36), // rombo
-    poligono(6, 34, 30), // hexágono
-    '<path d="M0 -34 L30 -22 L26 12 C22 26 10 32 0 36 C-10 32 -22 26 -26 12 L-30 -22 Z"/>', // escudo
-    estrella(5, 36, 16), // estrella
+  const dragon = () =>
+    emblema('#5a5ad8', '<path d="M0 -4 L-20 -14 L-14 4 L-6 2 L0 16 L6 2 L14 4 L20 -14 Z" fill="#ffffff"/>');
+
+  const hitos = [
+    ['Roca', 'Lexer', roca, false],
+    ['Cascada', 'Expresiones', cascada, true],
+    ['Trueno', 'Bloques', trueno, true],
+    ['Arcoíris', 'Primer programa', arcoiris, true],
+    ['Alma', 'Tipos', alma, true],
+    ['Pantano', 'Movimientos', pantano, true],
+    ['Volcán', 'Colecciones', volcan, true],
+    ['Tierra', 'Segun', tierra, true],
+    ['Lorelei', 'Importaciones', hielo, true],
+    ['Bruno', 'Posible', lucha, true],
+    ['Agatha', 'Fichas', fantasma, true],
+    ['Lance', 'Asistente', dragon, true],
   ];
-  const medallas = [
-    ['Lexer', '#b8a038', false],
-    ['Expresiones', '#6890f0', true],
-    ['Bloques', '#f8d030', true],
-    ['Primer programa', '#f08030', true],
-    ['Tipos', '#e0588a', true],
-    ['Movimientos', '#a060d8', true],
-    ['Colecciones', '#e05030', true],
-    ['Segun', '#58b848', true],
-    ['Importaciones', '#40a8c8', true],
-    ['Posible', '#8878d8', true],
-    ['Fichas', '#c89838', true],
-    ['Asistente', '#e8b820', true],
-  ];
-  const ganadas = medallas.filter((m) => m[2]).length;
-  let css = '';
+  const ganadas = hitos.filter((h) => h[3]).length;
+
   let cuerpo = '';
-  medallas.forEach(([nombre, color, ganada], i) => {
-    const x = 90 + (i % 6) * 144;
-    const y = 118 + Math.floor(i / 6) * 118;
+  hitos.forEach(([nombre, hito, dibujo, ganada], i) => {
+    const enCaja = i < 8;
+    const x = enCaja ? 102 + (i % 4) * 132 : 680 + ((i - 8) % 2) * 130;
+    const y = 150 + Math.floor((enCaja ? i : i - 8) / (enCaja ? 4 : 2)) * 118;
     const d = (0.25 + i * 0.12).toFixed(2);
-    const forma = formas[i];
-    const relleno = ganada
-      ? `fill="url(#g${i})" stroke="#3a3a3a" stroke-width="2.5"`
-      : 'fill="#3a3f66" stroke="#6b70a8" stroke-width="2.5" stroke-dasharray="5 4"';
-    cuerpo += `    <defs><linearGradient id="g${i}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.25" stop-color="${color}"/><stop offset="1" stop-color="${color}" stop-opacity="0.7"/></linearGradient></defs>
-    <g class="pop" style="animation-delay:${d}s"><g transform="translate(${x} ${y})" ${relleno}>${forma}</g>
-      <text x="${x}" y="${y + 56}" font-family="${SANS}" font-size="14" font-weight="700" fill="${ganada ? '#e6e9ff' : '#8b90c0'}" text-anchor="middle">${nombre}</text>
-      ${ganada ? '' : `<text x="${x}" y="${y + 74}" font-family="${SANS}" font-size="11" fill="#8b90c0" text-anchor="middle">falta el editor</text>`}
-      ${ganada ? `<path class="destello" style="animation-delay:${(1.8 + i * 0.37).toFixed(2)}s" d="M${x + 24} ${y - 34} l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 z" fill="#ffffff"/>` : ''}
-    </g>\n`;
+    const hueco = `<circle cx="${x}" cy="${y}" r="42" fill="${enCaja ? '#6e1d1d' : '#262a4a'}"/>`;
+    const figura = ganada
+      ? `<g class="pop" style="animation-delay:${d}s"><g transform="translate(${x} ${y})">${dibujo()}</g></g>`
+      : `<g transform="translate(${x} ${y})" opacity="0.45"><g fill="#000000" stroke="#000000">${dibujo().replace(/fill="[^"]*"/g, 'fill="#1a1a1a"').replace(/stroke="[^"]*"/g, 'stroke="#555555"')}</g></g>
+      <circle cx="${x}" cy="${y}" r="42" fill="none" stroke="#e6e9ff" stroke-opacity="0.5" stroke-width="2" stroke-dasharray="6 5"/>`;
+    const claro = enCaja ? '#ffe9c8' : '#e6e9ff';
+    const tenue = enCaja ? '#e6a88c' : '#8b90c0';
+    cuerpo += `    ${hueco}
+    ${figura}
+    <text x="${x}" y="${y + 60}" font-family="${SANS}" font-size="14" font-weight="700" fill="${claro}" text-anchor="middle">${nombre}</text>
+    <text x="${x}" y="${y + 76}" font-family="${SANS}" font-size="11" fill="${tenue}" text-anchor="middle">${ganada ? `${i + 1} · ${hito}` : 'falta el editor'}</text>
+${ganada ? `    <path class="destello" style="animation-delay:${(1.8 + i * 0.37).toFixed(2)}s" d="M${x + 26} ${y - 36} l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 z" fill="#ffffff"/>\n` : ''}`;
   });
-  css += `    .pop { opacity: 0; transform-box: fill-box; transform-origin: center; animation: pop 0.45s cubic-bezier(.34,1.56,.64,1) both; }
+
+  const s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Estuche de medallas: ${ganadas} de 12. Las ocho medallas de Kanto y el Alto Mando, una por hito; falta la Medalla Roca, el editor del hito 1">
+  <style>
+    .pop { opacity: 0; transform-box: fill-box; transform-origin: center; animation: pop 0.45s cubic-bezier(.34,1.56,.64,1) both; }
     @keyframes pop { from { opacity: 0; transform: scale(0.3); } to { opacity: 1; transform: scale(1); } }
     .destello { opacity: 0; transform-box: fill-box; transform-origin: center; animation: destello 4.4s ease-in-out infinite; }
     @keyframes destello { 0%, 100% { opacity: 0; transform: scale(0.4); } 8% { opacity: 1; transform: scale(1.2); } 16% { opacity: 0; transform: scale(0.4); } }
-`;
-  const s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Medallas de la hoja de ruta: ${ganadas} de 12 hitos ganados; falta el editor del hito 1">
-  <style>
-${css}  </style>
+  </style>
   <rect width="${W}" height="${H}" rx="16" fill="#1b1d36"/>
-  <text x="40" y="44" font-family="${SANS}" font-size="22" font-weight="900" fill="#ffcb05">Medallas: ${ganadas} de 12</text>
-  <text x="${W - 40}" y="44" font-family="${SANS}" font-size="14" fill="#8b90c0" text-anchor="end">una por cada hito de la especificación</text>
+  <text x="36" y="44" font-family="${SANS}" font-size="22" font-weight="900" fill="#ffcb05">Estuche de medallas: ${ganadas} de 12</text>
+  <text x="${W - 36}" y="44" font-family="${SANS}" font-size="14" fill="#8b90c0" text-anchor="end">un hito de la especificación por medalla</text>
+  <rect x="24" y="70" width="562" height="290" rx="18" fill="#b8322a" stroke="#6e1d1d" stroke-width="4"/>
+  <rect x="36" y="82" width="538" height="266" rx="12" fill="#8e2420"/>
+  <text x="305" y="102" font-family="${SANS}" font-size="12" font-weight="700" letter-spacing="3" fill="#ffcfb8" text-anchor="middle">GIMNASIOS DE KANTO</text>
+  <rect x="606" y="70" width="270" height="290" rx="18" fill="#2e3260" stroke="#141630" stroke-width="4"/>
+  <text x="741" y="102" font-family="${SANS}" font-size="12" font-weight="700" letter-spacing="3" fill="#b8bdf0" text-anchor="middle">ALTO MANDO</text>
 ${cuerpo}</svg>
 `;
   writeFileSync(join(OUT, 'medallas.svg'), s);

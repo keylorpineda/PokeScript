@@ -82,6 +82,7 @@ cópialo
 dano
 davidanson
 declaracion
+deepsea
 desapila
 descripcion
 despues
@@ -91,6 +92,7 @@ eamodio
 ebnf
 eevee
 ejecucion
+eleccion
 electrico
 encadenable
 encadenables
@@ -131,6 +133,7 @@ kanto
 keylor
 keylorpineda
 keymap
+lapras
 leccion
 leida
 leidos
@@ -152,6 +155,7 @@ minuscula
 mochila
 movimiento
 multiarchivo
+navegacion
 nolint
 nombrador
 nulabilidad
@@ -215,6 +219,7 @@ superefectivo
 tamano
 telon
 termínalo
+thunderplains
 tipado
 transicion
 trillones

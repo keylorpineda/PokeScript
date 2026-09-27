@@ -5,10 +5,11 @@
   import { temaActual } from '../lib/temas.js';
   import { perfil } from '../lib/estado.svelte.js';
 
-  // «lugar» fuerza un tema de escena (Oak siempre está en Pueblo Paleta).
-  let { oscurecer = 0, paneo = true, lugar = null, children } = $props();
+  // «lugar» fuerza la escena de un tema (Oak siempre está en Pueblo Paleta) y
+  // «portada» da una escena completa (las portadas del título).
+  let { oscurecer = 0, paneo = true, lugar = null, portada = null, children } = $props();
 
-  const escena = $derived(temaActual(lugar ?? perfil.tema).escena);
+  const escena = $derived(portada ?? temaActual(lugar ?? perfil.tema).escena);
 
   // Posiciones fijas (sin aleatorio) para que no salten al redibujar.
   const PARTICULAS = Array.from({ length: 34 }, (_, i) => ({
@@ -182,6 +183,43 @@
     to {
       transform: translate(-6vw, 60vh);
       opacity: 0.2;
+    }
+  }
+
+  /* Burbujas en el río y el mar. */
+  .burbujas span {
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation-name: subir;
+  }
+
+  /* Chispas en la llanura del trueno. */
+  .chispas span {
+    width: calc(var(--t) * 3);
+    height: 3px;
+    background: #fff27a;
+    box-shadow: 0 0 8px #ffd000;
+    animation-name: chispear;
+    animation-timing-function: steps(1);
+  }
+  @keyframes chispear {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+      transform: rotate(35deg);
+    }
+    12% {
+      opacity: 0;
+    }
+    40% {
+      opacity: 1;
+      transform: rotate(-40deg) translate(10px, 4px);
+    }
+    44% {
+      opacity: 0;
     }
   }
 

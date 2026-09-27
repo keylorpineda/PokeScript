@@ -10,11 +10,13 @@
   import Companero from './Companero.svelte';
   import Transicion from './Transicion.svelte';
   import OakAviso from './OakAviso.svelte';
-  import { ide, perfil } from '../lib/estado.svelte.js';
+  import { ide, perfil, navegacion } from '../lib/estado.svelte.js';
   import { temaActual } from '../lib/temas.js';
   import { objeto, sprite } from '../lib/pokemon.js';
   import { abrirProyecto, escucharEjecucion } from '../lib/acciones.js';
   import { sonar } from '../lib/sonido.js';
+
+  let { ruta } = $props();
 
   let listo = $state(false);
   let combate = $state(false);
@@ -25,7 +27,14 @@
 
   onMount(async () => {
     escucharEjecucion();
-    await abrirProyecto();
+    try {
+      await abrirProyecto(ruta);
+    } catch (e) {
+      // El proyecto ya no está (se borró o se movió): de vuelta al menú.
+      navegacion.aviso = `No se pudo abrir ${ruta}: ${e?.message ?? e}.`;
+      navegacion.pantalla = 'menu';
+      return;
+    }
     listo = true;
   });
 

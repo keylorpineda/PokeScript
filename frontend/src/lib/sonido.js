@@ -101,16 +101,28 @@ const SONIDOS = {
   huir: () =>
     arpegio([1175, 988, 784, 587, 440], 0.05, 0.06, 'square', 0.035).forEach((n) => nota(...n)),
   combate: () => {
-    // Encuentro salvaje: una corrida cromática que sube alternando octavas,
-    // el bajo marcando el pulso, el barrido de las franjas y un acorde final.
-    for (let i = 0; i < 16; i++) {
-      const f = 392 * Math.pow(2, i / 12);
-      nota(i % 2 ? f * 2 : f, i * 0.052, 0.05, 'square', 0.035);
-    }
-    [0, 0.21, 0.42, 0.63].forEach((t, i) => nota(i % 2 ? 147 : 98, t, 0.18, 'triangle', 0.09));
-    golpeRuido(0.78, 0.38, 0.07, 4000);
-    [523, 659, 784, 1047].forEach((f) => nota(f, 0.9, 0.42, 'square', 0.026));
-    nota(131, 0.9, 0.5, 'triangle', 0.1);
+    // ¡Un combate empieza! Dura lo mismo que la transición de las franjas:
+    // 1) barrido que sube, 2) tres golpes de acorde con bajo, 3) trémolo
+    // rápido en La menor mientras cierran las franjas, 4) acorde final.
+    const doble = (f, t, d, vol, onda = 'square') => {
+      nota(f, t, d, onda, vol);
+      nota(f * 1.006, t, d, onda, vol * 0.6); // levemente desafinada: suena más llena
+    };
+    nota(180, 0, 0.32, 'sawtooth', 0.035, 1400);
+    golpeRuido(0, 0.3, 0.05, 5000);
+    [0.34, 0.5, 0.66].forEach((t, i) => {
+      const raiz = [220, 220, 262][i];
+      doble(raiz * 2, t, 0.12, 0.04);
+      doble(raiz * 3, t, 0.12, 0.03);
+      nota(raiz / 2, t, 0.14, 'triangle', 0.12);
+      golpeRuido(t, 0.06, 0.07, 1500);
+    });
+    const tremolo = [440, 523, 659, 880];
+    for (let i = 0; i < 12; i++) doble(tremolo[i % 4], 0.84 + i * 0.035, 0.034, 0.028);
+    nota(110, 0.84, 0.42, 'triangle', 0.1);
+    [440, 523, 659, 880].forEach((f) => doble(f, 1.28, 0.5, 0.026));
+    nota(55, 1.28, 0.55, 'triangle', 0.14);
+    golpeRuido(1.28, 0.5, 0.08, 6000);
   },
   captura: () => {
     [0, 0.45, 0.9].forEach((t) => {

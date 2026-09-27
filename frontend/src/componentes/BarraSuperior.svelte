@@ -5,7 +5,7 @@
   import { ide, perfil, cambiarTema, cambiarSonido } from '../lib/estado.svelte.js';
   import { TEMAS } from '../lib/temas.js';
   import { sprite } from '../lib/pokemon.js';
-  import { compilar, ejecutar, detener } from '../lib/acciones.js';
+  import { compilar, ejecutar, detener, salirAlMenu } from '../lib/acciones.js';
   import { sonar } from '../lib/sonido.js';
 
   let menuTemas = $state(false);
@@ -36,6 +36,7 @@
   </div>
 
   <div class="derecha">
+    <button class="boton" onclick={salirAlMenu} title="Volver a la portada">MENÚ</button>
     <div class="temas">
       <button class="boton" onclick={() => (menuTemas = !menuTemas)}>
         <img class="sprite mini" src={sprite(TEMAS[perfil.tema].escena.mascota)} alt="" />

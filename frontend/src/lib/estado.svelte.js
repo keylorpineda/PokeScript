@@ -23,6 +23,7 @@ export const perfil = $state({
   tema: TEMAS[guardado?.tema] ? guardado.tema : 'rojo-fuego',
   sonido: guardado?.sonido ?? true,
   logros: guardado?.logros ?? {},
+  recientes: guardado?.recientes ?? [], // { ruta, nombre, fecha }
   exp: guardado?.exp ?? 0, // compilaciones exitosas: suben de nivel al compañero
 });
 
@@ -77,3 +78,6 @@ export function logro(nombre) {
   guardarPerfil();
   return true;
 }
+
+// Pantalla actual del IDE y el proyecto elegido en el menú del título.
+export const navegacion = $state({ pantalla: 'titulo', ruta: null, aviso: '' });

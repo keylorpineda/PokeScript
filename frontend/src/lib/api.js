@@ -33,46 +33,95 @@ fin
 `,
 };
 
+// El proyecto de ejemplo del repositorio (sección 10), leído en tiempo de
+// compilación.
+const COMBATE = Object.fromEntries(
+  Object.entries(
+    import.meta.glob('../../../ejemplos/combate/*.pks', {
+      query: '?raw',
+      import: 'default',
+      eager: true,
+    }),
+  ).map(([ruta, texto]) => [ruta.split('/').pop(), texto]),
+);
+
+const CLAVE_SIMULADO = 'pokescript-simulado';
+
 const simulado = {
-  archivos: { ...EJEMPLO },
-  principal: 'principal.pks',
+  // Los proyectos del simulador se guardan en el navegador para que sigan ahí
+  // al recargar la página.
+  proyectos: (() => {
+    const base = {
+      centro_pokemon: { principal: 'principal.pks', archivos: { ...EJEMPLO } },
+      combate: { principal: 'principal.pks', archivos: { ...COMBATE } },
+    };
+    try {
+      return { ...base, ...JSON.parse(localStorage.getItem(CLAVE_SIMULADO) ?? '{}') };
+    } catch {
+      return base;
+    }
+  })(),
+  guardar() {
+    try {
+      localStorage.setItem(CLAVE_SIMULADO, JSON.stringify(this.proyectos));
+    } catch {
+      // Sin almacenamiento: los cambios duran solo esta sesión.
+    }
+  },
   oyentes: {},
   entrada: null,
 
-  async LeerProyecto() {
-    return {
-      nombre: 'centro_pokemon',
-      principal: this.principal,
-      archivos: Object.keys(this.archivos).sort(),
+  proyecto(ruta) {
+    const p = this.proyectos[ruta];
+    if (!p) throw new Error(`no existe el proyecto ${ruta}`);
+    return p;
+  },
+  async CrearProyecto(_carpeta, nombre) {
+    if (this.proyectos[nombre]) throw new Error(`ya existe el proyecto ${nombre}`);
+    this.proyectos[nombre] = {
+      principal: 'principal.pks',
+      archivos: { 'principal.pks': 'combate\n    gritar "¡Hola, mundo!"\nfin\n' },
     };
+    return { ruta: nombre, ...(await this.LeerProyecto(nombre)) };
   },
-  async LeerArchivo(_ruta, archivo) {
-    return this.archivos[archivo] ?? '';
+  async ElegirCarpeta() {
+    return null; // Sin Wails no hay diálogo de carpetas.
   },
-  async GuardarArchivo(_ruta, archivo, contenido) {
-    this.archivos[archivo] = contenido;
+  async LeerProyecto(ruta) {
+    const p = this.proyecto(ruta);
+    return { nombre: ruta, principal: p.principal, archivos: Object.keys(p.archivos).sort() };
   },
-  async NuevoArchivo(_ruta, archivo) {
-    if (this.archivos[archivo] !== undefined) throw new Error(`ya existe ${archivo}`);
-    this.archivos[archivo] = '';
+  async LeerArchivo(ruta, archivo) {
+    return this.proyecto(ruta).archivos[archivo] ?? '';
   },
-  async RenombrarArchivo(_ruta, de, a) {
-    if (this.archivos[a] !== undefined) throw new Error(`ya existe ${a}`);
-    this.archivos[a] = this.archivos[de];
-    delete this.archivos[de];
-    if (this.principal === de) this.principal = a;
+  async GuardarArchivo(ruta, archivo, contenido) {
+    this.proyecto(ruta).archivos[archivo] = contenido;
   },
-  async BorrarArchivo(_ruta, archivo) {
-    if (archivo === this.principal) throw new Error('no se puede borrar el archivo principal');
-    delete this.archivos[archivo];
+  async NuevoArchivo(ruta, archivo) {
+    const p = this.proyecto(ruta);
+    if (p.archivos[archivo] !== undefined) throw new Error(`ya existe ${archivo}`);
+    p.archivos[archivo] = '';
   },
-  async MarcarPrincipal(_ruta, archivo) {
-    this.principal = archivo;
+  async RenombrarArchivo(ruta, de, a) {
+    const p = this.proyecto(ruta);
+    if (p.archivos[a] !== undefined) throw new Error(`ya existe ${a}`);
+    p.archivos[a] = p.archivos[de];
+    delete p.archivos[de];
+    if (p.principal === de) p.principal = a;
   },
-  async CompilarProyecto() {
+  async BorrarArchivo(ruta, archivo) {
+    const p = this.proyecto(ruta);
+    if (archivo === p.principal) throw new Error('no se puede borrar el archivo principal');
+    delete p.archivos[archivo];
+  },
+  async MarcarPrincipal(ruta, archivo) {
+    this.proyecto(ruta).principal = archivo;
+  },
+  async CompilarProyecto(ruta) {
     await espera(250);
+    const p = this.proyecto(ruta);
     const diagnosticos = [];
-    for (const [archivo, texto] of Object.entries(this.archivos)) {
+    for (const [archivo, texto] of Object.entries(p.archivos)) {
       texto.split('\n').forEach((l, i) => {
         const col = l.indexOf('curra');
         if (col >= 0) {
@@ -127,8 +176,8 @@ const simulado = {
     return {
       exito,
       encabezado: exito ? '¡Es superefectivo!' : diagnosticos[0].heading,
-      principal: 'principal.pks',
-      archivos: Object.keys(this.archivos),
+      principal: p.principal,
+      archivos: Object.keys(p.archivos),
       diagnosticos,
       simbolos: {
         'principal.pks': [
@@ -143,18 +192,43 @@ const simulado = {
   async EjecutarProyecto(ruta) {
     const r = await this.CompilarProyecto(ruta);
     if (!r.exito) return r;
-    (async () => {
-      this.emitir('pedir-entrada', { tipo: 'pedir-entrada', texto: '¿Cómo se llama tu Pokémon? ' });
-      const nombre = await new Promise((res) => (this.entrada = res));
-      if (nombre === null)
-        return this.emitir('fin-ejecucion', { tipo: 'fin-ejecucion', texto: 'detenido' });
-      for (const t of [`¡${nombre} fue curado! Vida: 55`, '¡Listo para el combate!']) {
-        await espera(350);
-        this.emitir('salida', { tipo: 'salida', texto: t });
-      }
-      this.emitir('fin-ejecucion', { tipo: 'fin-ejecucion', texto: 'terminado' });
-    })();
+    this.simular(this.proyecto(ruta));
     return r;
+  },
+  // simular recorre el combate del principal de arriba abajo, sin evaluar de
+  // verdad: pregunta en cada capturar y muestra cada gritar con los datos que
+  // conoce. Alcanza para diseñar la interfaz; el intérprete real es el de Go.
+  async simular(p) {
+    const texto = p.archivos[p.principal] ?? '';
+    const cuerpo = texto
+      .split('\n')
+      .slice(texto.split('\n').findIndex((l) => /^\s*combate\b/.test(l)) + 1);
+    const datos = {};
+    const valor = (parte) => {
+      const t = parte.trim();
+      if (/^".*"$/.test(t)) return t.slice(1, -1);
+      if (/^\d+(\.\d+)?$/.test(t)) return t;
+      return datos[t] ?? `«${t}»`;
+    };
+    for (const linea of cuerpo) {
+      const pide = linea.match(/capturar\((\w+),\s*"([^"]*)"\)/);
+      const grita = linea.match(/^\s*gritar\s+(.*)$/);
+      const asigna = linea.match(/^\s*(?:roca|agua|planta|fuego|electrico)\s+(\w+)\s*=\s*(.+)$/);
+      if (pide) {
+        this.emitir('pedir-entrada', { tipo: 'pedir-entrada', texto: pide[2] });
+        const r = await new Promise((res) => (this.entrada = res));
+        if (r === null)
+          return this.emitir('fin-ejecucion', { tipo: 'fin-ejecucion', texto: 'detenido' });
+        datos[pide[1]] = r;
+      } else if (asigna) {
+        datos[asigna[1]] = valor(asigna[2]);
+      } else if (grita) {
+        await espera(300);
+        const partes = grita[1].match(/"[^"]*"|[^,]+/g) ?? [];
+        this.emitir('salida', { tipo: 'salida', texto: partes.map(valor).join('') });
+      }
+    }
+    this.emitir('fin-ejecucion', { tipo: 'fin-ejecucion', texto: 'terminado' });
   },
   async EnviarEntrada(texto) {
     const r = this.entrada;
@@ -174,6 +248,23 @@ const simulado = {
   },
 };
 
+// Lo que cambia un proyecto del simulador se guarda enseguida.
+for (const m of [
+  'CrearProyecto',
+  'GuardarArchivo',
+  'NuevoArchivo',
+  'RenombrarArchivo',
+  'BorrarArchivo',
+  'MarcarPrincipal',
+]) {
+  const original = simulado[m];
+  simulado[m] = async function (...args) {
+    const r = await original.apply(this, args);
+    this.guardar();
+    return r;
+  };
+}
+
 const espera = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // ─── Interfaz única para los componentes ───────────────────────────────────
@@ -183,6 +274,9 @@ const llamar = (metodo, ...args) =>
 
 export const api = {
   enWails: () => Boolean(wails()),
+  crearProyecto: (carpeta, nombre) => llamar('CrearProyecto', carpeta, nombre),
+  // Abre el diálogo de carpetas del sistema; null si se cancela o sin Wails.
+  elegirCarpeta: () => llamar('ElegirCarpeta'),
   leerProyecto: (ruta) => llamar('LeerProyecto', ruta),
   leerArchivo: (ruta, archivo) => llamar('LeerArchivo', ruta, archivo),
   guardarArchivo: (ruta, archivo, contenido) => llamar('GuardarArchivo', ruta, archivo, contenido),

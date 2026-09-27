@@ -1,11 +1,13 @@
 // Acciones del IDE: abrir el proyecto, compilar, ejecutar y responder a
 // capturar. Cambian el estado compartido; los componentes solo lo pintan.
 import { api } from './api.js';
-import { ide, perfil, guardarPerfil, logro } from './estado.svelte.js';
+import { ide, perfil, guardarPerfil, logro, navegacion } from './estado.svelte.js';
 import { POKEMON } from './pokemon.js';
 import { sonar } from './sonido.js';
 
-const RUTA = ''; // El simulador no usa ruta; con Wails será la carpeta abierta.
+// Carpeta del proyecto abierto (con Wails, una ruta del disco; en el simulador,
+// el nombre del proyecto).
+const RUTA_ACTUAL = () => ide.proyecto?.ruta ?? '';
 
 // Pokémon invitado según el encabezado del diagnóstico, como en el README.
 const INVITADOS = {
@@ -27,13 +29,31 @@ export function oak(...lineas) {
   ide.oak = { lineas };
 }
 
-export async function abrirProyecto() {
-  const info = await api.leerProyecto(RUTA);
-  ide.proyecto = { ruta: RUTA, ...info };
+// recordar deja el proyecto de primero en la lista de recientes.
+function recordar(ruta, nombre) {
+  perfil.recientes = [
+    { ruta, nombre, fecha: Date.now() },
+    ...(perfil.recientes ?? []).filter((p) => p.ruta !== ruta),
+  ].slice(0, 6);
+  guardarPerfil();
+}
+
+export async function abrirProyecto(ruta) {
+  const info = await api.leerProyecto(ruta);
+  Object.assign(ide, {
+    proyecto: { ruta, ...info },
+    contenidos: {},
+    sucios: {},
+    diagnosticos: [],
+    resultado: null,
+    salida: [],
+    esperandoEntrada: null,
+  });
   for (const archivo of info.archivos) {
-    ide.contenidos[archivo] = await api.leerArchivo(RUTA, archivo);
+    ide.contenidos[archivo] = await api.leerArchivo(ruta, archivo);
   }
   ide.archivoActivo = info.principal;
+  recordar(ruta, info.nombre);
   decir(
     `¡Hola, ${perfil.nombre}! Estoy listo. Escribe tu programa y presiona ANALIZAR cuando quieras que lo revise.`,
     'feliz',
@@ -42,7 +62,7 @@ export async function abrirProyecto() {
 
 export async function guardarTodo() {
   for (const archivo of Object.keys(ide.sucios)) {
-    await api.guardarArchivo(RUTA, archivo, ide.contenidos[archivo]);
+    await api.guardarArchivo(RUTA_ACTUAL(), archivo, ide.contenidos[archivo]);
   }
   ide.sucios = {};
 }
@@ -93,7 +113,7 @@ export async function compilar() {
   const inicio = Date.now();
   try {
     await guardarTodo();
-    const r = await api.compilar(RUTA);
+    const r = await api.compilar(RUTA_ACTUAL());
     // La animación del escaneo dura al menos un momento.
     await new Promise((res) => setTimeout(res, Math.max(0, 1300 - (Date.now() - inicio))));
     reaccionar(r);
@@ -117,7 +137,7 @@ export async function ejecutar() {
     { tipo: 'sistema', texto: `¡${perfil.nombre} y ${companero()} entran en combate!` },
   ];
   ide.ejecutando = true;
-  const r = await api.ejecutar(RUTA);
+  const r = await api.ejecutar(RUTA_ACTUAL());
   reaccionar(r);
   if (!r.exito) {
     ide.salida = anterior;
@@ -208,8 +228,8 @@ export function irA(d) {
 // ─── Gestor de archivos ────────────────────────────────────────────────────
 
 async function refrescar() {
-  const info = await api.leerProyecto(RUTA);
-  ide.proyecto = { ruta: RUTA, ...info };
+  const info = await api.leerProyecto(RUTA_ACTUAL());
+  ide.proyecto = { ruta: RUTA_ACTUAL(), ...info };
 }
 
 // nombrePks agrega .pks si hace falta y quita espacios.
@@ -236,8 +256,8 @@ async function intentar(accion, exito) {
 export async function nuevoArchivo(nombre, contenido = '') {
   const archivo = nombrePks(nombre);
   const ok = await intentar(async () => {
-    await api.nuevoArchivo(RUTA, archivo);
-    if (contenido) await api.guardarArchivo(RUTA, archivo, contenido);
+    await api.nuevoArchivo(RUTA_ACTUAL(), archivo);
+    if (contenido) await api.guardarArchivo(RUTA_ACTUAL(), archivo, contenido);
   }, `¡Nuevo archivo en la mochila: ${archivo}!`);
   if (!ok) return;
   ide.contenidos[archivo] = contenido;
@@ -259,7 +279,10 @@ export async function renombrarArchivo(de, nombre) {
   const a = nombrePks(nombre);
   if (a === de) return;
   await guardarTodo();
-  const ok = await intentar(() => api.renombrarArchivo(RUTA, de, a), `Ahora se llama ${a}.`);
+  const ok = await intentar(
+    () => api.renombrarArchivo(RUTA_ACTUAL(), de, a),
+    `Ahora se llama ${a}.`,
+  );
   if (!ok) return;
   ide.contenidos[a] = ide.contenidos[de];
   delete ide.contenidos[de];
@@ -269,7 +292,7 @@ export async function renombrarArchivo(de, nombre) {
 
 export async function borrarArchivo(archivo) {
   const ok = await intentar(
-    () => api.borrarArchivo(RUTA, archivo),
+    () => api.borrarArchivo(RUTA_ACTUAL(), archivo),
     `Soltaste ${archivo}. ¡Adiós, ${archivo.replace(/\.pks$/, '')}!`,
   );
   if (!ok) return;
@@ -281,8 +304,46 @@ export async function borrarArchivo(archivo) {
 
 export async function marcarPrincipal(archivo) {
   const ok = await intentar(
-    () => api.marcarPrincipal(RUTA, archivo),
+    () => api.marcarPrincipal(RUTA_ACTUAL(), archivo),
     `${archivo} ahora es el archivo principal: ahí debe vivir el combate.`,
   );
   if (ok) await refrescar();
+}
+
+// ─── Proyectos ─────────────────────────────────────────────────────────────
+
+// crearProyecto crea un proyecto nuevo con un combate de saludo. Con Wails
+// primero se elige dónde guardarlo; en el simulador vive en memoria.
+export async function crearProyecto(nombre) {
+  let carpeta = '';
+  if (api.enWails()) {
+    carpeta = await api.elegirCarpeta();
+    if (!carpeta) return null;
+  }
+  const info = await api.crearProyecto(carpeta, nombre.trim().replace(/\s+/g, '_'));
+  recordar(info.ruta, info.nombre);
+  return info.ruta;
+}
+
+// buscarProyecto abre el diálogo de carpetas del sistema (solo con Wails).
+export async function buscarProyecto() {
+  return api.enWails() ? await api.elegirCarpeta() : null;
+}
+
+// Proyectos que se pueden abrir sin buscar: los recientes y, en el
+// simulador, los de ejemplo.
+export function proyectosConocidos() {
+  const recientes = perfil.recientes ?? [];
+  if (api.enWails()) return recientes;
+  const ejemplos = ['centro_pokemon', 'combate'].map((r) => ({ ruta: r, nombre: r }));
+  return [...recientes, ...ejemplos.filter((e) => !recientes.some((p) => p.ruta === e.ruta))];
+}
+
+// salirAlMenu guarda todo, corta el combate si hay uno y vuelve al menú del
+// título para abrir o crear otro proyecto.
+export async function salirAlMenu() {
+  if (ide.ejecutando) await api.detener();
+  await guardarTodo();
+  sonar('huir');
+  navegacion.pantalla = 'menu';
 }

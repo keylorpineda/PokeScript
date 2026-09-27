@@ -35,7 +35,7 @@
     }
   ],
   "ignorePaths": [
-    "node_modules/**",
+    "**/node_modules/**",
     "pnpm-lock.yaml",
     "go.sum",
     "go.mod",

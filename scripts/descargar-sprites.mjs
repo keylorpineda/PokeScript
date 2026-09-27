@@ -10,8 +10,8 @@ const BASE = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites';
 const FUENTES = fileURLToPath(new URL('../docs/assets/fuentes/', import.meta.url));
 
 export const POKEMON = [
-  1, 4, 6, 7, 9, 18, 25, 54, 63, 66, 68, 94, 95, 113, 115, 128, 129, 131, 132, 133, 137, 143,
-  149, 150, 151, 479,
+  1, 4, 6, 7, 9, 18, 25, 54, 63, 66, 68, 94, 95, 113, 115, 128, 129, 131, 132, 133, 137, 143, 149,
+  150, 151, 479,
 ];
 // Sprites de los juegos (Negro y Blanco) que se dibujan como pixel art.
 export const PIXELES = {

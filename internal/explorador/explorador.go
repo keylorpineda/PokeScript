@@ -59,9 +59,10 @@ func Lugares() []Lugar {
 				continue
 			}
 			nombre := filepath.Base(n)
-			if nombre == "Desktop" {
+			switch nombre {
+			case "Desktop":
 				nombre = "Escritorio"
-			} else if nombre == "Documents" {
+			case "Documents":
 				nombre = "Documentos"
 			}
 			if strings.HasPrefix(n, "OneDrive") {

@@ -231,16 +231,28 @@ async function intentar(accion, exito) {
   }
 }
 
-export async function nuevoArchivo(nombre) {
+// nuevoArchivo crea el archivo y, si viene de una plantilla, le escribe su
+// contenido inicial.
+export async function nuevoArchivo(nombre, contenido = '') {
   const archivo = nombrePks(nombre);
-  const ok = await intentar(
-    () => api.nuevoArchivo(RUTA, archivo),
-    `¡Nuevo archivo en la mochila: ${archivo}!`,
-  );
+  const ok = await intentar(async () => {
+    await api.nuevoArchivo(RUTA, archivo);
+    if (contenido) await api.guardarArchivo(RUTA, archivo, contenido);
+  }, `¡Nuevo archivo en la mochila: ${archivo}!`);
   if (!ok) return;
-  ide.contenidos[archivo] = '';
+  ide.contenidos[archivo] = contenido;
   await refrescar();
   ide.archivoActivo = archivo;
+}
+
+// duplicarArchivo copia un archivo con el primer nombre libre: x_copia,
+// x_copia2…
+export async function duplicarArchivo(archivo) {
+  const base = archivo.replace(/\.pks$/, '');
+  const existentes = new Set(ide.proyecto?.archivos ?? []);
+  let nombre = `${base}_copia`;
+  for (let n = 2; existentes.has(`${nombre}.pks`); n++) nombre = `${base}_copia${n}`;
+  await nuevoArchivo(nombre, ide.contenidos[archivo] ?? '');
 }
 
 export async function renombrarArchivo(de, nombre) {

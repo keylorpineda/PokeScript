@@ -127,6 +127,7 @@ instruccion
 invalidos
 jetbrains
 jordy
+kanto
 keylor
 keylorpineda
 keymap

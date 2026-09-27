@@ -24,6 +24,7 @@
   let contenedor;
   let vista;
   const estados = {};
+  const scrolls = {}; // dónde iba cada archivo al cambiar de pestaña
   let mostrado = null;
 
   function crearEstado(archivo) {
@@ -72,9 +73,13 @@
 
   function mostrar(archivo) {
     if (!vista || !archivo || archivo === mostrado) return;
-    if (mostrado) estados[mostrado] = vista.state;
+    if (mostrado) {
+      estados[mostrado] = vista.state;
+      scrolls[mostrado] = vista.scrollDOM.scrollTop;
+    }
     estados[archivo] ??= crearEstado(archivo);
     vista.setState(estados[archivo]);
+    vista.scrollDOM.scrollTop = scrolls[archivo] ?? 0;
     mostrado = archivo;
     pintarDiagnosticos();
     vista.focus();

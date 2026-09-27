@@ -11,10 +11,13 @@
     renombrarArchivo,
     borrarArchivo,
     marcarPrincipal,
+    duplicarArchivo,
   } from '../lib/acciones.js';
+  import { PLANTILLAS } from '../lib/plantillas.js';
 
   let abierta = $state(true);
-  let creando = $state(false);
+  let eligiendo = $state(false); // panel de plantillas abierto
+  let plantilla = $state(null); // la elegida, esperando el nombre
   let nuevo = $state('');
   let renombrando = $state(null);
   let apodo = $state('');
@@ -28,7 +31,6 @@
     ),
   );
 
-  const lineas = (a) => (ide.contenidos[a] ?? '').split('\n').length;
   const errores = (a) =>
     ide.diagnosticos.filter((d) => d.file === a && d.severity === 'error').length;
   const avisos = (a) =>
@@ -47,18 +49,37 @@
     menu = { archivo, x: e.clientX - r.left, y: e.clientY - r.top };
   }
 
-  async function empezarNuevo() {
-    creando = true;
-    nuevo = '';
+  function empezarNuevo(e) {
+    e.stopPropagation();
+    eligiendo = !eligiendo;
+    plantilla = null;
+    sonar(eligiendo ? 'elegir' : 'mover');
+  }
+
+  // nombreLibre sugiere el nombre de la plantilla sin chocar con otro archivo.
+  function nombreLibre(base) {
+    const hay = new Set(ide.proyecto?.archivos ?? []);
+    let n = base;
+    for (let i = 2; hay.has(`${n}.pks`); i++) n = `${base}${i}`;
+    return n;
+  }
+
+  async function elegirPlantilla(p) {
+    plantilla = p;
+    nuevo = nombreLibre(p.nombre);
     sonar('elegir');
     await tick();
-    document.querySelector('.mochila .campo-nuevo')?.focus();
+    const c = document.querySelector('.mochila .campo-nuevo');
+    c?.focus();
+    c?.select();
   }
 
   async function crear(e) {
     e.preventDefault();
-    if (nuevo.trim()) await nuevoArchivo(nuevo);
-    creando = false;
+    if (!nuevo.trim()) return;
+    await nuevoArchivo(nuevo, plantilla.contenido);
+    eligiendo = false;
+    plantilla = null;
   }
 
   async function empezarRenombrar(archivo) {
@@ -84,8 +105,45 @@
   <div class="bolsillo">
     <img class="pixel" src={objeto('exp-share')} alt="" />
     <span>MOCHILA</span>
-    <button class="mas" onclick={empezarNuevo} title="Nuevo archivo">NUEVO</button>
+    <button class="mas" class:abierto={eligiendo} onclick={empezarNuevo} title="Nuevo archivo"
+      >NUEVO</button
+    >
   </div>
+
+  {#if eligiendo}
+    <div class="nuevo marco">
+      {#if !plantilla}
+        <p class="pregunta">¿Qué archivo quieres crear?</p>
+        {#each PLANTILLAS as p (p.id)}
+          <button class="plantilla" onclick={() => elegirPlantilla(p)}>
+            <img class="pixel" src={objeto(p.objeto)} alt="" />
+            <span>
+              <b>{p.titulo}</b>
+              <small>{p.descripcion}</small>
+            </span>
+          </button>
+        {/each}
+      {:else}
+        <p class="pregunta">
+          <img class="pixel" src={objeto(plantilla.objeto)} alt="" />{plantilla.titulo}
+        </p>
+        <form class="nombrar" onsubmit={crear}>
+          <label>
+            <input
+              class="campo-nuevo"
+              bind:value={nuevo}
+              spellcheck="false"
+              onkeydown={(e) => e.key === 'Escape' && (plantilla = null)}
+            /><span>.pks</span>
+          </label>
+          <div class="si-no">
+            <button class="boton principal" type="submit">CREAR</button>
+            <button class="boton" type="button" onclick={() => (plantilla = null)}>ATRÁS</button>
+          </div>
+        </form>
+      {/if}
+    </div>
+  {/if}
 
   <div class="arbol">
     <button class="carpeta" onclick={() => (abierta = !abierta)}>
@@ -141,6 +199,7 @@
                 <span class="nombre">
                   {archivo.replace(/\.pks$/, '')}<small>.pks</small>
                 </span>
+                {#if archivo === principal}<span class="chip">PRINCIPAL</span>{/if}
                 {#if ide.sucios[archivo]}<span class="sucio" title="Sin guardar"></span>{/if}
                 {#if errores(archivo)}
                   <span class="cuenta error">{errores(archivo)}</span>
@@ -153,27 +212,9 @@
                   ><i></i><i></i><i></i></span
                 >
               </button>
-              <div class="detalle">
-                {#if archivo === principal}<span class="chip">PRINCIPAL</span>{/if}
-                <span>{lineas(archivo)} líneas</span>
-              </div>
             {/if}
           </li>
         {/each}
-        {#if creando}
-          <li>
-            <form class="fila" onsubmit={crear}>
-              <img class="pixel bola" src={objeto('poke-ball')} alt="" />
-              <input
-                class="campo-nuevo"
-                bind:value={nuevo}
-                placeholder="nombre"
-                onblur={() => (creando = false)}
-                onkeydown={(e) => e.key === 'Escape' && (creando = false)}
-              />
-            </form>
-          </li>
-        {/if}
       </ul>
     {/if}
   </div>
@@ -201,6 +242,12 @@
   {#if menu}
     <div class="menu marco" style="left:{menu.x}px;top:{menu.y}px">
       <button onclick={() => empezarRenombrar(menu.archivo)}>Cambiar nombre</button>
+      <button
+        onclick={() => {
+          duplicarArchivo(menu.archivo);
+          menu = null;
+        }}>Duplicar</button
+      >
       <button
         disabled={menu.archivo === principal}
         onclick={() => {
@@ -365,20 +412,85 @@
     color: var(--texto-suave);
     font-size: 13px;
   }
-  .detalle {
+  .nuevo {
+    margin-top: 8px;
+    padding: 0 2px;
+    animation: desplegar 0.2s steps(3) both;
+  }
+  @keyframes desplegar {
+    from {
+      clip-path: inset(0 0 100% 0);
+    }
+  }
+  .pregunta {
     display: flex;
-    gap: 6px;
     align-items: center;
-    padding: 0 0 4px 36px;
+    gap: 6px;
+    margin: 0 0 6px;
+    font-family: var(--titulo);
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .pregunta img {
+    width: 24px;
+  }
+  .plantilla {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 4px 4px 4px 18px;
+    text-align: left;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+  .plantilla:hover {
+    background: var(--panel-2);
+  }
+  .plantilla:hover::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 8px solid var(--texto);
+  }
+  .plantilla img {
+    width: 26px;
+    flex: none;
+  }
+  .plantilla b {
+    display: block;
+    font-family: var(--titulo);
+    font-size: 15px;
+  }
+  .plantilla small {
+    display: block;
     font-size: 11px;
+    line-height: 1.25;
     color: var(--texto-suave);
   }
-  .chip {
-    padding: 0 5px;
+  .nombrar label {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-bottom: 8px;
     font-family: var(--titulo);
-    font-size: 10px;
+    color: var(--texto-suave);
+  }
+  .mas.abierto {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 0 var(--borde);
+  }
+  .chip {
+    flex: none;
+    padding: 0 4px;
+    font-family: var(--titulo);
+    font-size: 9px;
     font-weight: 700;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     color: var(--acento-texto);
     background: #8a3ab9;
     border: 1px solid var(--borde);

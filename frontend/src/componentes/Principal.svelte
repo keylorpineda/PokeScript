@@ -22,7 +22,6 @@
   let encima = null;
 
   const escena = $derived(temaActual(perfil.tema).escena);
-  const lineas = $derived((ide.contenidos[ide.archivoActivo] ?? '').split('\n').length);
 
   onMount(async () => {
     escucharEjecucion();
@@ -84,7 +83,7 @@
           <span class="miga">{ide.proyecto?.nombre ?? ''}</span>
           <span class="sep"></span>
           <b>{ide.archivoActivo ?? ''}</b>
-          <span class="der">{lineas} líneas</span>
+          <span class="der"></span>
           <span class="lenguaje">POKESCRIPT</span>
         </div>
         <div class="codigo">
@@ -139,7 +138,7 @@
   main {
     position: relative;
     display: grid;
-    grid-template-columns: 250px 1fr 330px;
+    grid-template-columns: 270px 1fr 330px;
     gap: 14px;
     padding: 14px;
     min-height: 0;

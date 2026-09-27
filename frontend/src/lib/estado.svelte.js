@@ -83,3 +83,19 @@ export function logro(nombre) {
 
 // Pantalla actual del IDE y el proyecto elegido en el menú del título.
 export const navegacion = $state({ pantalla: 'titulo', ruta: null, aviso: '' });
+
+// El explorador (PC de Bill) se abre desde cualquier pantalla y devuelve la
+// carpeta elegida, o null si se cierra sin elegir.
+export const explorador = $state({ abierto: false, modo: 'abrir', nombre: '', resolver: null });
+
+export function pedirCarpeta(modo = 'abrir', nombre = '') {
+  return new Promise((resolver) => {
+    Object.assign(explorador, { abierto: true, modo, nombre, resolver });
+  });
+}
+
+export function cerrarExplorador(ruta = null) {
+  const r = explorador.resolver;
+  Object.assign(explorador, { abierto: false, resolver: null });
+  r?.(ruta);
+}

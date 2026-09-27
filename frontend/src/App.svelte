@@ -5,7 +5,8 @@
   import IntroOak from './componentes/IntroOak.svelte';
   import Carga from './componentes/Carga.svelte';
   import Principal from './componentes/Principal.svelte';
-  import { navegacion } from './lib/estado.svelte.js';
+  import Explorador from './componentes/Explorador.svelte';
+  import { navegacion, explorador } from './lib/estado.svelte.js';
 
   // Lo que eligió el menú antes de pasar por Oak.
   let pendiente = null;
@@ -47,3 +48,5 @@
     <Principal ruta={navegacion.ruta} />
   {/key}
 {/if}
+
+{#if explorador.abierto}<Explorador />{/if}

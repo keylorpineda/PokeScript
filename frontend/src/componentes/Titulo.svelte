@@ -2,9 +2,16 @@
   // Pantalla de título: las portadas van rotando (un lugar y su Pokémon) y,
   // después de «PRESIONA CUALQUIER TECLA», el menú de los juegos para
   // continuar, crear o abrir un proyecto.
+  import Sombra from './Sombra.svelte';
   import { onMount, tick } from 'svelte';
   import Escena from './Escena.svelte';
-  import { perfil, cambiarTema, cambiarSonido, navegacion } from '../lib/estado.svelte.js';
+  import {
+    perfil,
+    cambiarTema,
+    cambiarSonido,
+    navegacion,
+    explorador,
+  } from '../lib/estado.svelte.js';
   import { TEMAS } from '../lib/temas.js';
   import { POKEMON, sprite } from '../lib/pokemon.js';
   import { PORTADAS, portadaInicial } from '../lib/portadas.js';
@@ -41,7 +48,7 @@
     if (vista === 'abrir')
       return [
         ...conocidos.map((p) => ({ id: 'proyecto', texto: p.nombre, ruta: p.ruta })),
-        ...(api.enWails() ? [{ id: 'buscar', texto: 'BUSCAR CARPETA…' }] : []),
+        { id: 'buscar', texto: 'BUSCAR EN EL PC…' },
         { id: 'volver', texto: 'VOLVER' },
       ];
     if (vista === 'opciones')
@@ -121,7 +128,7 @@
   }
 
   function tecla(e) {
-    if (!listo || e.repeat) return;
+    if (!listo || e.repeat || explorador.abierto) return;
     if (fase === 'presiona') {
       sonar('elegir');
       if (!perfil.companero) return alContinuar({ accion: 'oak' });
@@ -156,7 +163,7 @@
     {#key indice}
       <div class="mascota" class:vuela={portada.vuela}>
         <img class="sprite" src={sprite(portada.mascota)} alt="" draggable="false" />
-        {#if !portada.vuela}<span class="sombra"></span>{/if}
+        {#if !portada.vuela}<Sombra ancho={210} />{/if}
       </div>
     {/key}
 
@@ -334,6 +341,8 @@
     }
   }
   .mascota img {
+    position: relative;
+    z-index: 1;
     zoom: 3;
   }
   .mascota.vuela {
@@ -348,13 +357,6 @@
     50% {
       transform: translateY(-8px);
     }
-  }
-  .sombra {
-    width: 180px;
-    height: 26px;
-    margin-top: -18px;
-    background: rgba(0, 0, 0, 0.35);
-    border-radius: 50%;
   }
   .presiona {
     position: absolute;
@@ -491,5 +493,8 @@
     display: flex;
     gap: 10px;
     margin: 4px 6px;
+  }
+  .mascota :global(.sombra) {
+    margin-top: -20px;
   }
 </style>

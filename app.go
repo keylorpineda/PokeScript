@@ -8,6 +8,7 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 
 	"github.com/keylorpineda/PokeScript/internal/consulta"
+	"github.com/keylorpineda/PokeScript/internal/explorador"
 	"github.com/keylorpineda/PokeScript/internal/proyecto"
 	"github.com/keylorpineda/PokeScript/internal/servicio"
 )
@@ -77,6 +78,14 @@ func (a *App) ObtenerPalabrasReservadas() []consulta.PalabraDoc {
 }
 
 // ─── Gestor de proyectos ───────────────────────────────────────────────────
+
+// LugaresExplorador devuelve los accesos directos del explorador del IDE.
+func (a *App) LugaresExplorador() []explorador.Lugar { return explorador.Lugares() }
+
+// ListarCarpeta devuelve lo que hay en una carpeta para el explorador.
+func (a *App) ListarCarpeta(ruta string) (explorador.Carpeta, error) {
+	return explorador.Listar(ruta)
+}
 
 // ElegirCarpeta abre el diálogo de carpetas del sistema; vacío si se cancela.
 func (a *App) ElegirCarpeta() (string, error) {

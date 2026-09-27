@@ -2,6 +2,7 @@
   // Pokédex de consulta (sección 9: el menú de consulta del IDE). Todo el
   // lenguaje por secciones, con un Pokémon que explica cada entrada, la tabla
   // de efectividades para explorar y las 49 palabras reservadas.
+  import Sombra from './Sombra.svelte';
   import { onMount, tick } from 'svelte';
   import Codigo from './Codigo.svelte';
   import Pokebola from './Pokebola.svelte';
@@ -178,7 +179,7 @@
                   src={sprite(entrada.pokemon)}
                   alt={POKEMON[entrada.pokemon]?.nombre}
                 />
-                <span class="base"></span>
+                <Sombra ancho={140} />
               </div>
               <p class="quien">{POKEMON[entrada.pokemon]?.nombre ?? ''} explica</p>
             </div>
@@ -591,14 +592,6 @@
     max-height: 140px;
     zoom: 1.6;
   }
-  .base {
-    position: absolute;
-    bottom: 8px;
-    width: 130px;
-    height: 22px;
-    background: rgba(0, 0, 0, 0.18);
-    border-radius: 50%;
-  }
   .quien {
     margin: 0;
     font-family: var(--titulo);
@@ -811,5 +804,9 @@
     .buscar {
       max-width: none;
     }
+  }
+  .escenario :global(.sombra) {
+    position: absolute;
+    bottom: 10px;
   }
 </style>

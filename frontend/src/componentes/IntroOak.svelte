@@ -1,6 +1,7 @@
 <script>
   // Presentación del Profesor Oak, como al empezar los juegos: se presenta,
   // pregunta el nombre y ofrece un compañero de su laboratorio.
+  import Sombra from './Sombra.svelte';
   import Escena from './Escena.svelte';
   import Dialogo from './Dialogo.svelte';
   import Pokebola from './Pokebola.svelte';
@@ -144,7 +145,7 @@
           {#each ['pikachu', 'bulbasaur', 'charmander', 'squirtle', 'eevee'] as id, i (id)}
             <div class="en-fila" style="animation-delay:{i * 0.15}s">
               <img class="sprite" src={sprite(id)} alt="" draggable="false" />
-              <span class="plataforma chica"></span>
+              <Sombra ancho={170} />
             </div>
           {/each}
         </div>
@@ -152,7 +153,7 @@
         <div class="duo">
           <div class="figura">
             <img class="pixel oak" src={OAK} alt="Profesor Oak" draggable="false" />
-            <span class="plataforma"></span>
+            <Sombra ancho={250} />
           </div>
           <div class="figura">
             <img
@@ -161,13 +162,13 @@
               alt={inicial.nombre}
               draggable="false"
             />
-            <span class="plataforma chica"></span>
+            <Sombra ancho={170} />
           </div>
         </div>
       {:else}
         <div class="figura entra">
           <img class="pixel oak" src={OAK} alt="Profesor Oak" draggable="false" />
-          <span class="plataforma"></span>
+          <Sombra ancho={250} />
         </div>
       {/if}
     </div>
@@ -273,18 +274,6 @@
     50% {
       transform: translateY(-1px);
     }
-  }
-  .plataforma {
-    width: 300px;
-    height: 46px;
-    margin-top: -34px;
-    background: radial-gradient(ellipse at center, #9ed36a 0 55%, #5f9a3a 56% 70%, transparent 71%);
-    image-rendering: pixelated;
-  }
-  .plataforma.chica {
-    width: 190px;
-    height: 34px;
-    margin-top: -24px;
   }
   .desfile,
   .duo {
@@ -473,5 +462,9 @@
     border-bottom: 7px solid transparent;
     border-left: 10px solid var(--texto);
     transform: translateY(-50%);
+  }
+  .figura :global(.sombra),
+  .en-fila :global(.sombra) {
+    margin-top: -22px;
   }
 </style>

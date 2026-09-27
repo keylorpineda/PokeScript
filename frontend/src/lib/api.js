@@ -100,6 +100,41 @@ const simulado = {
   async PlantillaPrincipal() {
     return '// principal.pks · aquí empieza tu programa\ncombate\n    gritar "¡Hola, mundo Pokémon!"\nfin\n';
   },
+  // Explorador simulado: una sola carpeta con los proyectos del simulador.
+  async LugaresExplorador() {
+    return [{ nombre: 'Proyectos de ejemplo', ruta: '/', tipo: 'personal' }];
+  },
+  async ListarCarpeta(ruta) {
+    if (ruta === '/') {
+      return {
+        ruta: '/',
+        nombre: 'Proyectos de ejemplo',
+        padre: '',
+        proyecto: false,
+        recortada: false,
+        carpetas: Object.entries(this.proyectos).map(([n, p]) => ({
+          nombre: n,
+          ruta: n,
+          proyecto: true,
+          pks: Object.keys(p.archivos).length,
+        })),
+        archivos: [],
+      };
+    }
+    const p = this.proyecto(ruta);
+    return {
+      ruta,
+      nombre: ruta,
+      padre: '/',
+      proyecto: true,
+      recortada: false,
+      carpetas: [],
+      archivos: [
+        ...Object.keys(p.archivos).map((n) => ({ nombre: n, pks: true })),
+        ...(await this.OtrosArchivos(ruta)).map((n) => ({ nombre: n, pks: false })),
+      ],
+    };
+  },
   async ElegirCarpeta() {
     return null; // Sin Wails no hay diálogo de carpetas.
   },
@@ -293,6 +328,8 @@ export const api = {
   crearProyecto: (carpeta, nombre) => llamar('CrearProyecto', carpeta, nombre),
   // Abre el diálogo de carpetas del sistema; null si se cancela o sin Wails.
   elegirCarpeta: () => llamar('ElegirCarpeta'),
+  lugaresExplorador: () => llamar('LugaresExplorador'),
+  listarCarpeta: (ruta) => llamar('ListarCarpeta', ruta),
   leerProyecto: (ruta) => llamar('LeerProyecto', ruta),
   otrosArchivos: (ruta) => llamar('OtrosArchivos', ruta),
   plantillaPrincipal: () => llamar('PlantillaPrincipal'),

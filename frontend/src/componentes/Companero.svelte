@@ -2,6 +2,7 @@
   // Panel del compañero: su pedacito de mundo (como una pantalla de combate),
   // la barra de PS que baja con cada error, lo que dice y la lista de
   // diagnósticos con su arreglo.
+  import Sombra from './Sombra.svelte';
   import Dialogo from './Dialogo.svelte';
   import Diagnosticos from './Diagnosticos.svelte';
   import { ide, perfil } from '../lib/estado.svelte.js';
@@ -39,7 +40,7 @@
           alt={datos.nombre}
           draggable="false"
         />
-        <span class="plataforma"></span>
+        <Sombra ancho={150} />
       </div>
     {/key}
 
@@ -111,13 +112,6 @@
     position: relative;
     z-index: 1;
     zoom: 2;
-  }
-  .plataforma {
-    width: 150px;
-    height: 26px;
-    margin-top: -18px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.3);
   }
   .yo.feliz img {
     animation: saltar 0.35s steps(3) 3;
@@ -212,5 +206,8 @@
   }
   .habla {
     flex: none;
+  }
+  .yo :global(.sombra) {
+    margin-top: -16px;
   }
 </style>

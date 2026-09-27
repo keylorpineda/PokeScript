@@ -59,6 +59,7 @@ Wails
 Zreza
 accion
 alakazam
+almacen
 ambitos
 arbol
 arcoiris
@@ -146,6 +147,7 @@ gofmt
 goimports
 golangci
 gritar
+guia
 guias
 huir
 icecave
@@ -203,6 +205,7 @@ operacion
 operandos
 outputfilename
 paneo
+pantallita
 parametro
 parametros
 parsear
@@ -276,6 +279,7 @@ trillones
 unconvert
 unown
 usernamehw
+vacia
 vacio
 vacios
 variacion

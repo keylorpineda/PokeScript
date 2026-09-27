@@ -1,7 +1,7 @@
 // Acciones del IDE: abrir el proyecto, compilar, ejecutar y responder a
 // capturar. Cambian el estado compartido; los componentes solo lo pintan.
 import { api } from './api.js';
-import { ide, perfil, guardarPerfil, logro, navegacion } from './estado.svelte.js';
+import { ide, perfil, guardarPerfil, logro, navegacion, pedirCarpeta } from './estado.svelte.js';
 import { POKEMON } from './pokemon.js';
 import { sonar } from './sonido.js';
 
@@ -132,11 +132,7 @@ export async function revisar() {
 // abrirCarpeta abre cualquier carpeta del disco como proyecto.
 export async function abrirCarpeta() {
   const ruta = await buscarProyecto();
-  if (!ruta) {
-    if (!api.enWails())
-      decir('Abrir carpetas del disco funciona en la app de escritorio.', 'normal');
-    return;
-  }
+  if (!ruta) return;
   await guardarTodo();
   navegacion.ruta = ruta;
   navegacion.pantalla = 'carga';
@@ -388,11 +384,11 @@ export async function marcarPrincipal(archivo) {
 // ─── Proyectos ─────────────────────────────────────────────────────────────
 
 // crearProyecto crea un proyecto nuevo con un combate de saludo. Con Wails
-// primero se elige dónde guardarlo; en el simulador vive en memoria.
+// primero se elige en el PC dónde guardarlo; en el simulador vive en memoria.
 export async function crearProyecto(nombre) {
   let carpeta = '';
   if (api.enWails()) {
-    carpeta = await api.elegirCarpeta();
+    carpeta = await pedirCarpeta('crear', nombre.trim().replace(/\s+/g, '_'));
     if (!carpeta) return null;
   }
   const info = await api.crearProyecto(carpeta, nombre.trim().replace(/\s+/g, '_'));
@@ -400,9 +396,9 @@ export async function crearProyecto(nombre) {
   return info.ruta;
 }
 
-// buscarProyecto abre el diálogo de carpetas del sistema (solo con Wails).
+// buscarProyecto abre el PC de Bill para elegir la carpeta de un proyecto.
 export async function buscarProyecto() {
-  return api.enWails() ? await api.elegirCarpeta() : null;
+  return pedirCarpeta('abrir');
 }
 
 // Proyectos que se pueden abrir sin buscar: los recientes y, en el

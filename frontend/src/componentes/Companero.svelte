@@ -40,7 +40,7 @@
           alt={datos.nombre}
           draggable="false"
         />
-        <Sombra ancho={96} />
+        <Sombra />
       </div>
     {/key}
 
@@ -206,8 +206,5 @@
   }
   .habla {
     flex: none;
-  }
-  .yo :global(.sombra) {
-    margin-top: -13px;
   }
 </style>

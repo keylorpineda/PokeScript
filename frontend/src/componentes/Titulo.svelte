@@ -167,7 +167,7 @@
     {#key indice}
       <div class="mascota" class:vuela={portada.vuela}>
         <img class="sprite" src={sprite(portada.mascota)} alt="" draggable="false" />
-        {#if !portada.vuela}<Sombra ancho={150} />{/if}
+        {#if !portada.vuela}<Sombra />{/if}
       </div>
     {/key}
 
@@ -332,6 +332,7 @@
   }
   .mascota {
     position: absolute;
+    isolation: isolate;
     right: 12vw;
     bottom: 12vh;
     display: flex;
@@ -497,9 +498,6 @@
     display: flex;
     gap: 10px;
     margin: 4px 6px;
-  }
-  .mascota :global(.sombra) {
-    margin-top: -20px;
   }
   @media (max-height: 720px) {
     .logo {

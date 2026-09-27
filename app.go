@@ -33,7 +33,26 @@ func NuevaApp() *App {
 	return &App{entorno: servicio.NuevoEntorno()}
 }
 
-func (a *App) iniciar(ctx context.Context) { a.ctx = ctx }
+// iniciar ajusta la ventana a la pantalla: la ventana no tiene marco de
+// Windows, así que si fuera más grande que la pantalla, los botones de la
+// barra propia quedarían afuera.
+func (a *App) iniciar(ctx context.Context) {
+	a.ctx = ctx
+	pantallas, err := runtime.ScreenGetAll(ctx)
+	if err != nil {
+		return
+	}
+	for _, p := range pantallas {
+		if !p.IsCurrent && !p.IsPrimary {
+			continue
+		}
+		ancho := min(1400, p.Size.Width*9/10)
+		alto := min(880, p.Size.Height*85/100)
+		runtime.WindowSetSize(ctx, ancho, alto)
+		runtime.WindowCenter(ctx)
+		return
+	}
+}
 
 func (a *App) cerrar(context.Context) { a.entorno.DetenerEjecucion() }
 

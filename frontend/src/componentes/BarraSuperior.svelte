@@ -3,6 +3,7 @@
   // centro, y a la derecha la Pokédex y la tarjeta del entrenador (que abre
   // tema, sonidos y la vuelta a la portada).
   import Pokebola from './Pokebola.svelte';
+  import IconoPokedex from './IconoPokedex.svelte';
   import { ide, perfil, cambiarTema, cambiarSonido, logro } from '../lib/estado.svelte.js';
   import { TEMAS } from '../lib/temas.js';
   import { POKEMON, sprite, objeto } from '../lib/pokemon.js';
@@ -60,7 +61,7 @@
 
   <div class="derecha">
     <button class="boton" onclick={abrirPokedex} title="Todo sobre el lenguaje">
-      <img class="pixel icono" src={objeto('exp-share')} alt="" /><span>POKÉDEX</span>
+      <IconoPokedex tam={26} /><span>POKÉDEX</span>
     </button>
 
     <div class="entrenador">

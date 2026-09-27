@@ -18,18 +18,7 @@
 
 <img src="docs/assets/pokedex.svg" alt="Entrada de Pokédex: PokeScript, un lenguaje en español para aprender a programar" width="100%">
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" alt="Charizard" width="130"><br><b>CHARIZARD</b></td>
-<td>
-
-PokeScript es un lenguaje de programación en español para quien está empezando. Las palabras salen de los juegos: un programa arranca con `combate`, las funciones son movimientos y para mostrar algo en pantalla se usa `gritar`.
-
-Debajo de eso hay un lenguaje de verdad. Cada dato tiene un tipo, el programa se revisa completo antes de correr y, cuando algo falla, el error se explica en español con una forma de arreglarlo.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/charizard.svg" alt="Charizard: ¡Hola, entrenador! PokeScript es un lenguaje en español para aprender a programar. Los datos tienen tipo, las funciones son movimientos y los errores se explican en tu idioma." width="100%">
 
 Trae su propio editor de escritorio. Mientras lo terminamos, los programas ya corren desde la terminal.
 
@@ -52,16 +41,7 @@ Trae su propio editor de escritorio. Mientras lo terminamos, los programas ya co
 
 ## El editor
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/479.png" alt="Rotom" width="130"><br><b>ROTOM</b></td>
-<td>
-
-Así va a verse el IDE: el código a la izquierda, el asistente al lado y la salida abajo. Si escribes `curra` en vez de `curar`, el asistente se da cuenta y te ofrece el arreglo.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/rotom.svg" alt="Rotom: Así va a verse el IDE: el código, el asistente al lado y la salida abajo. Si escribes curra en vez de curar, el asistente te ofrece el arreglo." width="100%">
 
 <img src="docs/assets/editor.svg" alt="Editor de PokeScript con un programa, el asistente y la salida" width="100%">
 
@@ -69,16 +49,7 @@ Así va a verse el IDE: el código a la izquierda, el asistente al lado y la sal
 
 ## Tipos
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="Pikachu" width="130"><br><b>PIKACHU</b></td>
-<td>
-
-Cada tipo de dato es un tipo de Pokémon. El mío es `electrico`: solo sé decir `verdadero` o `falso`, pero sin mí no hay `si` ni `mientras`.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/pikachu.svg" alt="Pikachu: Cada tipo de dato es un tipo de Pokémon. El mío es electrico: solo sé decir verdadero o falso, pero sin mí no hay si ni mientras." width="100%">
 
 <div align="center">
 
@@ -144,16 +115,7 @@ Lo necesario para leer y escribir PokeScript. Cada bloque se puede copiar tal cu
 
 ### Hola, mundo
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png" alt="Charmander" width="130"><br><b>CHARMANDER</b></td>
-<td>
-
-Todo empieza en `combate` y termina en su `fin`. Lo de adentro corre de arriba abajo, una instrucción por línea.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/charmander.svg" alt="Charmander: Todo programa empieza en combate y termina en su fin. Lo de adentro corre de arriba abajo, una instrucción por línea." width="100%">
 
 ```text
 combate
@@ -163,16 +125,7 @@ fin
 
 ### Datos y medallas
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/95.png" alt="Onix" width="130"><br><b>ONIX</b></td>
-<td>
-
-Cada dato se declara con su tipo. Una `medalla` es un valor que no cambia nunca, duro como la roca; por eso se escribe en mayúsculas.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/onix.svg" alt="Onix: Cada dato se declara con su tipo. Una medalla es un valor que no cambia nunca, duro como la roca. Por eso va en mayúsculas." width="100%">
 
 ```text
 medalla roca NIVEL_MAXIMO = 100
@@ -191,16 +144,7 @@ fin
 
 ### Decisiones
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png" alt="Psyduck" width="130"><br><b>PSYDUCK</b></td>
-<td>
-
-Aquí no hay «más o menos»: la condición de un `si` da `verdadero` o `falso`. `si vida` no compila; `si vida > 0` sí.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/psyduck.svg" alt="Psyduck: Aquí no hay «más o menos»: la condición de un si da verdadero o falso. si vida no compila; si vida &gt; 0 sí." width="100%">
 
 ```text
 si vida > 50
@@ -224,16 +168,7 @@ fin
 
 ### Ciclos
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/128.png" alt="Tauros" width="130"><br><b>TAUROS</b></td>
-<td>
-
-`mientras` embiste una y otra vez hasta que la condición deja de cumplirse. `recorrer` pasa por cada número de un rango o por cada Pokémon de un equipo. `siguiente` salta a la próxima vuelta y `huir` sale del ciclo.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/tauros.svg" alt="Tauros: mientras embiste una y otra vez hasta que la condición deja de cumplirse. recorrer pasa por un rango o por un equipo. huir sale del ciclo y siguiente salta a la otra vuelta." width="100%">
 
 ```text
 // De un número a otro (ambos incluidos)
@@ -260,16 +195,7 @@ fin
 
 ### Movimientos
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/68.png" alt="Machamp" width="130"><br><b>MACHAMP</b></td>
-<td>
-
-Los movimientos son las funciones. Unos devuelven un valor con `entregar`; otros solo hacen algo, como gritar un mensaje.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/machamp.svg" alt="Machamp: Los movimientos son las funciones. Unos devuelven un valor con entregar; otros solo hacen algo, como gritar un mensaje. ¡Cuatro brazos, cero efectos colaterales!" width="100%">
 
 ```text
 movimiento roca calcular_dano(roca ataque, roca defensa)
@@ -289,16 +215,7 @@ fin
 
 ### Equipo y mochila
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/115.png" alt="Kangaskhan" width="130"><br><b>KANGASKHAN</b></td>
-<td>
-
-Un `equipo` es una lista. Una `mochila` guarda cada cosa con su nombre, como mi bolsa, y recuerda el orden en que la metiste. Se cuenta desde 1, igual que el primer Pokémon de tu equipo.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/kangaskhan.svg" alt="Kangaskhan: Un equipo es una lista. Una mochila guarda cada cosa con su clave, como mi bolsa, y recuerda el orden. Se cuenta desde 1, como el primer Pokémon de tu equipo." width="100%">
 
 ```text
 equipo de planta equipo_ash = ["Pikachu", "Charizard"]
@@ -316,16 +233,7 @@ fin
 
 ### Especies y fichas
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png" alt="Eevee" width="130"><br><b>EEVEE</b></td>
-<td>
-
-Una `especie` es una lista cerrada de valores, como mis evoluciones: no hay más que esas. Una `ficha` junta varios datos bajo un mismo nombre.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/eevee.svg" alt="Eevee: Una especie es una lista cerrada de valores, como mis evoluciones: no hay más que esas. Una ficha junta varios datos bajo un mismo nombre." width="100%">
 
 ```text
 especie Clima
@@ -347,16 +255,7 @@ fin
 
 ### Conversiones
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png" alt="Ditto" width="130"><br><b>DITTO</b></td>
-<td>
-
-Cambiar de forma es lo mío, pero aquí hay que pedirlo con `convertir`. Ojo: `convertir(agua) a roca` corta los decimales; para redondear está `redondear`.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/ditto.svg" alt="Ditto: Cambiar de forma es lo mío, pero aquí se pide con convertir. Ojo: convertir(agua) a roca corta los decimales; para redondear está redondear." width="100%">
 
 ```text
 planta texto = "25"
@@ -369,16 +268,7 @@ roca dado = aleatorio(1, 6)
 
 ### Varios archivos
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/63.png" alt="Abra" width="130"><br><b>ABRA</b></td>
-<td>
-
-Con `enseñar … desde` un archivo se trae lo que declara otro: movimientos, especies, fichas y medallas.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/abra.svg" alt="Abra: Con enseñar … desde un archivo se teletransporta lo que declara otro: movimientos, especies, fichas y medallas." width="100%">
 
 ```text
 enseñar calcular_dano desde "operaciones.pks"
@@ -391,16 +281,7 @@ Cada animación es un programa real con su salida real. Están en [`ejemplos/`](
 
 ### Entrenamiento
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/66.png" alt="Machop" width="130"><br><b>MACHOP</b></td>
-<td>
-
-Un equipo de niveles, una mochila de objetos y varios ciclos para entrenar.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/machop.svg" alt="Machop: Un equipo de niveles, una mochila de objetos y varios ciclos para entrenar. ¡A sudar!" width="100%">
 
 <div align="center">
 <img src="docs/assets/ejemplo-colecciones.svg" alt="Programa con equipo, mochila, recorrer y mientras, y su salida" width="100%">
@@ -436,16 +317,7 @@ fin
 
 ### Estados alterados
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png" alt="Gengar" width="130"><br><b>GENGAR</b></td>
-<td>
-
-Una especie con los estados alterados, un `segun` que los cubre todos y movimientos que dicen qué le pasa a cada Pokémon.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/gengar.svg" alt="Gengar: Una especie con los estados alterados, un segun que los cubre todos y movimientos que dicen qué le pasa a cada Pokémon. Je, je." width="100%">
 
 <div align="center">
 <img src="docs/assets/ejemplo-especies.svg" alt="Programa con especie, ficha, segun exhaustivo y movimientos, y su salida" width="100%">
@@ -489,16 +361,7 @@ fin
 
 ### Centro Pokémon
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/113.png" alt="Chansey" width="130"><br><b>CHANSEY</b></td>
-<td>
-
-`capturar` se queda esperando lo que escribas. Si la respuesta no sirve para ese dato, lo explica y vuelve a preguntar, con toda la paciencia de un Centro Pokémon.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/chansey.svg" alt="Chansey: capturar se queda esperando lo que escribas. Si la respuesta no sirve, lo explica y vuelve a preguntar, con la paciencia de un Centro Pokémon." width="100%">
 
 <div align="center">
 <img src="docs/assets/ejemplo-captura.svg" alt="Programa que pide datos con capturar y valida la entrada" width="100%">
@@ -535,16 +398,7 @@ fin
 
 ### Cuando falta un `fin`
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/129.png" alt="Magikarp" width="130"><br><b>MAGIKARP</b></td>
-<td>
-
-Olvidar un `fin` es el error más común al empezar. El mensaje dice qué bloque quedó abierto y en qué línea empezó, y mirando la sangría señala cuál es el que probablemente falta cerrar.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/magikarp.svg" alt="Magikarp: Olvidar un fin es el error más común al empezar. El mensaje dice qué bloque quedó abierto, en qué línea empezó y cuál es el que falta cerrar." width="100%">
 
 <div align="center">
 <img src="docs/assets/ejemplo-error.svg" alt="PokeScript detecta un bloque sin cerrar y explica dónde se abrió" width="100%">
@@ -552,16 +406,7 @@ Olvidar un `fin` es el error más común al empezar. El mensaje dice qué bloque
 
 ### Combate por turnos
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png" alt="Blastoise" width="130"><br><b>BLASTOISE</b></td>
-<td>
-
-El programa de la especificación: cuatro archivos que se importan entre sí y usan casi todo el lenguaje. Tu Pokémon contra Bulbi, veinte turnos como máximo.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/blastoise.svg" alt="Blastoise: El programa de la especificación: cuatro archivos que se importan entre sí. Tu Pokémon contra Bulbi, veinte turnos como máximo." width="100%">
 
 <details>
 <summary>constantes.pks</summary>
@@ -664,16 +509,7 @@ fin
 
 ## Por dentro
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/137.png" alt="Porygon" width="130"><br><b>PORYGON</b></td>
-<td>
-
-Un programa pasa por cuatro etapas antes de mostrar algo. Si el analizador encuentra un nombre que no existe, el asistente busca qué quisiste escribir.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/porygon.svg" alt="Porygon: Un programa pasa por cuatro etapas antes de mostrar algo. Si el analizador no encuentra un nombre, el asistente busca qué quisiste escribir." width="100%">
 
 <img src="docs/assets/recorrido.svg" alt="El recorrido de un programa por el compilador" width="100%">
 
@@ -683,16 +519,7 @@ El compilador y el intérprete están escritos en Go. El editor usa Svelte y Cod
 
 ## Medallas
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/149.png" alt="Dragonite" width="130"><br><b>DRAGONITE</b></td>
-<td>
-
-Cada hito de la especificación es una medalla: primero los ocho gimnasios de Kanto y después el Alto Mando. Falta la Medalla Roca, que llega con los colores dentro del editor.
-
-</td>
-</tr>
-</table>
+<img src="docs/assets/guias/dragonite.svg" alt="Dragonite: Cada hito es una medalla: primero los ocho gimnasios de Kanto y después el Alto Mando. Falta la Medalla Roca, que llega con los colores del editor." width="100%">
 
 <img src="docs/assets/medallas.svg" alt="Estuche de medallas: los ocho gimnasios de Kanto y el Alto Mando, 11 de 12" width="100%">
 
@@ -700,16 +527,9 @@ Cada hito de la especificación es una medalla: primero los ocho gimnasios de Ka
 
 ## Probarlo
 
-<table>
-<tr>
-<td width="150" align="center"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/143.png" alt="Snorlax" width="130"><br><b>SNORLAX</b></td>
-<td>
+<img src="docs/assets/guias/snorlax.svg" alt="Snorlax: Para despertarme hace falta Go 1.23 o más nuevo. Si vas a trabajar en el proyecto, también Node.js 22 y pnpm 10. Con npm no me muevo. Zzz…" width="100%">
 
-Para despertarme hace falta [Go](https://go.dev/dl/) 1.23 o más nuevo. Si vas a trabajar en el proyecto, también [Node.js](https://nodejs.org) 22 y [pnpm](https://pnpm.io/installation) 10; con npm no me muevo.
-
-</td>
-</tr>
-</table>
+Descargas: [Go](https://go.dev/dl/) · [Node.js](https://nodejs.org) · [pnpm](https://pnpm.io/installation)
 
 ```bash
 git clone https://github.com/keylorpineda/PokeScript.git

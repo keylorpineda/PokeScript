@@ -531,7 +531,16 @@ El compilador y el intérprete están escritos en Go. El editor usa Svelte y Cod
 
 <img src="docs/assets/guias/snorlax.svg" alt="Snorlax: Para despertarme hace falta Go 1.25 o más nuevo. Para el IDE, también Node.js 22, pnpm 10 y la herramienta de Wails. Con npm no me muevo." width="100%">
 
-Descargas: [Go 1.25+](https://go.dev/dl/) · [Node.js 22+](https://nodejs.org) · [pnpm 10+](https://pnpm.io/installation) · [Wails](https://wails.io/docs/gettingstarted/installation)
+<div align="center">
+
+<a href="https://go.dev/dl/"><img src="https://img.shields.io/badge/Go-1.25%2B-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go 1.25+"></a>
+<a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node.js-22%2B-5FA04E?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js 22+"></a>
+<a href="https://pnpm.io/installation"><img src="https://img.shields.io/badge/pnpm-10%2B-F69220?style=for-the-badge&logo=pnpm&logoColor=white" alt="pnpm 10+"></a>
+<a href="https://wails.io/docs/gettingstarted/installation"><img src="https://img.shields.io/badge/Wails-v2-DF0000?style=for-the-badge&logo=wails&logoColor=white" alt="Wails v2"></a>
+
+<sub>Toca cada una para ir a su página de descarga.</sub>
+
+</div>
 
 ```bash
 git clone https://github.com/keylorpineda/PokeScript.git

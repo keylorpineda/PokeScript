@@ -5,3 +5,4 @@ frontend/wailsjs/
 build/
 *.go
 *.pks
+frontend/public/

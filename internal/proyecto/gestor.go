@@ -189,3 +189,22 @@ func escribirMetadatos(carpeta string, meta metadatos) error {
 	}
 	return os.WriteFile(filepath.Join(carpeta, ArchivoProyecto), append(datos, '\n'), 0o644)
 }
+
+// Otros devuelve, en orden alfabético, los archivos de la carpeta que no son
+// .pks ni proyecto.json. El IDE los muestra aparte porque no los edita.
+func Otros(carpeta string) ([]string, error) {
+	entradas, err := os.ReadDir(carpeta)
+	if err != nil {
+		return nil, err
+	}
+	otros := []string{}
+	for _, e := range entradas {
+		n := e.Name()
+		if e.IsDir() || n == ArchivoProyecto || strings.HasSuffix(n, ".pks") {
+			continue
+		}
+		otros = append(otros, n)
+	}
+	sort.Strings(otros)
+	return otros, nil
+}

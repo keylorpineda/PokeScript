@@ -35,14 +35,16 @@
     }
   ],
   "ignorePaths": [
-    "node_modules/**",
+    "**/node_modules/**",
     "pnpm-lock.yaml",
     "go.sum",
+    "go.mod",
     "frontend/dist/**",
     "frontend/wailsjs/**",
     "build/**",
     ".git/**",
-    ".husky/_/**"
+    ".husky/_/**",
+    "docs/assets/fuentes/**"
   ],
   "ignoreRegExpList": ["/\\bT[A-Z][A-Za-z]*\\b/", "/\\u[0-9A-Fa-f]{4}/"]
 }

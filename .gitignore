@@ -17,3 +17,9 @@ frontend/wailsjs/
 .idea/
 .DS_Store
 Thumbs.db
+.claude/
+
+
+# Archivos que Wails genera solo
+frontend/package.json.md5
+build/windows/icon.ico

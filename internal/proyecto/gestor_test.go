@@ -129,3 +129,25 @@ func TestLeerSinProyectoJSON(t *testing.T) {
 		t.Error("un proyecto.json inválido debe dar error")
 	}
 }
+
+func TestOtros(t *testing.T) {
+	carpeta := t.TempDir()
+	for _, n := range []string{"principal.pks", "proyecto.json", "notas.txt", "arte.png"} {
+		if err := os.WriteFile(filepath.Join(carpeta, n), nil, 0o600); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := os.Mkdir(filepath.Join(carpeta, "subcarpeta"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	otros, err := Otros(carpeta)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(otros) != 2 || otros[0] != "arte.png" || otros[1] != "notas.txt" {
+		t.Errorf("Otros = %v, want [arte.png notas.txt]", otros)
+	}
+	if _, err := Otros(filepath.Join(carpeta, "no-existe")); err == nil {
+		t.Error("una carpeta inexistente debe dar error")
+	}
+}

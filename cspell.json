@@ -38,6 +38,7 @@
     "node_modules/**",
     "pnpm-lock.yaml",
     "go.sum",
+    "go.mod",
     "frontend/dist/**",
     "frontend/wailsjs/**",
     "build/**",

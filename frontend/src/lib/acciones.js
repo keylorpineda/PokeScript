@@ -132,6 +132,7 @@ export async function ejecutar() {
   // La salida se prepara antes de llamar al backend: el programa puede emitir
   // (por ejemplo, la pregunta de un capturar) antes de que vuelva la
   // respuesta, y esos mensajes no se deben perder.
+  api.reiniciarOrden();
   const anterior = ide.salida;
   ide.salida = [
     { tipo: 'sistema', texto: `¡${perfil.nombre} y ${companero()} entran en combate!` },

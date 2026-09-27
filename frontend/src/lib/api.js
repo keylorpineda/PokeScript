@@ -2,6 +2,8 @@
 // (window.go.main.App) y sus eventos; en el navegador, sin Wails, usa un
 // backend simulado para poder diseñar la interfaz.
 
+import CONSULTA from './consulta.json';
+
 const wails = () => window.go?.main?.App;
 
 // ─── Backend simulado ──────────────────────────────────────────────────────
@@ -83,6 +85,14 @@ const simulado = {
       archivos: { 'principal.pks': 'combate\n    gritar "¡Hola, mundo!"\nfin\n' },
     };
     return { ruta: nombre, ...(await this.LeerProyecto(nombre)) };
+  },
+  // El menú de consulta viene del backend: consulta.json lo genera
+  // `pnpm docs:consulta` desde internal/consulta.
+  async ObtenerPalabrasReservadas() {
+    return CONSULTA.palabras;
+  },
+  async ObtenerTablaEfectividades() {
+    return CONSULTA.efectividades;
   },
   async ElegirCarpeta() {
     return null; // Sin Wails no hay diálogo de carpetas.
@@ -278,6 +288,8 @@ export const api = {
   // Abre el diálogo de carpetas del sistema; null si se cancela o sin Wails.
   elegirCarpeta: () => llamar('ElegirCarpeta'),
   leerProyecto: (ruta) => llamar('LeerProyecto', ruta),
+  palabrasReservadas: () => llamar('ObtenerPalabrasReservadas'),
+  tablaEfectividades: () => llamar('ObtenerTablaEfectividades'),
   leerArchivo: (ruta, archivo) => llamar('LeerArchivo', ruta, archivo),
   guardarArchivo: (ruta, archivo, contenido) => llamar('GuardarArchivo', ruta, archivo, contenido),
   nuevoArchivo: (ruta, archivo) => llamar('NuevoArchivo', ruta, archivo),
@@ -290,7 +302,29 @@ export const api = {
   detener: () => llamar('DetenerEjecucion'),
   // Eventos de la ejecución: salida, pedir-entrada, error-ejecucion, fin-ejecucion.
   alEvento(evento, f) {
-    if (window.runtime?.EventsOn) window.runtime.EventsOn(evento, f);
-    else simulado.on(evento, f);
+    const recibir = (e) => enOrden(evento, e, f);
+    if (window.runtime?.EventsOn) window.runtime.EventsOn(evento, recibir);
+    else simulado.on(evento, recibir);
+  },
+  // Cada ejecución numera sus eventos desde 1 (ver EventoNumerado en app.go).
+  reiniciarOrden() {
+    esperado = 1;
+    pendientes.clear();
   },
 };
+
+// Wails puede entregar los eventos desordenados: los que llegan antes de
+// tiempo esperan a los que faltan. Los del simulador no traen número y pasan
+// directo.
+let esperado = 1;
+const pendientes = new Map();
+function enOrden(evento, e, f) {
+  if (e?.n == null) return f(e);
+  pendientes.set(e.n, () => f(e));
+  while (pendientes.has(esperado)) {
+    const siguiente = pendientes.get(esperado);
+    pendientes.delete(esperado);
+    esperado += 1;
+    siguiente();
+  }
+}

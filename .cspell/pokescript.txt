@@ -47,10 +47,12 @@ Unown
 Wails
 Zreza
 accion
+alakazam
 ambitos
 arbol
 aritmetica
 asignacion
+assetserver
 astprueba
 atrápalos
 autocompletado
@@ -58,6 +60,7 @@ autocompletar
 boton
 bulbasaur
 bulbi
+busqueda
 campanita
 caracter
 categoria
@@ -65,6 +68,7 @@ categorias
 chansey
 charizard
 charmander
+charmy
 chispo
 cientifica
 claude
@@ -72,6 +76,7 @@ codigo
 codigos
 coleccion
 colision
+colour
 comilla
 commitlint
 companero
@@ -116,6 +121,7 @@ fuzztime
 gantt
 generico
 gengar
+geodude
 gitmessage
 gocyclo
 gofmt
@@ -124,6 +130,9 @@ golangci
 gritar
 huir
 icecave
+idat
+iend
+ihdr
 implementacion
 importacion
 indentación
@@ -132,6 +141,7 @@ instruccion
 invalidos
 jetbrains
 jordy
+kangaskhan
 kanto
 keylor
 keylorpineda
@@ -148,6 +158,7 @@ lexicos
 lezer
 logica
 luciernagas
+machamp
 magikarp
 maximo
 mayuscula
@@ -155,6 +166,7 @@ medalla
 metodo
 minimo
 minuscula
+mios
 mochila
 movimiento
 multiarchivo
@@ -165,9 +177,11 @@ nulabilidad
 numericos
 nunito
 ocultamiento
+onix
 opcion
 operacion
 operandos
+outputfilename
 paneo
 parametro
 parametros
@@ -181,7 +195,10 @@ pixelado
 pixelados
 pixelify
 pks
+pksconsulta
 plex
+plte
+pocion
 pokebola
 pokedex
 pokemon
@@ -193,6 +210,7 @@ porygon
 posicion
 psyduck
 raiz
+reacomoda
 reasignación
 recoleccion
 recorrer
@@ -221,8 +239,10 @@ spanish
 squirtle
 subcarpetas
 subcódigo
+superball
 superefectivo
 tamano
+teletransporta
 telon
 termínalo
 thunderplains
@@ -230,16 +250,19 @@ tipado
 transicion
 trillones
 unconvert
+unown
 usernamehw
 vacio
 vacios
 variacion
+vdia
 verificacion
 vineta
 vivaxy
 volcanocave
 wailsapp
 wailsjs
+wailsjsdir
 webkit
 winget
 únelas

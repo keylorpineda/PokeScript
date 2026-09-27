@@ -17,7 +17,8 @@
     "lint:md": "markdownlint-cli2 \"**/*.md\"",
     "spell": "cspell --no-progress --dot \"**\"",
     "lint": "pnpm run format:check && pnpm run lint:md && pnpm run spell",
-    "docs:svg": "node scripts/generar-svg.mjs && node scripts/generar-escenas.mjs"
+    "docs:svg": "node scripts/generar-svg.mjs && node scripts/generar-escenas.mjs",
+    "docs:sprites": "node scripts/descargar-sprites.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.3",

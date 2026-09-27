@@ -1,4 +1,4 @@
-| ✅ T8.3 || ✅ T7.5 || ✅ T7.4 || ✅ T6.6 || ✅ T5.5 || ✅ T4.6 || ✅ T3.5 || ✅ T3.4 || ✅ T2.7 || ✅ T1.6 || ✅ T1.5 || ✅ T0.2 |# 🗺️ Plan de implementación de PokeScript
+# 🗺️ Plan de implementación de PokeScript
 
 Este es el documento de coordinación del equipo: quién hace qué, en qué orden, cómo se integra y cuándo algo se da por terminado. La especificación del lenguaje ([`PokeScript_Especificacion_Implementacion.md`](PokeScript_Especificacion_Implementacion.md)) dice **qué** construir; este plan dice **cómo** lo construimos entre los tres.
 
@@ -443,7 +443,7 @@ Cada tarea tiene un identificador (`T1.3`) para usarlo en el título del PR. Res
 | ID      | Tarea                                                                                                                                                                  | Resp.          | Listo cuando                       |
 | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ---------------------------------- |
 | 🟡 T0.1 | Instalar Go ≥ 1.25, Node ≥ 22, pnpm ≥ 10 y Wails CLI v2; correr `wails doctor` sin errores                                                                             | Todos          | Cada quien lo confirma en el grupo |
-| T0.2    | `wails init -n PokeScript -t svelte` e integrarlo a la estructura del repo (raíz Go + `frontend/`), con `pnpm` en `wails.json` (`frontend:install` y `frontend:build`) | A              | `wails dev` abre una ventana       |
+| ✅ T0.2 | `wails init -n PokeScript -t svelte` e integrarlo a la estructura del repo (raíz Go + `frontend/`), con `pnpm` en `wails.json` (`frontend:install` y `frontend:build`) | A              | `wails dev` abre una ventana       |
 | ✅ T0.3 | Crear `go.mod` y los paquetes vacíos de `internal/` con un `doc.go` cada uno                                                                                           | B              | `go build ./...` y el CI pasan     |
 | ✅ T0.4 | Escribir `internal/token` (todos los `Kind`, tabla de 48 palabras reservadas) y `internal/diag`                                                                        | B              | Revisado por A y C                 |
 | ✅ T0.5 | Proponer la lista de nodos de `internal/ast`                                                                                                                           | B              | Revisado por C                     |
@@ -459,8 +459,8 @@ Cada tarea tiene un identificador (`T1.3`) para usarlo en el título del PR. Res
 | ✅ T1.2 | Lexer: `fuego`, `planta` con escapes `\"` `\n` `\\`; escape desconocido = error léxico                                     | B     | Incluye caso "cadena sin cerrar" (sección 11)         |
 | ✅ T1.3 | Lexer: `sino si` como `SINO_SI`, punto de `6.9` vs `chispo.vida`, `//` comentarios                                         | B     | Pruebas de los casos ambiguos                         |
 | ✅ T1.4 | Lexer: `NEWLINE` significativo, líneas en blanco y comentarios sin `NEWLINE` propio, columna inicial de cada línea         | B     | Pruebas                                               |
-| T1.5    | Resaltado en CodeMirror 6 con `StreamLanguage` (categorías: reservada, tipo, literal, identificador, comentario, operador) | A     | Los ejemplos del README se ven coloreados             |
-| T1.6    | Diseño base del IDE: editor, panel de salida, panel de diagnósticos, barra con Compilar / Ejecutar                         | A     | Maqueta funcional (botones aún sin lógica)            |
+| ✅ T1.5 | Resaltado en CodeMirror 6 con `StreamLanguage` (categorías: reservada, tipo, literal, identificador, comentario, operador) | A     | Los ejemplos del README se ven coloreados             |
+| ✅ T1.6 | Diseño base del IDE: editor, panel de salida, panel de diagnósticos, barra con Compilar / Ejecutar                         | A     | Maqueta funcional (botones aún sin lógica)            |
 | ✅ T1.7 | `internal/interprete`: tipos de valores en ejecución (sección 3.4), incluida la mochila con orden de inserción             | C     | Pruebas de la mochila ordenada y de la copia profunda |
 
 ### S2 · Hitos 2 y 3: parser (5 – 11 oct)
@@ -473,7 +473,7 @@ Cada tarea tiene un identificador (`T1.3`) para usarlo en el título del PR. Res
 | ✅ T2.4 | ⭐ Pila de bloques: el error dice **en qué línea se abrió** el bloque sin `fin`                                               | B     | Caso "falta un `fin`" de la sección 11                            |
 | ✅ T2.5 | Recuperación hasta el siguiente `NEWLINE`, máximo 20 diagnósticos                                                             | B     | Casos "dos instrucciones en una línea" y "`recorrer` sin `hasta`" |
 | ✅ T2.6 | Intérprete: evaluar expresiones sobre un AST (aritmética, comparación, `y`/`o` en cortocircuito)                              | C     | Pruebas con AST armados a mano, sin esperar al parser             |
-| T2.7    | Método `CompilarProyecto` en `app.go` (por ahora solo lexer + parser) y subrayado de errores en CodeMirror con `Line/Col/Len` | A     | Un error de sintaxis se subraya en el editor                      |
+| ✅ T2.7 | Método `CompilarProyecto` en `app.go` (por ahora solo lexer + parser) y subrayado de errores en CodeMirror con `Line/Col/Len` | A     | Un error de sintaxis se subraya en el editor                      |
 
 ### S3 · Hito 4: primer programa corriendo (12 – 18 oct) 🏁
 
@@ -482,8 +482,8 @@ Cada tarea tiene un identificador (`T1.3`) para usarlo en el título del PR. Res
 | ✅ T3.1 | Intérprete: variables, asignación, `gritar`, `si`/`sino si`/`sino`, `mientras`, `recorrer` de rango, `huir`, `siguiente` | C     | Pruebas con programas `.pks` en `testdata/`            |
 | ✅ T3.2 | Intérprete: `capturar` usando la interfaz `ES`                                                                           | C     | Prueba con entrada simulada                            |
 | ✅ T3.3 | Errores de ejecución: división entre cero, desbordamiento de `roca`                                                      | C     | Diagnóstico `¡Falló el ataque!` con línea              |
-| T3.4    | `EjecutarProyecto` con streaming por eventos, `EnviarEntrada` y `DetenerEjecucion`                                       | A + C | En el IDE: `capturar` pide un dato y el programa sigue |
-| T3.5    | Panel de salida con caja de entrada cuando el programa espera `capturar`                                                 | A     | Demo en vivo                                           |
+| ✅ T3.4 | `EjecutarProyecto` con streaming por eventos, `EnviarEntrada` y `DetenerEjecucion`                                       | A + C | En el IDE: `capturar` pide un dato y el programa sigue |
+| ✅ T3.5 | Panel de salida con caja de entrada cuando el programa espera `capturar`                                                 | A     | Demo en vivo                                           |
 | T3.6    | Etiqueta `v0.1` en `main` y video corto de la demo                                                                       | Todos | Tag publicado                                          |
 
 ### S4 · Hitos 5 y 6: tipos y movimientos (19 – 25 oct)
@@ -495,7 +495,7 @@ Cada tarea tiene un identificador (`T1.3`) para usarlo en el título del PR. Res
 | T4.3    | Analizador, pasada 2: tipos de expresiones, condiciones `electrico`, reasignación de `medalla`, ocultamiento             | C     | Casos semánticos 1 y 4 de la sección 11 |
 | T4.4    | Asignación definida (sección 4.2)                                                                                        | B     | Caso semántico 5 de la sección 11       |
 | 🟡 T4.5 | Movimientos: parámetros por valor con copia profunda, `entregar`, retorno por todos los caminos, límite de 1000 llamadas | C     | Pruebas de recursión y de copia         |
-| T4.6    | Diagnósticos con encabezados temáticos y panel de diagnósticos navegable (clic → salta a la línea)                       | A     | Demo                                    |
+| ✅ T4.6 | Diagnósticos con encabezados temáticos y panel de diagnósticos navegable (clic → salta a la línea)                       | A     | Demo                                    |
 
 ### S5 · Hitos 7, 8 y 12: colecciones, `segun` y asistente (26 oct – 1 nov)
 
@@ -505,19 +505,19 @@ Cada tarea tiene un identificador (`T1.3`) para usarlo en el título del PR. Res
 | T5.2    | Prohibido modificar la colección que se recorre; la variable de recorrido es de solo lectura                                   | B     | Pruebas                                                      |
 | T5.3    | `especie` y `segun`: exhaustivo **nombrando los faltantes**, `otro` obligatorio en tipos abiertos, ramas inalcanzables         | B     | Caso semántico 2 de la sección 11                            |
 | T5.4    | Asistente: plantillas por `Category + Code` y sugerencia por Levenshtein (distancia ≤ 2 o ≤ 1/3 de la longitud)                | A     | Escribir `curra(vida)` sugiere `curar`                       |
-| T5.5    | Botón "Aplicar arreglo" en el editor (`Fix` → `dispatch`)                                                                      | A     | Demo                                                         |
+| ✅ T5.5 | Botón "Aplicar arreglo" en el editor (`Fix` → `dispatch`)                                                                      | A     | Demo                                                         |
 | T5.6    | Etiqueta `v0.2`                                                                                                                | Todos | Tag publicado                                                |
 
 ### S6 · Hitos 9 y 11: importaciones y fichas (2 – 8 nov)
 
-| ID   | Tarea                                                                                                     | Resp. | Listo cuando                                |
-| ---- | --------------------------------------------------------------------------------------------------------- | ----- | ------------------------------------------- |
-| T6.1 | `internal/proyecto`: leer `proyecto.json`, cargar los `.pks`, resolver `enseñar … desde`                  | C     | Casos de importación 1 y 2 de la sección 11 |
-| T6.2 | Grafo de dependencias y detección de ciclos con **la cadena completa**                                    | C     | Caso `a.pks → b.pks → a.pks`                |
-| T6.3 | Tipos de argumentos en movimientos importados                                                             | C     | Caso de importación 3                       |
-| T6.4 | `ficha`: declaración, literal (completo, sin repetir, sin campos ajenos), acceso con `.`                  | B     | Pruebas                                     |
-| T6.5 | Resolver `{ }` como mochila o ficha según el tipo esperado                                                | B     | Pruebas de ambos casos                      |
-| T6.6 | Gestor de proyectos en la interfaz: abrir/crear carpeta, árbol de archivos, pestañas, marcar el principal | A     | Demo con el proyecto de la sección 10       |
+| ID      | Tarea                                                                                                     | Resp. | Listo cuando                                |
+| ------- | --------------------------------------------------------------------------------------------------------- | ----- | ------------------------------------------- |
+| T6.1    | `internal/proyecto`: leer `proyecto.json`, cargar los `.pks`, resolver `enseñar … desde`                  | C     | Casos de importación 1 y 2 de la sección 11 |
+| T6.2    | Grafo de dependencias y detección de ciclos con **la cadena completa**                                    | C     | Caso `a.pks → b.pks → a.pks`                |
+| T6.3    | Tipos de argumentos en movimientos importados                                                             | C     | Caso de importación 3                       |
+| T6.4    | `ficha`: declaración, literal (completo, sin repetir, sin campos ajenos), acceso con `.`                  | B     | Pruebas                                     |
+| T6.5    | Resolver `{ }` como mochila o ficha según el tipo esperado                                                | B     | Pruebas de ambos casos                      |
+| ✅ T6.6 | Gestor de proyectos en la interfaz: abrir/crear carpeta, árbol de archivos, pestañas, marcar el principal | A     | Demo con el proyecto de la sección 10       |
 
 ### S7 · Hito 10: `posible` y programa completo (9 – 15 nov)
 
@@ -526,21 +526,21 @@ Cada tarea tiene un identificador (`T1.3`) para usarlo en el título del PR. Res
 | T7.1    | `posible` y su literal nulo, operador `sino` de respaldo                                         | B     | Pruebas                              |
 | T7.2    | Estrechamiento con `igual`/`diferente` contra el nulo, propagación por `y`, pérdida al reasignar | B     | Caso semántico 3 de la sección 11    |
 | ✅ T7.3 | `convertir`, `redondear` y `aleatorio` completos, con sus errores de ejecución                   | C     | Pruebas                              |
-| T7.4    | 🏆 El programa de la sección 10 corre completo en el IDE                                         | Todos | Prueba de integración en `ejemplos/` |
-| T7.5    | Menú de consulta: tabla de efectividades y palabras reservadas                                   | A     | Demo                                 |
+| ✅ T7.4 | 🏆 El programa de la sección 10 corre completo en el IDE                                         | Todos | Prueba de integración en `ejemplos/` |
+| ✅ T7.5 | Menú de consulta: tabla de efectividades y palabras reservadas                                   | A     | Demo                                 |
 | T7.6    | Etiqueta `v0.3`                                                                                  | Todos | Tag publicado                        |
 
 ### S8 · Cierre (16 – 22 nov)
 
-| ID   | Tarea                                                                              | Resp. | Listo cuando                                 |
-| ---- | ---------------------------------------------------------------------------------- | ----- | -------------------------------------------- |
-| T8.1 | Correr los 15 casos de la sección 11 y el programa completo; corregir lo que falle | Todos | Todos pasan en el CI                         |
-| T8.2 | Advertencias 18 a 23 de la sección 4 (las 20 a 23 son _prescindibles_)             | B + C | 18 y 19 hechas; 20 a 23 solo si sobra tiempo |
-| T8.3 | Sonidos con Howler.js (compilación exitosa, error, captura)                        | A     | _Prescindible_                               |
-| T8.4 | Proyecto de ejemplo del entregable y manual de usuario                             | A     | Revisado por B y C                           |
-| T8.5 | Compilar el ejecutable final con `wails build` para Windows                        | A     | El `.exe` corre en otra máquina              |
-| T8.6 | Ensayo de defensa cruzada (ver abajo)                                              | Todos | Cada quien explica un módulo que no hizo     |
-| T8.7 | Etiqueta `v1.0` en `main`                                                          | Todos | Tag publicado                                |
+| ID      | Tarea                                                                              | Resp. | Listo cuando                                 |
+| ------- | ---------------------------------------------------------------------------------- | ----- | -------------------------------------------- |
+| T8.1    | Correr los 15 casos de la sección 11 y el programa completo; corregir lo que falle | Todos | Todos pasan en el CI                         |
+| T8.2    | Advertencias 18 a 23 de la sección 4 (las 20 a 23 son _prescindibles_)             | B + C | 18 y 19 hechas; 20 a 23 solo si sobra tiempo |
+| ✅ T8.3 | Sonidos con Howler.js (compilación exitosa, error, captura)                        | A     | _Prescindible_                               |
+| T8.4    | Proyecto de ejemplo del entregable y manual de usuario                             | A     | Revisado por B y C                           |
+| T8.5    | Compilar el ejecutable final con `wails build` para Windows                        | A     | El `.exe` corre en otra máquina              |
+| T8.6    | Ensayo de defensa cruzada (ver abajo)                                              | Todos | Cada quien explica un módulo que no hizo     |
+| T8.7    | Etiqueta `v1.0` en `main`                                                          | Todos | Tag publicado                                |
 
 ---
 

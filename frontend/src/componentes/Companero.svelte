@@ -40,7 +40,7 @@
           alt={datos.nombre}
           draggable="false"
         />
-        <Sombra ancho={150} />
+        <Sombra ancho={96} />
       </div>
     {/key}
 
@@ -208,6 +208,6 @@
     flex: none;
   }
   .yo :global(.sombra) {
-    margin-top: -16px;
+    margin-top: -13px;
   }
 </style>

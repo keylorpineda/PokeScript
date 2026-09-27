@@ -179,7 +179,7 @@
                   src={sprite(entrada.pokemon)}
                   alt={POKEMON[entrada.pokemon]?.nombre}
                 />
-                <Sombra ancho={140} />
+                <Sombra ancho={110} />
               </div>
               <p class="quien">{POKEMON[entrada.pokemon]?.nombre ?? ''} explica</p>
             </div>
@@ -807,6 +807,6 @@
   }
   .escenario :global(.sombra) {
     position: absolute;
-    bottom: 10px;
+    bottom: 14px;
   }
 </style>

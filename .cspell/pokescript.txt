@@ -134,6 +134,7 @@ expresion
 fantasma
 fira
 flechita
+frameless
 fsys
 funcion
 fuzztime
@@ -182,10 +183,13 @@ luciernagas
 machamp
 machop
 magikarp
+maximise
+maximised
 maximo
 mayuscula
 medalla
 metodo
+minimise
 minimo
 minuscula
 mios

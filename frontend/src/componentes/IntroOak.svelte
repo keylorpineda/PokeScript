@@ -145,7 +145,7 @@
           {#each ['pikachu', 'bulbasaur', 'charmander', 'squirtle', 'eevee'] as id, i (id)}
             <div class="en-fila" style="animation-delay:{i * 0.15}s">
               <img class="sprite" src={sprite(id)} alt="" draggable="false" />
-              <Sombra ancho={170} />
+              <Sombra ancho={110} />
             </div>
           {/each}
         </div>
@@ -153,7 +153,7 @@
         <div class="duo">
           <div class="figura">
             <img class="pixel oak" src={OAK} alt="Profesor Oak" draggable="false" />
-            <Sombra ancho={250} />
+            <Sombra ancho={150} />
           </div>
           <div class="figura">
             <img
@@ -162,13 +162,13 @@
               alt={inicial.nombre}
               draggable="false"
             />
-            <Sombra ancho={170} />
+            <Sombra ancho={110} />
           </div>
         </div>
       {:else}
         <div class="figura entra">
           <img class="pixel oak" src={OAK} alt="Profesor Oak" draggable="false" />
-          <Sombra ancho={250} />
+          <Sombra ancho={150} />
         </div>
       {/if}
     </div>
@@ -463,9 +463,12 @@
     border-left: 10px solid var(--texto);
     transform: translateY(-50%);
   }
-  .figura :global(.sombra),
-  .en-fila :global(.sombra) {
-    margin-top: -22px;
+  .figura :global(.sombra) {
+    margin-top: -24px;
+  }
+  .en-fila :global(.sombra),
+  .duo .figura:last-child :global(.sombra) {
+    margin-top: -15px;
   }
   @media (max-height: 740px) {
     .escenario {

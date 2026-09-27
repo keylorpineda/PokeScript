@@ -23,10 +23,13 @@ func main() {
 		MinWidth:         760,
 		MinHeight:        560,
 		BackgroundColour: &options.RGBA{R: 16, G: 16, B: 24, A: 255},
-		AssetServer:      &assetserver.Options{Assets: interfaz},
-		OnStartup:        app.iniciar,
-		OnShutdown:       app.cerrar,
-		Bind:             []interface{}{app},
+		// Sin el marco de Windows: la interfaz dibuja su propia barra con
+		// minimizar, maximizar, pantalla completa y cerrar.
+		Frameless:   true,
+		AssetServer: &assetserver.Options{Assets: interfaz},
+		OnStartup:   app.iniciar,
+		OnShutdown:  app.cerrar,
+		Bind:        []interface{}{app},
 	})
 	if err != nil {
 		log.Fatal(err)

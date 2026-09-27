@@ -167,7 +167,7 @@
     {#key indice}
       <div class="mascota" class:vuela={portada.vuela}>
         <img class="sprite" src={sprite(portada.mascota)} alt="" draggable="false" />
-        {#if !portada.vuela}<Sombra ancho={210} />{/if}
+        {#if !portada.vuela}<Sombra ancho={150} />{/if}
       </div>
     {/key}
 

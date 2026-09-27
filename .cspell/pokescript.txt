@@ -67,6 +67,7 @@ astprueba
 atrápalos
 autocompletado
 autocompletar
+blandito
 blastoise
 boton
 bulbi
@@ -88,6 +89,7 @@ condicion
 convencion
 corazon
 cortocircuito
+cuadritos
 cópialo
 dano
 davidanson
@@ -95,6 +97,7 @@ declaracion
 desapila
 descripcion
 despues
+detras
 diagnosticos
 digito
 dragonite
@@ -128,6 +131,8 @@ golangci
 gritar
 guias
 huir
+idat
+ihdr
 implementacion
 importacion
 indentación
@@ -170,8 +175,10 @@ parametro
 parametros
 parsear
 petalos
+pidgeot
 pikachu
 pks
+plte
 pokebola
 pokedex
 pokemon

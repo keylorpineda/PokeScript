@@ -1,4 +1,3 @@
-
 # Diccionario del proyecto. Una palabra por línea.
 # Español técnico que el diccionario no trae
 # Herramientas y rutas
@@ -10,25 +9,34 @@
 # Si cspell marca una palabra válida, agrégala aquí (orden alfabético).
 # Técnicos
 Aranja
+Blastoise
 Bulbasaur
 Bulbi
+Chansey
 Charizard
 Charmander
 CodeMirror
+Dragonite
 EBNF
 Eevee
 Fira
+Gengar
 Geodude
 Hidrobomba
 Howler
 Interp
+Kangaskhan
+Kanto
 Lanzallamas
 Levenshtein
 Lugia
+Machamp
+Machop
 Magikarp
 Meloc
 Menlo
 Mewtwo
+Onix
 Pikachu
 PixiJS
 Placaje
@@ -36,9 +44,12 @@ PokeScript
 Pokemon
 Pokébola
 Pokébolas
+Pokédex
 Pokémon
 Porygon
+Psyduck
 Rayquaza
+Rotom
 Segoe
 Snorlax
 Squirtle
@@ -50,6 +61,7 @@ accion
 alakazam
 ambitos
 arbol
+arcoiris
 aritmetica
 asignacion
 assetserver
@@ -57,6 +69,8 @@ astprueba
 atrápalos
 autocompletado
 autocompletar
+blandito
+blastoise
 boton
 bulbasaur
 bulbi
@@ -83,7 +97,9 @@ companero
 compilacion
 condicion
 convencion
+corazon
 cortocircuito
+cuadritos
 cópialo
 dano
 davidanson
@@ -92,9 +108,11 @@ deepsea
 desapila
 descripcion
 despues
+detras
 diagnosticos
 digito
 dotgothic
+dragonite
 eamodio
 ebnf
 eevee
@@ -128,6 +146,7 @@ gofmt
 goimports
 golangci
 gritar
+guias
 huir
 icecave
 idat
@@ -159,6 +178,7 @@ lezer
 logica
 luciernagas
 machamp
+machop
 magikarp
 maximo
 mayuscula
@@ -190,6 +210,7 @@ particulas
 pestana
 pestanas
 petalos
+pidgeot
 pikachu
 pixelado
 pixelados
@@ -206,6 +227,7 @@ pokescript
 pokéball
 pokéballs
 pokédex
+poligono
 porygon
 posicion
 psyduck
@@ -220,6 +242,7 @@ redibuja
 redibujar
 redondear
 resto
+rotom
 saltito
 seccion
 segun
@@ -259,6 +282,7 @@ vdia
 verificacion
 vineta
 vivaxy
+volcan
 volcanocave
 wailsapp
 wailsjs

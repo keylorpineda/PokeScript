@@ -13,6 +13,7 @@
     alTerminar = null,
     teclado = true,
     compacto = false,
+    silencioso = false, // sin el pitido de cada letra
     children,
   } = $props();
 
@@ -40,7 +41,7 @@
     });
     reloj = setInterval(() => {
       visibles += 1;
-      if (visibles % 3 === 0) sonar('letra');
+      if (!silencioso && visibles % 3 === 0) sonar('letra');
       if (visibles >= total) {
         clearInterval(reloj);
         fin();

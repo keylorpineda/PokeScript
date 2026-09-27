@@ -60,8 +60,12 @@
         </div>
       {/if}
     </div>
-    <button class="boton" onclick={() => cambiarSonido(!perfil.sonido)} title="Sonido">
-      {perfil.sonido ? 'SONIDO: SÍ' : 'SONIDO: NO'}
+    <button
+      class="boton interruptor"
+      onclick={() => cambiarSonido(!perfil.sonido)}
+      title="Efectos de sonido"
+    >
+      <span class="luz" class:on={perfil.sonido}></span>SONIDOS
     </button>
     <div class="entrenador marco">
       <img class="sprite mini" src={sprite(perfil.companero ?? 'pikachu')} alt="" />
@@ -172,5 +176,18 @@
     font-family: var(--titulo);
     font-size: 17px;
     font-weight: 700;
+  }
+  .interruptor {
+    font-size: 14px;
+  }
+  .luz {
+    width: 10px;
+    height: 10px;
+    background: var(--error);
+    border: 2px solid var(--borde);
+  }
+  .luz.on {
+    background: var(--exito);
+    box-shadow: 0 0 6px var(--exito);
   }
 </style>

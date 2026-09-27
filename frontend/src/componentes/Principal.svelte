@@ -14,16 +14,21 @@
   import { temaActual } from '../lib/temas.js';
   import { objeto, sprite } from '../lib/pokemon.js';
   import { abrirProyecto, escucharEjecucion } from '../lib/acciones.js';
-  import { sonar } from '../lib/sonido.js';
+  import { sonar, volumenGeneral } from '../lib/sonido.js';
 
   let { ruta } = $props();
 
   let listo = $state(false);
   let combate = $state(false);
   let ultima = 0;
-  let encima = null;
 
   const escena = $derived(temaActual(perfil.tema).escena);
+
+  // En el editor los efectos suenan más bajito que en la portada.
+  onMount(() => {
+    volumenGeneral(0.5);
+    return () => volumenGeneral(1);
+  });
 
   onMount(async () => {
     escucharEjecucion();
@@ -44,16 +49,7 @@
       combate = true;
     }
   });
-
-  // Un pitido suave al pasar sobre un botón, como el cursor de los menús.
-  function alPasar(e) {
-    const b = e.target.closest?.('.boton, .pestana, .opcion');
-    if (b && b !== encima && !b.disabled) sonar('letra');
-    encima = b;
-  }
 </script>
-
-<svelte:window onmouseover={alPasar} />
 
 <div class="ide">
   <div

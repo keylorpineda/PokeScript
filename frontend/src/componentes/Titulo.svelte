@@ -47,7 +47,7 @@
     if (vista === 'opciones')
       return [
         { id: 'tema', texto: `TEMA: ${TEMAS[perfil.tema].nombre.toUpperCase()}` },
-        { id: 'sonido', texto: `SONIDO: ${perfil.sonido ? 'SÍ' : 'NO'}` },
+        { id: 'sonido', texto: `SONIDOS: ${perfil.sonido ? 'SÍ' : 'NO'}` },
         { id: 'oak', texto: 'VER A OAK OTRA VEZ' },
         { id: 'volver', texto: 'VOLVER' },
       ];

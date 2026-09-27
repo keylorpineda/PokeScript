@@ -61,6 +61,7 @@ bulbi
 campanita
 caracter
 categoria
+categorias
 chansey
 charizard
 charmander
@@ -88,6 +89,7 @@ descripcion
 despues
 diagnosticos
 digito
+dotgothic
 eamodio
 ebnf
 eevee
@@ -106,6 +108,7 @@ especificacion
 exito
 expresion
 fantasma
+fira
 flechita
 fsys
 funcion
@@ -178,7 +181,9 @@ pixelado
 pixelados
 pixelify
 pks
+plex
 pokebola
+pokedex
 pokemon
 pokescript
 pokéball
@@ -210,6 +215,7 @@ simbolos
 sinosi
 sintactico
 sintácticamente
+sniglet
 snorlax
 spanish
 squirtle

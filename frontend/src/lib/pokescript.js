@@ -142,7 +142,7 @@ const resaltado = HighlightStyle.define([
 const tema = EditorView.theme({
   '&': {
     height: '100%',
-    fontSize: '15px',
+    fontSize: 'var(--tam-codigo, 15px)',
     backgroundColor: 'var(--editor-fondo)',
     color: 'var(--editor-texto)',
   },

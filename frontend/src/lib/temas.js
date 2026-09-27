@@ -220,6 +220,129 @@ export const TEMAS = {
       cielo3: '#7fb865',
     },
   },
+  'mar-profundo': {
+    nombre: 'Mar Profundo',
+    oscuro: true,
+    escena: { fondo: 'deepsea', particulas: 'burbujas', mascota: 'lapras' },
+    colores: {
+      fondo: '#08192b',
+      'fondo-2': '#0c2238',
+      panel: '#0f2a45',
+      'panel-2': '#143456',
+      borde: '#030b14',
+      'borde-suave': '#24527a',
+      texto: '#dff3ff',
+      'texto-suave': '#86b4d6',
+      acento: '#3fc1e8',
+      'acento-texto': '#04121f',
+      'acento-2': '#7af0d8',
+      exito: '#6ef0b0',
+      error: '#ff7a8a',
+      aviso: '#ffd07a',
+      'editor-fondo': '#0a2136',
+      'editor-gutter': '#0d263e',
+      'editor-texto': '#d6efff',
+      'editor-linea': '#11304d',
+      'editor-seleccion': '#1f4f7a',
+      comentario: '#5d88aa',
+      palabra: '#7af0d8',
+      control: '#8fb8ff',
+      numero: '#ffb87a',
+      texto_lit: '#a8f07a',
+      constante: '#ff9ad6',
+      nombre_tipo: '#ffe08a',
+      't-roca': '#d8bc86',
+      't-agua': '#5fb4ff',
+      't-fuego': '#ff9066',
+      't-planta': '#86e08a',
+      't-electrico': '#ffe066',
+      cielo1: '#1f5a86',
+      cielo2: '#0d2a48',
+      cielo3: '#03101e',
+    },
+  },
+  'llanura-trueno': {
+    nombre: 'Llanura Trueno',
+    oscuro: false,
+    escena: { fondo: 'thunderplains', particulas: 'chispas', mascota: 'pikachu' },
+    colores: {
+      fondo: '#f6efc4',
+      'fondo-2': '#ece0a0',
+      panel: '#fffbe6',
+      'panel-2': '#fbf2c8',
+      borde: '#3a3212',
+      'borde-suave': '#d8c46a',
+      texto: '#2c2610',
+      'texto-suave': '#7a6c30',
+      acento: '#f2b600',
+      'acento-texto': '#2c2610',
+      'acento-2': '#3a7ae0',
+      exito: '#3a9a3a',
+      error: '#d6402f',
+      aviso: '#c86a00',
+      'editor-fondo': '#fffdf0',
+      'editor-gutter': '#fbf3d0',
+      'editor-texto': '#2c2610',
+      'editor-linea': '#fff5cc',
+      'editor-seleccion': '#ffe68a',
+      comentario: '#a09460',
+      palabra: '#b06a00',
+      control: '#3a5ac8',
+      numero: '#c0392b',
+      texto_lit: '#2e8b3e',
+      constante: '#8a3ab9',
+      nombre_tipo: '#8a5a1a',
+      't-roca': '#8a6d2b',
+      't-agua': '#1f78d8',
+      't-fuego': '#e0501a',
+      't-planta': '#23903a',
+      't-electrico': '#b88f00',
+      cielo1: '#fff7c0',
+      cielo2: '#f5d65a',
+      cielo3: '#c89a10',
+    },
+  },
+  'monte-plateado': {
+    nombre: 'Monte Plateado',
+    oscuro: false,
+    escena: { fondo: 'mountain', particulas: 'hojas', mascota: 'snorlax' },
+    colores: {
+      fondo: '#e4e0d8',
+      'fondo-2': '#d4cec2',
+      panel: '#faf8f4',
+      'panel-2': '#efebe3',
+      borde: '#2e2a26',
+      'borde-suave': '#b8ae9c',
+      texto: '#26221e',
+      'texto-suave': '#6e665a',
+      acento: '#4a6a8a',
+      'acento-texto': '#ffffff',
+      'acento-2': '#e0a040',
+      exito: '#3a8a4a',
+      error: '#c8402f',
+      aviso: '#c07a00',
+      'editor-fondo': '#fdfcf9',
+      'editor-gutter': '#f1ede5',
+      'editor-texto': '#26221e',
+      'editor-linea': '#f3efe6',
+      'editor-seleccion': '#d6e0ea',
+      comentario: '#948a7a',
+      palabra: '#3a5a8a',
+      control: '#8a3a6a',
+      numero: '#b0501a',
+      texto_lit: '#3a7a3a',
+      constante: '#8a4a1a',
+      nombre_tipo: '#6a4a2a',
+      't-roca': '#7a5d2b',
+      't-agua': '#1f68c8',
+      't-fuego': '#d0481a',
+      't-planta': '#23803a',
+      't-electrico': '#a88000',
+      cielo1: '#f4f2ec',
+      cielo2: '#c8c2b4',
+      cielo3: '#7a7466',
+    },
+  },
 };
 
 // marco devuelve un SVG de 12x12 píxeles con esquinas escalonadas, para
@@ -245,6 +368,30 @@ function marco(borde, linea, relleno) {
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
 }
 
+// Tipografías de cada tema: títulos y menús, texto de diálogos y paneles, y
+// código (con su tamaño, porque cada fuente se ve distinta).
+const MONO = "Consolas, 'Courier New', monospace";
+export const FUENTES = {
+  'rojo-fuego': { titulo: 'Pixelify Sans', cuerpo: 'Nunito', codigo: 'JetBrains Mono', tam: 15 },
+  'game-boy': { titulo: 'Silkscreen', cuerpo: 'DotGothic16', codigo: 'VT323', tam: 19 },
+  'torre-lavanda': { titulo: 'Jersey 10', cuerpo: 'Nunito', codigo: 'Fira Code', tam: 15 },
+  'cueva-celeste': {
+    titulo: 'Tiny5',
+    cuerpo: 'M PLUS Rounded 1c',
+    codigo: 'IBM Plex Mono',
+    tam: 15,
+  },
+  'pueblo-paleta': { titulo: 'Sniglet', cuerpo: 'Nunito', codigo: 'JetBrains Mono', tam: 15 },
+  'mar-profundo': {
+    titulo: 'Pixelify Sans',
+    cuerpo: 'M PLUS Rounded 1c',
+    codigo: 'Fira Code',
+    tam: 15,
+  },
+  'llanura-trueno': { titulo: 'Silkscreen', cuerpo: 'Nunito', codigo: 'IBM Plex Mono', tam: 15 },
+  'monte-plateado': { titulo: 'Tiny5', cuerpo: 'Sniglet', codigo: 'JetBrains Mono', tam: 15 },
+};
+
 export function aplicarTema(id) {
   const tema = temaActual(id);
   const raiz = document.documentElement;
@@ -255,6 +402,11 @@ export function aplicarTema(id) {
   raiz.style.setProperty('--marco', marco(c.borde, c['borde-suave'], c.panel));
   raiz.style.setProperty('--marco-acento', marco(c.borde, c['acento-2'], c.acento));
   raiz.style.setProperty('--marco-oscuro', marco('#101018', '#58587a', '#282838'));
+  const fu = FUENTES[id] ?? FUENTES['rojo-fuego'];
+  raiz.style.setProperty('--titulo', `'${fu.titulo}', 'Pixelify Sans', sans-serif`);
+  raiz.style.setProperty('--cuerpo', `'${fu.cuerpo}', 'Nunito', system-ui, sans-serif`);
+  raiz.style.setProperty('--codigo', `'${fu.codigo}', ${MONO}`);
+  raiz.style.setProperty('--tam-codigo', `${fu.tam}px`);
   raiz.dataset.tema = id;
   raiz.dataset.oscuro = tema.oscuro ? 'si' : 'no';
 }

@@ -10,7 +10,7 @@ import { sonar } from './sonido.js';
 const RUTA_ACTUAL = () => ide.proyecto?.ruta ?? '';
 
 // Pokémon invitado según el encabezado del diagnóstico, como en el README.
-const INVITADOS = {
+export const INVITADOS = {
   '¡Se escapó!': 'magikarp',
   '¡No pasó nada!': 'psyduck',
   'No es muy efectivo…': 'mewtwo',
@@ -172,7 +172,6 @@ export function escucharEjecucion() {
   escuchando = true;
   api.alEvento('salida', (e) => {
     ide.salida.push({ tipo: 'texto', texto: e.texto });
-    sonar('linea');
   });
   api.alEvento('pedir-entrada', (e) => {
     ide.salida.push({ tipo: 'pregunta', texto: e.texto });

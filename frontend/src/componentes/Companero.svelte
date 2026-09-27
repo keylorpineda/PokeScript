@@ -3,10 +3,10 @@
   // la barra de PS que baja con cada error, lo que dice y la lista de
   // diagnósticos con su arreglo.
   import Dialogo from './Dialogo.svelte';
+  import Diagnosticos from './Diagnosticos.svelte';
   import { ide, perfil } from '../lib/estado.svelte.js';
   import { temaActual } from '../lib/temas.js';
   import { POKEMON, sprite } from '../lib/pokemon.js';
-  import { aplicarArreglo, irA } from '../lib/acciones.js';
 
   const datos = $derived(POKEMON[perfil.companero] ?? POKEMON.pikachu);
   const fondo = $derived(temaActual(perfil.tema).escena);
@@ -64,38 +64,14 @@
         texto={ide.asistente.texto}
         nombre={datos.nombre}
         compacto
+        silencioso
         teclado={false}
         velocidad={16}
       />
     {/key}
   </div>
 
-  {#if ide.diagnosticos.length}
-    <div class="lista">
-      <h3>{errores ? `${errores} ${errores === 1 ? 'ERROR' : 'ERRORES'}` : 'AVISOS'}</h3>
-      {#each ide.diagnosticos as d, i (i)}
-        <div class="diag marco {d.severity}">
-          <button class="ir" onclick={() => irA(d)}>
-            <img
-              class="pixel"
-              src="/objetos/{d.severity === 'error' ? 'poke-ball' : 'great-ball'}.png"
-              alt=""
-            />
-            <span>
-              <b>{d.heading}</b>
-              <small>{d.file} · línea {d.line}</small>
-              <span class="desc">{d.desc}</span>
-            </span>
-          </button>
-          {#if d.fix}
-            <button class="boton principal arreglo" onclick={() => aplicarArreglo(d)}>
-              USAR «{d.fix.replacement}»
-            </button>
-          {/if}
-        </div>
-      {/each}
-    </div>
-  {/if}
+  <Diagnosticos />
 </aside>
 
 <style>
@@ -236,56 +212,5 @@
   }
   .habla {
     flex: none;
-  }
-  .lista h3 {
-    margin: 0 0 8px;
-    font-family: var(--titulo);
-    font-size: 16px;
-    letter-spacing: 2px;
-    color: var(--texto-suave);
-  }
-  .diag {
-    margin-bottom: 8px;
-    padding: 0 2px;
-  }
-  .ir {
-    display: flex;
-    gap: 10px;
-    width: 100%;
-    padding: 2px;
-    text-align: left;
-    background: none;
-    border: 0;
-    cursor: pointer;
-  }
-  .ir img {
-    width: 24px;
-    height: 24px;
-    flex: none;
-    margin-top: 2px;
-  }
-  .ir b {
-    display: block;
-    font-family: var(--titulo);
-    font-size: 16px;
-    color: var(--error);
-  }
-  .warning .ir b {
-    color: var(--aviso);
-  }
-  .ir small {
-    display: block;
-    color: var(--texto-suave);
-    font-size: 12px;
-  }
-  .desc {
-    display: block;
-    font-size: 13px;
-    line-height: 1.35;
-  }
-  .arreglo {
-    margin: 6px 0 2px 34px;
-    min-height: 32px;
-    font-size: 14px;
   }
 </style>

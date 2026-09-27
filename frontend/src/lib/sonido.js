@@ -4,13 +4,17 @@
 let ctx = null;
 let ruido = null;
 let activo = true;
-let ultimaTecla = 0;
+let factor = 1; // volumen general: más bajo dentro del editor
+
+export function volumenGeneral(v) {
+  factor = v;
+}
 
 export function sonidoActivo(valor) {
   activo = valor;
 }
 
-function audio() {
+export function audio() {
   ctx ??= new AudioContext();
   if (ctx.state === 'suspended') ctx.resume();
   return ctx;
@@ -25,7 +29,7 @@ function nota(freq, inicio, dur, tipo = 'square', vol = 0.05, hasta = null) {
   osc.type = tipo;
   osc.frequency.setValueAtTime(freq, t);
   if (hasta) osc.frequency.exponentialRampToValueAtTime(hasta, t + dur);
-  gan.gain.setValueAtTime(vol, t);
+  gan.gain.setValueAtTime(vol * factor, t);
   gan.gain.exponentialRampToValueAtTime(0.0001, t + dur);
   osc.connect(gan).connect(a.destination);
   osc.start(t);
@@ -48,7 +52,7 @@ function golpeRuido(inicio, dur, vol = 0.12, corte = 1800) {
   filtro.frequency.setValueAtTime(corte, t);
   filtro.frequency.exponentialRampToValueAtTime(120, t + dur);
   const gan = a.createGain();
-  gan.gain.setValueAtTime(vol, t);
+  gan.gain.setValueAtTime(vol * factor, t);
   gan.gain.exponentialRampToValueAtTime(0.0001, t + dur);
   fuente.connect(filtro).connect(gan).connect(a.destination);
   fuente.start(t);
@@ -60,25 +64,17 @@ const arpegio = (notas, paso, dur = paso, tipo = 'square', vol = 0.045) =>
 
 const SONIDOS = {
   letra: () => nota(1500, 0, 0.018, 'square', 0.01),
-  tecla: () => nota(2200 + Math.random() * 300, 0, 0.012, 'square', 0.006),
   mover: () => nota(880, 0, 0.045, 'square', 0.03),
   elegir: () => [...arpegio([988, 1319], 0.06)].forEach((n) => nota(...n)),
   abrir: () => arpegio([660, 880, 1175], 0.04, 0.05, 'square', 0.03).forEach((n) => nota(...n)),
-  // ANALIZAR: la Pokédex se enciende (dos pitidos y un barrido) y cada fase que
-  // pasa suena un poco más aguda, con eco.
+  // ANALIZAR: la Pokédex se enciende con dos pitidos y un barrido.
+
   escaneo: () => {
     nota(1760, 0, 0.05, 'square', 0.035);
     nota(1760, 0.09, 0.05, 'square', 0.035);
     nota(330, 0.18, 0.35, 'sine', 0.06, 1320);
     nota(165, 0.18, 0.35, 'triangle', 0.05, 660);
   },
-  fase: (i = 0) => {
-    const base = [523, 659, 784][i] ?? 988;
-    nota(base, 0, 0.08, 'square', 0.045);
-    nota(base * 2, 0.06, 0.1, 'square', 0.03);
-    nota(base * 2, 0.16, 0.08, 'square', 0.012);
-  },
-  linea: () => nota(1320, 0, 0.03, 'square', 0.018),
   pregunta: () => arpegio([784, 1175], 0.08, 0.1, 'square', 0.04).forEach((n) => nota(...n)),
   exito: () => {
     arpegio([784, 988, 1175, 1568], 0.09, 0.1).forEach((n) => nota(...n));
@@ -140,11 +136,6 @@ const SONIDOS = {
 
 export function sonar(nombre, ...args) {
   if (!activo) return;
-  if (nombre === 'tecla') {
-    const ahora = performance.now();
-    if (ahora - ultimaTecla < 35) return;
-    ultimaTecla = ahora;
-  }
   try {
     SONIDOS[nombre]?.(...args);
   } catch {

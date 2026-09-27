@@ -4,15 +4,15 @@
 export const PLANTILLAS = [
   {
     id: 'vacio',
-    titulo: 'Archivo vacío',
-    descripcion: 'Una hoja en blanco.',
+    titulo: 'En blanco',
+    descripcion: 'Sin nada adentro.',
     objeto: 'poke-ball',
     nombre: 'nuevo',
     contenido: '',
   },
   {
     id: 'movimientos',
-    titulo: 'Movimientos',
+    titulo: 'Con movimientos',
     descripcion: 'Funciones para usar desde el combate.',
     objeto: 'great-ball',
     nombre: 'movimientos',
@@ -30,7 +30,7 @@ fin
   },
   {
     id: 'tipos',
-    titulo: 'Especies y fichas',
+    titulo: 'Con especies y fichas',
     descripcion: 'Tus propios tipos de datos.',
     objeto: 'ultra-ball',
     nombre: 'tipos',
@@ -49,7 +49,7 @@ fin
   },
   {
     id: 'medallas',
-    titulo: 'Medallas',
+    titulo: 'Con medallas',
     descripcion: 'Valores que nunca cambian.',
     objeto: 'rare-candy',
     nombre: 'constantes',
@@ -62,8 +62,8 @@ medalla planta REGION = "Kanto"
   },
   {
     id: 'lista',
-    titulo: 'Equipo y mochila',
-    descripcion: 'Un movimiento que recorre una colección.',
+    titulo: 'Con un recorrido',
+    descripcion: 'Un movimiento que suma un equipo.',
     objeto: 'potion',
     nombre: 'colecciones',
     contenido: `// Recorrer un equipo con un movimiento.
@@ -78,3 +78,24 @@ fin
 `,
   },
 ];
+
+// tipoDeArchivo mira lo que tiene un archivo para mostrarlo en la mochila:
+// todos son .pks, pero no es lo mismo el que tiene el combate que uno de
+// medallas.
+export function tipoDeArchivo(contenido = '') {
+  const lineas = contenido
+    .split('\n')
+    .map((l) => l.replace(/\/\/.*$/, '').trim())
+    .filter(Boolean);
+  const hay = (re) => lineas.some((l) => re.test(l));
+  if (!lineas.length) return { objeto: 'poke-ball', nombre: 'Archivo vacío', clase: 'vacio' };
+  if (hay(/^combate\b/))
+    return { objeto: 'master-ball', nombre: 'Tiene el combate', clase: 'combate' };
+  if (lineas.every((l) => /^(medalla|enseñar)\b/.test(l)))
+    return { objeto: 'rare-candy', nombre: 'Medallas', clase: 'medallas' };
+  if (hay(/^movimiento\b/))
+    return { objeto: 'great-ball', nombre: 'Movimientos', clase: 'movimientos' };
+  if (hay(/^(especie|ficha)\b/))
+    return { objeto: 'ultra-ball', nombre: 'Especies y fichas', clase: 'tipos' };
+  return { objeto: 'poke-ball', nombre: 'PokeScript', clase: 'otro' };
+}

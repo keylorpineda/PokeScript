@@ -53,8 +53,6 @@
         pokescript,
         EditorView.updateListener.of((u) => {
           if (u.docChanged) {
-            if (u.transactions.some((tr) => tr.isUserEvent('input') || tr.isUserEvent('delete')))
-              sonar('tecla');
             ide.contenidos[archivo] = u.state.doc.toString();
             ide.sucios[archivo] = true;
           }

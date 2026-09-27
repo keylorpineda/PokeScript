@@ -1,7 +1,6 @@
 <script>
   // Mientras compila: la Pokédex escanea el código y se encienden las fases.
   import { onMount } from 'svelte';
-  import { sonar } from '../lib/sonido.js';
 
   const FASES = ['LEXER', 'PARSER', 'ANALIZADOR'];
   let encendidas = $state(0);
@@ -10,7 +9,6 @@
     const id = setInterval(() => {
       if (encendidas < FASES.length) {
         encendidas += 1;
-        sonar('fase', encendidas - 1);
       }
     }, 380);
     return () => clearInterval(id);

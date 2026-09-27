@@ -13,7 +13,7 @@
     marcarPrincipal,
     duplicarArchivo,
   } from '../lib/acciones.js';
-  import { PLANTILLAS } from '../lib/plantillas.js';
+  import { PLANTILLAS, tipoDeArchivo } from '../lib/plantillas.js';
 
   let abierta = $state(true);
   let eligiendo = $state(false); // panel de plantillas abierto
@@ -113,7 +113,10 @@
   {#if eligiendo}
     <div class="nuevo marco">
       {#if !plantilla}
-        <p class="pregunta">¿Qué archivo quieres crear?</p>
+        <p class="pregunta">¿Con qué empieza el archivo?</p>
+        <p class="nota">
+          Todos son archivos <code>.pks</code>: lo que cambia es lo que traen adentro.
+        </p>
         {#each PLANTILLAS as p (p.id)}
           <button class="plantilla" onclick={() => elegirPlantilla(p)}>
             <img class="pixel" src={objeto(p.objeto)} alt="" />
@@ -172,7 +175,15 @@
     {#if abierta}
       <ul>
         {#each archivos as archivo (archivo)}
-          <li class:activo={ide.archivoActivo === archivo}>
+          {@const tipo =
+            archivo === principal
+              ? {
+                  objeto: 'master-ball',
+                  nombre: 'Archivo principal: tiene el combate',
+                  clase: 'combate',
+                }
+              : tipoDeArchivo(ide.contenidos[archivo])}
+          <li class={tipo.clase} class:activo={ide.archivoActivo === archivo}>
             {#if renombrando === archivo}
               <form class="fila" onsubmit={renombrar}>
                 <img class="pixel bola" src={objeto('poke-ball')} alt="" />
@@ -189,13 +200,9 @@
                 onclick={() => abrir(archivo)}
                 ondblclick={() => empezarRenombrar(archivo)}
                 oncontextmenu={(e) => opciones(e, archivo)}
-                title="Doble clic: cambiar nombre · Clic derecho: más opciones"
+                title="{tipo.nombre} · doble clic: cambiar nombre · clic derecho: más opciones"
               >
-                <img
-                  class="pixel bola"
-                  src={objeto(archivo === principal ? 'master-ball' : 'poke-ball')}
-                  alt=""
-                />
+                <img class="pixel bola" src={objeto(tipo.objeto)} alt={tipo.nombre} />
                 <span class="nombre">
                   {archivo.replace(/\.pks$/, '')}<small>.pks</small>
                 </span>
@@ -381,8 +388,44 @@
     border: 2px solid transparent;
     cursor: pointer;
   }
+  .fila::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--acento) 26%, transparent),
+      transparent 85%
+    );
+    box-shadow: inset 4px 0 0 var(--acento);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.16s steps(4);
+  }
+  .fila {
+    z-index: 0;
+    transition: transform 0.12s steps(3);
+  }
   li:hover .fila {
-    background: var(--panel-2);
+    transform: translateX(3px);
+  }
+  li:hover .fila::after {
+    transform: scaleX(1);
+  }
+  li:hover .bola {
+    animation: menear 0.5s steps(2) infinite;
+  }
+  @keyframes menear {
+    25% {
+      transform: rotate(-18deg);
+    }
+    75% {
+      transform: rotate(18deg);
+    }
+  }
+  li.vacio .bola {
+    opacity: 0.55;
   }
   li.activo .fila {
     background: var(--panel-2);
@@ -446,8 +489,43 @@
     border: 0;
     cursor: pointer;
   }
+  .plantilla {
+    z-index: 0;
+    transition: transform 0.12s steps(3);
+  }
+  .plantilla::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--acento) 26%, transparent),
+      transparent 85%
+    );
+    box-shadow: inset 4px 0 0 var(--acento);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.16s steps(4);
+  }
   .plantilla:hover {
-    background: var(--panel-2);
+    transform: translateX(3px);
+  }
+  .plantilla:hover::after {
+    transform: scaleX(1);
+  }
+  .plantilla:hover img {
+    animation: menear 0.5s steps(2) infinite;
+  }
+  .nota {
+    margin: -2px 0 8px;
+    font-size: 12px;
+    line-height: 1.3;
+    color: var(--texto-suave);
+  }
+  .nota code {
+    font-family: var(--codigo);
+    color: var(--palabra);
   }
   .plantilla:hover::before {
     content: '';

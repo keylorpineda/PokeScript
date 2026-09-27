@@ -95,9 +95,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: detect
     if: needs.detect.outputs.frontend == 'true'
-    defaults:
-      run:
-        working-directory: frontend
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -105,6 +102,6 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
-          cache-dependency-path: frontend/pnpm-lock.yaml
+      # El frontend es un paquete del workspace: se instala desde la raíz.
       - run: pnpm install --frozen-lockfile
-      - run: pnpm run build
+      - run: pnpm --dir frontend run build

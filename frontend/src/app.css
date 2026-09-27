@@ -1,0 +1,132 @@
+:root {
+  --titulo: 'Pixelify Sans', 'Nunito', system-ui, sans-serif;
+  --cuerpo: 'Nunito', system-ui, sans-serif;
+  --codigo: 'JetBrains Mono', Consolas, monospace;
+  --radio: 12px;
+  color-scheme: light;
+}
+:root[data-oscuro='si'] {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--cuerpo);
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  transition:
+    background 0.4s,
+    color 0.4s;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/* Marco de pixel art de los juegos: el SVG del tema (--marco) se usa como
+   border-image, así las esquinas escalonadas no se deforman. */
+.marco {
+  border: 12px solid transparent;
+  border-image: var(--marco) 3 fill / 12px / 0 stretch;
+  image-rendering: pixelated;
+}
+.marco.oscuro {
+  border-image-source: var(--marco-oscuro);
+  color: #f4f4ff;
+}
+
+/* Botón de menú: marco pixelado que se hunde al presionarlo. */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  min-height: 40px;
+  font-family: var(--titulo);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--texto);
+  background: none;
+  border: 9px solid transparent;
+  border-image: var(--marco) 3 fill / 9px / 0 stretch;
+  cursor: pointer;
+  filter: drop-shadow(0 3px 0 var(--borde));
+  transition:
+    transform 0.06s steps(2),
+    filter 0.06s steps(2);
+}
+.boton:hover {
+  transform: translateY(-2px);
+  filter: drop-shadow(0 5px 0 var(--borde));
+}
+.boton:active {
+  transform: translateY(3px);
+  filter: drop-shadow(0 0 0 var(--borde));
+}
+.boton.principal {
+  color: var(--acento-texto);
+  border-image-source: var(--marco-acento);
+}
+.boton:disabled {
+  opacity: 0.45;
+  cursor: default;
+  transform: none;
+}
+
+.pixel {
+  image-rendering: pixelated;
+}
+
+.sprite {
+  image-rendering: pixelated;
+  filter: var(--filtro-sprites);
+}
+.vector {
+  filter: var(--filtro-sprites);
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-corner,
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--borde-suave);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: 8px;
+}
+
+@keyframes parpadeo {
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes flotar {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}

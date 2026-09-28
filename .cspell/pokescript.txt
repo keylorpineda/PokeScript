@@ -301,3 +301,6 @@ webkit
 winget
 únelas
 basico
+hgss
+heartgold
+soulsilver

@@ -300,3 +300,4 @@ wailsjsdir
 webkit
 winget
 únelas
+basico

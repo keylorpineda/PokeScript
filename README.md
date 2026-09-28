@@ -28,14 +28,18 @@ Trae su propio IDE de escritorio, hecho en Go con Wails, y los programas tambié
 
 ## Contenido
 
-- [El editor](#el-editor)
-- [Tipos](#tipos)
-- [Lo básico](#lo-básico)
-- [Programas completos](#programas-completos)
-- [Por dentro](#por-dentro)
-- [Medallas](#medallas)
-- [Probarlo](#probarlo)
-- [Contribuir](#contribuir)
+<div align="center">
+
+<a href="#el-editor"><img src="docs/assets/indice/01-editor.svg" alt="01. El editor" width="49%"></a>
+<a href="#tipos"><img src="docs/assets/indice/02-tipos.svg" alt="02. Tipos" width="49%"></a>
+<a href="#lo-básico"><img src="docs/assets/indice/03-basico.svg" alt="03. Lo básico" width="49%"></a>
+<a href="#programas-completos"><img src="docs/assets/indice/04-programas.svg" alt="04. Programas completos" width="49%"></a>
+<a href="#por-dentro"><img src="docs/assets/indice/05-por-dentro.svg" alt="05. Por dentro" width="49%"></a>
+<a href="#medallas"><img src="docs/assets/indice/06-medallas.svg" alt="06. Medallas" width="49%"></a>
+<a href="#probarlo"><img src="docs/assets/indice/07-probarlo.svg" alt="07. Probarlo" width="49%"></a>
+<a href="#contribuir"><img src="docs/assets/indice/08-contribuir.svg" alt="08. Contribuir" width="49%"></a>
+
+</div>
 
 <img src="docs/assets/divisor.svg" alt="" width="100%">
 

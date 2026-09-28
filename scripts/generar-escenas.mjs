@@ -1055,4 +1055,128 @@ ${e.svg}  </g>
   }
 }
 
+// ─── 6. Índice: el equipo del README ───────────────────────────────────────
+// Cada sección es un Pokémon del equipo, como en el menú de los juegos: una
+// ficha por archivo para que cada una sea un enlace aparte en el README.
+{
+  const INDICE = [
+    [
+      '01-editor',
+      'El editor',
+      'Código, asistente y salida',
+      479,
+      'Rotom',
+      'FANTASMA',
+      ['#b89cf0', '#5a3a9a'],
+    ],
+    [
+      '02-tipos',
+      'Tipos',
+      'Cada dato es un tipo de Pokémon',
+      25,
+      'Pikachu',
+      'ELÉCTRICO',
+      ['#ffe066', '#d89a10'],
+    ],
+    [
+      '03-basico',
+      'Lo básico',
+      'Datos, condiciones y ciclos',
+      4,
+      'Charmander',
+      'FUEGO',
+      ['#ffb070', '#d8502a'],
+    ],
+    [
+      '04-programas',
+      'Programas completos',
+      'Ejemplos que corren de verdad',
+      151,
+      'Mew',
+      'PSÍQUICO',
+      ['#ffa0c8', '#c0407e'],
+    ],
+    [
+      '05-por-dentro',
+      'Por dentro',
+      'Lexer, parser, análisis e intérprete',
+      137,
+      'Porygon',
+      'NORMAL',
+      ['#8ad8e8', '#2a88a8'],
+    ],
+    [
+      '06-medallas',
+      'Medallas',
+      'La hoja de ruta, 12 de 12',
+      149,
+      'Dragonite',
+      'DRAGÓN',
+      ['#a898ff', '#4a3ab0'],
+    ],
+    [
+      '07-probarlo',
+      'Probarlo',
+      'Instalar, compilar y correr',
+      143,
+      'Snorlax',
+      'NORMAL',
+      ['#d8cca0', '#7a6e48'],
+    ],
+    [
+      '08-contribuir',
+      'Contribuir',
+      'Commits, ramas y pull requests',
+      18,
+      'Pidgeot',
+      'VOLADOR',
+      ['#9cd0ff', '#3a78c8'],
+    ],
+  ];
+  const W = 440;
+  const H = 110;
+  mkdirSync(join(OUT, 'indice'), { recursive: true });
+  INDICE.forEach(([archivo, titulo, desc, id, quien, tipo, [claro, oscuro]], i) => {
+    const n = String(i + 1).padStart(2, '0');
+    const anchoTipo = largo(tipo) * 8.4 + 20;
+    const s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${n}. ${titulo}: ${desc}">
+  <defs>
+    <linearGradient id="ficha" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${claro}"/><stop offset="1" stop-color="${oscuro}"/></linearGradient>
+    <radialGradient id="foco" cx="0.5" cy="0.55" r="0.5"><stop offset="0" stop-color="#ffffff" stop-opacity="0.75"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+    <clipPath id="borde"><rect x="6" y="6" width="${W - 12}" height="${H - 12}" rx="20"/></clipPath>
+  </defs>
+  <style>
+    .salta { animation: salta 2.4s ease-in-out ${(i * 0.3).toFixed(1)}s infinite; }
+    @keyframes salta { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    .flecha { animation: flecha 1.2s ease-in-out infinite; }
+    @keyframes flecha { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(4px); } }
+    .brilla { animation: brilla 5s ease-in-out ${(i * 0.6).toFixed(1)}s infinite; }
+    @keyframes brilla { 0%, 70% { transform: translateX(-160px); } 100% { transform: translateX(${W + 160}px); } }
+  </style>
+  <rect x="2" y="2" width="${W - 4}" height="${H - 4}" rx="24" fill="#1c2340"/>
+  <rect x="6" y="6" width="${W - 12}" height="${H - 12}" rx="20" fill="url(#ficha)"/>
+  <g clip-path="url(#borde)">
+    <rect x="6" y="6" width="${W - 12}" height="${(H - 12) / 2}" fill="#ffffff" opacity="0.14"/>
+    <circle cx="${W - 58}" cy="${H - 6}" r="70" fill="none" stroke="#ffffff" stroke-width="14" opacity="0.1"/>
+    <path d="M${W - 128} ${H - 6} h140" stroke="#ffffff" stroke-width="14" opacity="0.1"/>
+    <circle cx="${W - 58}" cy="${H - 6}" r="22" fill="none" stroke="#ffffff" stroke-width="10" opacity="0.1"/>
+    <path class="brilla" d="M0 0 h26 l-40 ${H} h-26 z" fill="#ffffff" opacity="0.18"/>
+  </g>
+  <circle cx="62" cy="58" r="40" fill="url(#foco)"/>
+  <ellipse cx="62" cy="88" rx="30" ry="6" fill="#000000" opacity="0.22"/>
+  <g class="salta">${pokemon(id, 22, 16, 80, 74)}</g>
+  <rect x="116" y="18" width="46" height="20" rx="10" fill="#1c2340"/>
+  <text x="139" y="32.5" text-anchor="middle" font-family="${MONO}" font-size="12" font-weight="700" fill="#ffcb05">Nº${n}</text>
+  <rect x="168" y="18" width="${anchoTipo}" height="20" rx="10" fill="#ffffff" opacity="0.92"/>
+  <text x="${168 + anchoTipo / 2}" y="32.5" text-anchor="middle" font-family="${SANS}" font-size="11" font-weight="900" letter-spacing="1" fill="${oscuro}">${tipo}</text>
+  <text x="116" y="66" font-family="${SANS}" font-size="${largo(titulo) > 14 ? 22 : 25}" font-weight="900" fill="#ffffff" stroke="#1c2340" stroke-width="5" stroke-linejoin="round" paint-order="stroke">${titulo}</text>
+  <text x="117" y="88" font-family="${SANS}" font-size="13.5" font-weight="700" fill="#1c2340" opacity="0.85">${esc(desc)}</text>
+  <text x="${W - 30}" y="32" text-anchor="end" font-family="${SANS}" font-size="11" font-weight="700" fill="#1c2340" opacity="0.7">${quien.toUpperCase()}</text>
+  <g class="flecha"><circle cx="${W - 38}" cy="62" r="15" fill="#1c2340"/><path d="M${W - 42} 55 l8 7 l-8 7" fill="none" stroke="#ffcb05" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+</svg>
+`;
+    writeFileSync(join(OUT, 'indice', `${archivo}.svg`), s);
+  });
+}
+
 console.log('escenas listas');

@@ -1073,7 +1073,7 @@ ${e.svg}  </g>
       '02-tipos',
       'Tipos',
       'Cada dato es un tipo de Pokémon',
-      25,
+      'pixel:25-hgss',
       'Pikachu',
       'ELÉCTRICO',
       ['#ffe066', '#d89a10'],
@@ -1164,7 +1164,7 @@ ${e.svg}  </g>
   </g>
   <circle cx="62" cy="58" r="40" fill="url(#foco)"/>
   <ellipse cx="62" cy="88" rx="30" ry="6" fill="#000000" opacity="0.22"/>
-  <g class="salta">${pokemon(id, 22, 16, 80, 74)}</g>
+  <g class="salta">${String(id).startsWith('pixel:') ? sprite(id.slice(6), 14, -4, 96, 100) : pokemon(id, 22, 16, 80, 74)}</g>
   <rect x="116" y="18" width="46" height="20" rx="10" fill="#1c2340"/>
   <text x="139" y="32.5" text-anchor="middle" font-family="${MONO}" font-size="12" font-weight="700" fill="#ffcb05">Nº${n}</text>
   <rect x="168" y="18" width="${anchoTipo}" height="20" rx="10" fill="#ffffff" opacity="0.92"/>

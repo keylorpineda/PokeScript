@@ -13,9 +13,10 @@ export const POKEMON = [
   1, 4, 6, 7, 9, 18, 25, 54, 63, 66, 68, 94, 95, 113, 115, 128, 129, 131, 132, 133, 137, 143, 149,
   150, 151, 479,
 ];
-// Sprites de los juegos (Negro y Blanco) que se dibujan como pixel art.
+// Sprites de los juegos que se dibujan como pixel art.
 export const PIXELES = {
   25: 'versions/generation-v/black-white/25.png',
+  '25-hgss': 'versions/generation-iv/heartgold-soulsilver/25.png',
   '74-espalda': 'versions/generation-v/black-white/back/74.png',
 };
 

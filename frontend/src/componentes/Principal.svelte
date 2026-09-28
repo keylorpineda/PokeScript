@@ -11,6 +11,7 @@
   import Transicion from './Transicion.svelte';
   import OakAviso from './OakAviso.svelte';
   import Pokedex from './Pokedex.svelte';
+  import IconoMochila from './IconoMochila.svelte';
   import { ide, perfil, navegacion } from '../lib/estado.svelte.js';
   import { temaActual } from '../lib/temas.js';
   import { objeto, sprite } from '../lib/pokemon.js';
@@ -128,7 +129,7 @@
 
     {#if cajonMochila}
       <button class="pestana-cajon izq" onclick={() => (verMochila = !verMochila)} title="Mochila">
-        <img class="pixel" src={objeto('exp-share')} alt="" /><span>MOCHILA</span>
+        <IconoMochila tam={28} /><span>MOCHILA</span>
       </button>
     {/if}
     {#if cajonCompanero}

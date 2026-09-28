@@ -3,6 +3,7 @@
   // Pokéball y el principal es la Master Ball. Con clic derecho (o el botón
   // de opciones) se le cambia el nombre, se marca como principal o se suelta.
   import { tick } from 'svelte';
+  import IconoMochila from './IconoMochila.svelte';
   import { ide } from '../lib/estado.svelte.js';
   import { objeto } from '../lib/pokemon.js';
   import { sonar } from '../lib/sonido.js';
@@ -105,7 +106,7 @@
 
 <nav class="mochila marco">
   <div class="bolsillo">
-    <img class="pixel" src={objeto('exp-share')} alt="" />
+    <IconoMochila tam={30} />
     <span>MOCHILA</span>
   </div>
   <div class="acciones-mochila">
@@ -344,9 +345,10 @@
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 1px;
-    color: var(--borde);
-    background: var(--acento-2);
+    color: var(--texto);
+    background: var(--panel);
     border: 2px solid var(--borde);
+    box-shadow: 0 2px 0 var(--borde);
     cursor: pointer;
   }
   .mas:hover {

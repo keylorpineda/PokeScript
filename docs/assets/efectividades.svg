@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" width="900" height="470" role="img" aria-label="Tabla de efectividades de PokeScript: qué conversiones entre tipos son automáticas, requieren convertir o son un error">
+  <defs><clipPath id="marco"><rect width="900" height="470" rx="16"/></clipPath></defs>
+  <style>
+    text { font-family: 'Trebuchet MS', 'Segoe UI', Verdana, sans-serif; }
+    .pop { opacity: 0; transform-box: fill-box; transform-origin: center; animation: pop 0.45s cubic-bezier(.34,1.56,.64,1) forwards; }
+    @keyframes pop { from { opacity: 0; transform: scale(0.2); } to { opacity: 1; transform: scale(1); } }
+    .brillo { animation: brillo 3s ease-in-out infinite; }
+    @keyframes brillo { 0%, 100% { opacity: 0; } 50% { opacity: 0.18; } }
+  </style>
+  <g clip-path="url(#marco)">
+    <rect width="900" height="470" fill="#1b1d36"/>
+    <text x="30" y="46" font-size="24" font-weight="900" fill="#ffcb05">Tabla de efectividades</text>
+    <text x="30" y="70" font-size="14" fill="#8b90c0">Origen (fila) → destino (columna). ¿Se puede pasar un valor de un tipo a otro?</text>
+    <g class="pop" style="animation-delay:0.00s"><rect x="196" y="96" width="98" height="30" rx="15" fill="#b8a038"/><text x="245" y="116" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">roca</text></g>
+    <g class="pop" style="animation-delay:0.05s"><rect x="306" y="96" width="98" height="30" rx="15" fill="#6890f0"/><text x="355" y="116" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">agua</text></g>
+    <g class="pop" style="animation-delay:0.10s"><rect x="416" y="96" width="98" height="30" rx="15" fill="#f08030"/><text x="465" y="116" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">fuego</text></g>
+    <g class="pop" style="animation-delay:0.15s"><rect x="526" y="96" width="98" height="30" rx="15" fill="#78c850"/><text x="575" y="116" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">planta</text></g>
+    <g class="pop" style="animation-delay:0.20s"><rect x="636" y="96" width="98" height="30" rx="15" fill="#e0b000"/><text x="685" y="116" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">electrico</text></g>
+    <g class="pop" style="animation-delay:0.25s"><rect x="746" y="96" width="98" height="30" rx="15" fill="#a040a0"/><text x="795" y="116" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">especie</text></g>
+    <g class="pop" style="animation-delay:0.00s"><rect x="30" y="144" width="140" height="30" rx="15" fill="#b8a038"/><text x="100" y="164" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">roca</text></g>
+    <g class="pop" style="animation-delay:0.40s"><rect x="196" y="140" width="98" height="38" rx="8" fill="#3a3f7a"/><text x="245" y="165" font-size="15" font-weight="700" fill="#e6e9ff" text-anchor="middle">MT =</text></g>
+    <g class="pop" style="animation-delay:0.47s"><rect x="306" y="140" width="98" height="38" rx="8" fill="#2f8f4e"/><text x="355" y="165" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">EF ×2</text></g>
+    <g class="pop" style="animation-delay:0.54s"><rect x="416" y="140" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="465" y="165" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.61s"><rect x="526" y="140" width="98" height="38" rx="8" fill="#b38a00"/><text x="575" y="165" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">RC ½</text></g>
+    <g class="pop" style="animation-delay:0.68s"><rect x="636" y="140" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="685" y="165" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.75s"><rect x="746" y="140" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="795" y="165" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.05s"><rect x="30" y="190" width="140" height="30" rx="15" fill="#6890f0"/><text x="100" y="210" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">agua</text></g>
+    <g class="pop" style="animation-delay:0.47s"><rect x="196" y="186" width="98" height="38" rx="8" fill="#b38a00"/><text x="245" y="211" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">RC ½</text></g>
+    <g class="pop" style="animation-delay:0.54s"><rect x="306" y="186" width="98" height="38" rx="8" fill="#3a3f7a"/><text x="355" y="211" font-size="15" font-weight="700" fill="#e6e9ff" text-anchor="middle">MT =</text></g>
+    <g class="pop" style="animation-delay:0.61s"><rect x="416" y="186" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="465" y="211" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.68s"><rect x="526" y="186" width="98" height="38" rx="8" fill="#b38a00"/><text x="575" y="211" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">RC ½</text></g>
+    <g class="pop" style="animation-delay:0.75s"><rect x="636" y="186" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="685" y="211" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.82s"><rect x="746" y="186" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="795" y="211" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.10s"><rect x="30" y="236" width="140" height="30" rx="15" fill="#f08030"/><text x="100" y="256" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">fuego</text></g>
+    <g class="pop" style="animation-delay:0.54s"><rect x="196" y="232" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="245" y="257" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.61s"><rect x="306" y="232" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="355" y="257" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.68s"><rect x="416" y="232" width="98" height="38" rx="8" fill="#3a3f7a"/><text x="465" y="257" font-size="15" font-weight="700" fill="#e6e9ff" text-anchor="middle">MT =</text></g>
+    <g class="pop" style="animation-delay:0.75s"><rect x="526" y="232" width="98" height="38" rx="8" fill="#b38a00"/><text x="575" y="257" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">RC ½</text></g>
+    <g class="pop" style="animation-delay:0.82s"><rect x="636" y="232" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="685" y="257" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.89s"><rect x="746" y="232" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="795" y="257" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.15s"><rect x="30" y="282" width="140" height="30" rx="15" fill="#78c850"/><text x="100" y="302" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">planta</text></g>
+    <g class="pop" style="animation-delay:0.61s"><rect x="196" y="278" width="98" height="38" rx="8" fill="#b38a00"/><text x="245" y="303" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">RC ½</text></g>
+    <g class="pop" style="animation-delay:0.68s"><rect x="306" y="278" width="98" height="38" rx="8" fill="#b38a00"/><text x="355" y="303" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">RC ½</text></g>
+    <g class="pop" style="animation-delay:0.75s"><rect x="416" y="278" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="465" y="303" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.82s"><rect x="526" y="278" width="98" height="38" rx="8" fill="#3a3f7a"/><text x="575" y="303" font-size="15" font-weight="700" fill="#e6e9ff" text-anchor="middle">MT =</text></g>
+    <g class="pop" style="animation-delay:0.89s"><rect x="636" y="278" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="685" y="303" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.96s"><rect x="746" y="278" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="795" y="303" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.20s"><rect x="30" y="328" width="140" height="30" rx="15" fill="#e0b000"/><text x="100" y="348" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">electrico</text></g>
+    <g class="pop" style="animation-delay:0.68s"><rect x="196" y="324" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="245" y="349" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.75s"><rect x="306" y="324" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="355" y="349" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.82s"><rect x="416" y="324" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="465" y="349" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.89s"><rect x="526" y="324" width="98" height="38" rx="8" fill="#b38a00"/><text x="575" y="349" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">RC ½</text></g>
+    <g class="pop" style="animation-delay:0.96s"><rect x="636" y="324" width="98" height="38" rx="8" fill="#3a3f7a"/><text x="685" y="349" font-size="15" font-weight="700" fill="#e6e9ff" text-anchor="middle">MT =</text></g>
+    <g class="pop" style="animation-delay:1.03s"><rect x="746" y="324" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="795" y="349" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.25s"><rect x="30" y="374" width="140" height="30" rx="15" fill="#a040a0"/><text x="100" y="394" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">especie</text></g>
+    <g class="pop" style="animation-delay:0.75s"><rect x="196" y="370" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="245" y="395" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.82s"><rect x="306" y="370" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="355" y="395" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.89s"><rect x="416" y="370" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="465" y="395" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:0.96s"><rect x="526" y="370" width="98" height="38" rx="8" fill="#b38a00"/><text x="575" y="395" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">RC ½</text></g>
+    <g class="pop" style="animation-delay:1.03s"><rect x="636" y="370" width="98" height="38" rx="8" fill="#9e2b2b"/><text x="685" y="395" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">SE ×0</text></g>
+    <g class="pop" style="animation-delay:1.10s"><rect x="746" y="370" width="98" height="38" rx="8" fill="#3a3f7a"/><text x="795" y="395" font-size="15" font-weight="700" fill="#e6e9ff" text-anchor="middle">MT =</text></g>
+    <rect class="brillo" style="animation-delay:2.00s" x="196" y="140" width="98" height="38" rx="8" fill="#ffffff"/>
+    <rect class="brillo" style="animation-delay:2.25s" x="306" y="186" width="98" height="38" rx="8" fill="#ffffff"/>
+    <rect class="brillo" style="animation-delay:2.50s" x="416" y="232" width="98" height="38" rx="8" fill="#ffffff"/>
+    <rect class="brillo" style="animation-delay:2.75s" x="526" y="278" width="98" height="38" rx="8" fill="#ffffff"/>
+    <rect class="brillo" style="animation-delay:3.00s" x="636" y="324" width="98" height="38" rx="8" fill="#ffffff"/>
+    <rect class="brillo" style="animation-delay:3.25s" x="746" y="370" width="98" height="38" rx="8" fill="#ffffff"/>
+    <g class="pop" style="animation-delay:3.00s"><rect x="30" y="420" width="44" height="26" rx="6" fill="#3a3f7a"/><text x="52" y="438" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">MT</text><text x="84" y="438" font-size="14" fill="#b8bde8">mismo tipo</text></g>
+    <g class="pop" style="animation-delay:3.12s"><rect x="245" y="420" width="44" height="26" rx="6" fill="#2f8f4e"/><text x="267" y="438" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">EF</text><text x="299" y="438" font-size="14" fill="#b8bde8">automática</text></g>
+    <g class="pop" style="animation-delay:3.24s"><rect x="460" y="420" width="44" height="26" rx="6" fill="#b38a00"/><text x="482" y="438" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">RC</text><text x="514" y="438" font-size="14" fill="#b8bde8">requiere convertir</text></g>
+    <g class="pop" style="animation-delay:3.36s"><rect x="675" y="420" width="44" height="26" rx="6" fill="#9e2b2b"/><text x="697" y="438" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">SE</text><text x="729" y="438" font-size="14" fill="#b8bde8">error de compilación</text></g>
+  </g>
+</svg>

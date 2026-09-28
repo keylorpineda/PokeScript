@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 590" width="900" height="590" role="img" aria-label="Editor de PokeScript con un programa de ejemplo y su salida">
+  <defs>
+    <clipPath id="ventana">
+      <rect width="900" height="590" rx="16"/>
+    </clipPath>
+  </defs>
+
+  <style>
+    text { font-family: Consolas, 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 16px; white-space: pre; }
+    .n { fill: #4b5080; text-anchor: end; }
+    .id { fill: #d6deeb; }
+    .k { fill: #c792ea; font-weight: 700; }
+    .f { fill: #82aaff; }
+    .s { fill: #c3e88d; }
+    .num { fill: #f78c6c; }
+    .op { fill: #89ddff; }
+    .c { fill: #637777; font-style: italic; }
+    .cte { fill: #ffcb6b; }
+    .roca { fill: #d4bc4a; font-weight: 700; }
+
+    .linea { opacity: 0; animation: entrar 0.35s ease-out forwards; }
+    @keyframes entrar {
+      from { opacity: 0; transform: translateX(-12px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .salida { opacity: 0; animation: entrar 0.4s ease-out forwards; }
+    .cursor { opacity: 0; animation: mostrar 0.01s 3.9s forwards, parpadeo 0.9s 3.9s step-end infinite; }
+    @keyframes mostrar { to { opacity: 1; } }
+    @keyframes parpadeo { 50% { fill: transparent; } }
+    .punto { animation: latido 1.6s ease-in-out infinite; }
+    @keyframes latido { 50% { opacity: 0.35; } }
+  </style>
+
+  <g clip-path="url(#ventana)">
+    <rect width="900" height="590" fill="#1b1d36"/>
+
+    <!-- Barra de título -->
+    <rect width="900" height="44" fill="#121328"/>
+    <circle cx="24" cy="22" r="7" fill="#ff5f57"/>
+    <circle cx="46" cy="22" r="7" fill="#febc2e"/>
+    <circle cx="68" cy="22" r="7" fill="#28c840"/>
+    <rect x="96" y="8" width="160" height="36" rx="8" fill="#1b1d36"/>
+    <circle cx="114" cy="26" r="6" fill="#ee1515"/>
+    <rect x="108" y="25" width="12" height="2" fill="#121328"/>
+    <text x="128" y="31" style="font-size:14px" fill="#e6e9ff">principal.pks</text>
+    <text x="276" y="31" style="font-size:14px" fill="#6b70a8">tipos.pks</text>
+    <text x="376" y="31" style="font-size:14px" fill="#6b70a8">operaciones.pks</text>
+    <circle class="punto" cx="872" cy="22" r="5" fill="#78c850"/>
+
+    <!-- Código -->
+    <g xml:space="preserve">
+      <g class="linea" style="animation-delay:0.10s"><text x="40" y="80" class="n">1</text><text x="58" y="80" class="c">// principal.pks · Centro Pokémon</text></g>
+      <g class="linea" style="animation-delay:0.25s"><text x="40" y="104" class="n">2</text><text x="58" y="104"><tspan class="k">medalla</tspan> <tspan class="roca">roca</tspan> <tspan class="cte">CURA</tspan> <tspan class="op">=</tspan> <tspan class="num">20</tspan></text></g>
+      <g class="linea" style="animation-delay:0.35s"><text x="40" y="128" class="n">3</text></g>
+      <g class="linea" style="animation-delay:0.45s"><text x="40" y="152" class="n">4</text><text x="58" y="152"><tspan class="k">movimiento</tspan> <tspan class="roca">roca</tspan> <tspan class="f">curar</tspan><tspan class="op">(</tspan><tspan class="roca">roca</tspan> <tspan class="id">vida</tspan><tspan class="op">)</tspan></text></g>
+      <g class="linea" style="animation-delay:0.60s"><text x="40" y="176" class="n">5</text><text x="58" y="176">    <tspan class="k">entregar</tspan> <tspan class="id">vida</tspan> <tspan class="op">+</tspan> <tspan class="cte">CURA</tspan></text></g>
+      <g class="linea" style="animation-delay:0.75s"><text x="40" y="200" class="n">6</text><text x="58" y="200" class="k">fin</text></g>
+      <g class="linea" style="animation-delay:0.85s"><text x="40" y="224" class="n">7</text></g>
+      <g class="linea" style="animation-delay:0.95s"><text x="40" y="248" class="n">8</text><text x="58" y="248" class="k">combate</text></g>
+      <g class="linea" style="animation-delay:1.10s"><text x="40" y="272" class="n">9</text><text x="58" y="272">    <tspan class="roca">roca</tspan> <tspan class="id">vida</tspan> <tspan class="op">=</tspan> <tspan class="num">35</tspan></text></g>
+      <g class="linea" style="animation-delay:1.25s"><text x="40" y="296" class="n">10</text><text x="58" y="296">    <tspan class="id">vida</tspan> <tspan class="op">=</tspan> <tspan class="f">curar</tspan><tspan class="op">(</tspan><tspan class="id">vida</tspan><tspan class="op">)</tspan></text></g>
+      <g class="linea" style="animation-delay:1.40s"><text x="40" y="320" class="n">11</text><text x="58" y="320">    <tspan class="k">si</tspan> <tspan class="id">vida</tspan> <tspan class="op">&gt;</tspan> <tspan class="num">50</tspan></text></g>
+      <g class="linea" style="animation-delay:1.55s"><text x="40" y="344" class="n">12</text><text x="58" y="344">        <tspan class="k">gritar</tspan> <tspan class="s">"¡Curado! Vida: "</tspan><tspan class="op">,</tspan> <tspan class="id">vida</tspan></text></g>
+      <g class="linea" style="animation-delay:1.70s"><text x="40" y="368" class="n">13</text><text x="58" y="368">    <tspan class="k">sino</tspan></text></g>
+      <g class="linea" style="animation-delay:1.85s"><text x="40" y="392" class="n">14</text><text x="58" y="392">        <tspan class="k">gritar</tspan> <tspan class="s">"No es muy efectivo…"</tspan></text></g>
+      <g class="linea" style="animation-delay:2.00s"><text x="40" y="416" class="n">15</text><text x="58" y="416">    <tspan class="k">fin</tspan></text></g>
+      <g class="linea" style="animation-delay:2.15s"><text x="40" y="440" class="n">16</text><text x="58" y="440" class="k">fin</text></g>
+    </g>
+
+    <!-- Tarjeta del asistente pedagógico -->
+    <g class="salida" style="animation-delay:2.4s">
+      <rect x="560" y="70" width="316" height="226" rx="12" fill="#23264a" stroke="#3a3f7a" stroke-width="1.5"/>
+      <rect x="560" y="70" width="6" height="226" rx="3" fill="#ffcb05"/>
+      <text x="584" y="100" style="font-size:12px; letter-spacing:2px" fill="#ffcb05" font-weight="700">ASISTENTE</text>
+      <text x="584" y="130" style="font-size:15px" fill="#e6e9ff" font-weight="700">¿Seguro que quieres hacer eso?</text>
+      <text x="584" y="160" style="font-size:14px" fill="#b8bde8">Escribiste <tspan fill="#ff8fa3">curra(vida)</tspan>, pero ese</text>
+      <text x="584" y="182" style="font-size:14px" fill="#b8bde8">movimiento no existe.</text>
+      <text x="584" y="214" style="font-size:14px" fill="#b8bde8">¿Quisiste decir <tspan fill="#82aaff">curar</tspan>?</text>
+      <rect x="584" y="236" width="136" height="34" rx="8" fill="#ffcb05"/>
+      <text x="652" y="258" style="font-size:14px" fill="#121328" font-weight="700" text-anchor="middle">Aplicar arreglo</text>
+    </g>
+
+    <!-- Panel de salida -->
+    <rect x="0" y="466" width="900" height="124" fill="#121328"/>
+    <rect x="0" y="466" width="900" height="1" fill="#2c3060"/>
+    <text x="24" y="492" style="font-size:13px; letter-spacing:2px" fill="#6b70a8">SALIDA</text>
+    <g class="salida" style="animation-delay:2.6s">
+      <text x="24" y="522"><tspan fill="#78c850" font-weight="700">✔ ¡Es superefectivo!</tspan><tspan fill="#8b90c0"> Compilación sin errores · 1 archivo</tspan></text>
+    </g>
+    <g class="salida" style="animation-delay:3.3s">
+      <text x="24" y="550" fill="#e6e9ff">¡Curado! Vida: 55</text>
+    </g>
+    <rect class="cursor" x="24" y="560" width="9" height="18" fill="#ffcb05"/>
+  </g>
+</svg>

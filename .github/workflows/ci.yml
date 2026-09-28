@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, dev]
   pull_request:
 
 concurrency:
@@ -17,42 +17,58 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-      - run: npm ci
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
       - name: Validar commits del PR
         if: github.event_name == 'pull_request'
-        run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
+        run: sh scripts/validar-commits.sh ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
       - name: Validar commits del push
         if: github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000'
-        run: npx commitlint --from ${{ github.event.before }} --to ${{ github.sha }} --verbose
+        run: sh scripts/validar-commits.sh ${{ github.event.before }} ${{ github.sha }}
       - name: Validar último commit (primer push de la rama)
         if: github.event_name == 'push' && github.event.before == '0000000000000000000000000000000000000000'
-        run: npx commitlint --last --verbose
+        run: git log -1 --no-merges --format=%B | pnpm exec commitlint --verbose
 
   standards:
     name: Formato, markdown y ortografía
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-      - run: npm ci
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
       - name: Prettier
-        run: npm run format:check
+        run: pnpm run format:check
       - name: Markdownlint
-        run: npm run lint:md
+        run: pnpm run lint:md
       - name: CSpell
-        run: npm run spell
+        run: pnpm run spell
+
+  detect:
+    name: Detectar partes del proyecto
+    runs-on: ubuntu-latest
+    outputs:
+      go: ${{ steps.check.outputs.go }}
+      frontend: ${{ steps.check.outputs.frontend }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: check
+        run: |
+          [ -f go.mod ] && echo "go=true" >> "$GITHUB_OUTPUT" || echo "go=false" >> "$GITHUB_OUTPUT"
+          [ -f frontend/package.json ] && echo "frontend=true" >> "$GITHUB_OUTPUT" || echo "frontend=false" >> "$GITHUB_OUTPUT"
 
   go:
     name: Compilador (Go)
     runs-on: ubuntu-latest
-    if: hashFiles('go.mod') != ''
+    needs: detect
+    if: needs.detect.outputs.go == 'true'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -60,33 +76,32 @@ jobs:
           go-version-file: go.mod
       - name: Formato (gofmt)
         run: |
-          sin_formato=$(gofmt -l ./internal)
+          sin_formato=$(gofmt -l ./internal ./cmd)
           if [ -n "$sin_formato" ]; then
             echo "Archivos sin gofmt:"; echo "$sin_formato"; exit 1
           fi
       - name: go vet
-        run: go vet ./internal/...
+        run: go vet ./internal/... ./cmd/...
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v8
         with:
           version: v2.4
-          args: ./internal/...
+          args: ./internal/... ./cmd/...
       - name: Pruebas
-        run: go test -race -cover ./internal/...
+        run: go test -race -cover ./internal/... ./cmd/...
 
   frontend:
     name: Interfaz (Svelte)
     runs-on: ubuntu-latest
-    if: hashFiles('frontend/package.json') != ''
-    defaults:
-      run:
-        working-directory: frontend
+    needs: detect
+    if: needs.detect.outputs.frontend == 'true'
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: frontend/package-lock.json
-      - run: npm ci
-      - run: npm run build
+          cache: pnpm
+      # El frontend es un paquete del workspace: se instala desde la raíz.
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --dir frontend run build

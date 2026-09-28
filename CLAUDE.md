@@ -29,6 +29,8 @@ La especificación completa se carga en el contexto con esta importación:
 
 ## Orden de trabajo
 
+El plan del equipo (roles, sprints, tareas `T<id>`, contratos entre módulos y decisiones) está en `docs/PLAN.md`. Las tareas nuevas y las decisiones se registran ahí.
+
 Seguir los hitos de la sección 0 de la especificación. La prioridad es llegar al hito 4: el intérprete corriendo el primer programa.
 
 ## Commits
@@ -45,14 +47,16 @@ Los tipos, los alcances y los ejemplos están en `CONTRIBUTING.md`.
 
 - El compilador y el intérprete viven en `internal/` (por ejemplo `internal/lexer`, `internal/parser`, `internal/analizador`, `internal/interprete`, `internal/asistente`). Esos paquetes **no** importan Wails, así que se prueban sin interfaz.
 - En la raíz quedan solo `main.go` y `app.go` de Wails, que hacen de puente.
+- `internal/servicio` une todas las fases: `Compilar`, `Ejecutar`, la `Sesion` con streaming y el `Entorno` con los métodos de la sección 9. `app.go` solo envuelve al `Entorno`, al gestor (`internal/proyecto/gestor.go`) y al menú de consulta (`internal/consulta`); la lógica no va en `app.go`.
 - Las pruebas usan `testing` de la librería estándar, en archivos `*_test.go` al lado del código, con estilo de tabla.
 - Los programas `.pks` de prueba van en `testdata/` dentro de cada paquete.
-- Para correrlas: `go test ./internal/...`
+- Para correrlas: `go test ./internal/... ./cmd/...`
+- Para ejecutar un programa sin el IDE: `go run ./cmd/pks ejemplos/combate` (o un archivo `.pks`).
 
 ## CI
 
-`.github/workflows/ci.yml` corre en cada push a `main`/`develop` y en cada PR:
+`.github/workflows/ci.yml` corre en cada push a `main`/`dev` y en cada PR:
 
 1. commitlint sobre todos los commits nuevos.
-2. `gofmt`, `go vet` y `go test -race` sobre `internal/` (solo si existe `go.mod`).
-3. `npm run build` del frontend (solo si existe `frontend/package.json`).
+2. `gofmt`, `go vet`, golangci-lint y `go test -race` sobre `internal/` y `cmd/` (solo si existe `go.mod`).
+3. `pnpm run build` del frontend (solo si existe `frontend/package.json`).

@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" width="900" height="300" role="img" aria-label="PokeScript: aprende a programar, ¡atrápalos a todos!">
+  <defs>
+    <linearGradient id="fondo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f1026"/>
+      <stop offset="1" stop-color="#262a55"/>
+    </linearGradient>
+    <linearGradient id="titulo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe45c"/>
+      <stop offset="1" stop-color="#ffb800"/>
+    </linearGradient>
+    <pattern id="pixeles" width="12" height="12" patternUnits="userSpaceOnUse">
+      <rect width="1.5" height="1.5" fill="#ffffff" opacity="0.08"/>
+    </pattern>
+    <clipPath id="consola">
+      <rect x="283" y="155" width="578" height="42" rx="9"/>
+    </clipPath>
+    <clipPath id="marco">
+      <rect width="900" height="300" rx="22"/>
+    </clipPath>
+  </defs>
+
+  <style>
+    .agitar { transform-origin: 150px 232px; animation: agitar 3.2s ease-in-out infinite; }
+    @keyframes agitar {
+      0%, 55%, 100% { transform: rotate(0deg); }
+      62% { transform: rotate(-16deg); }
+      70% { transform: rotate(13deg); }
+      78% { transform: rotate(-8deg); }
+      86% { transform: rotate(4deg); }
+      93% { transform: rotate(0deg); }
+    }
+    .boton { animation: brillo 3.2s ease-in-out infinite; }
+    @keyframes brillo {
+      0%, 90%, 100% { fill: #ffffff; }
+      94% { fill: #ffe45c; }
+    }
+    .girar { transform-origin: 800px 70px; animation: girar 40s linear infinite; }
+    @keyframes girar { to { transform: rotate(360deg); } }
+    .flotar { animation: flotar 4s ease-in-out infinite; }
+    @keyframes flotar {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    .tapa { animation: escribir 9s infinite; }
+    @keyframes escribir {
+      0% { transform: translateX(0); animation-timing-function: steps(40, end); }
+      38% { transform: translateX(520px); }
+      85% { transform: translateX(520px); animation-timing-function: steps(40, end); }
+      100% { transform: translateX(0); }
+    }
+    .cursor { animation: escribir 9s infinite, parpadeo 0.8s step-end infinite; }
+    @keyframes parpadeo { 50% { opacity: 0; } }
+    .tipo { opacity: 0; transform-box: fill-box; transform-origin: center;
+            animation: aparecer 0.5s cubic-bezier(.34,1.56,.64,1) forwards, rebotar 2.4s ease-in-out infinite; }
+    .t1 { animation-delay: 0.3s, 1.0s; }
+    .t2 { animation-delay: 0.45s, 1.2s; }
+    .t3 { animation-delay: 0.6s, 1.4s; }
+    .t4 { animation-delay: 0.75s, 1.6s; }
+    .t5 { animation-delay: 0.9s, 1.8s; }
+    @keyframes aparecer {
+      from { opacity: 0; transform: scale(0.3); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes rebotar {
+      0%, 100% { translate: 0 0; }
+      50% { translate: 0 -4px; }
+    }
+    .chispa { transform-box: fill-box; transform-origin: center; animation: titilar 2.6s ease-in-out infinite; }
+    .c2 { animation-delay: 0.7s; }
+    .c3 { animation-delay: 1.3s; }
+    .c4 { animation-delay: 1.9s; }
+    .c5 { animation-delay: 0.4s; }
+    @keyframes titilar {
+      0%, 100% { opacity: 0.15; transform: scale(0.6); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+  </style>
+
+  <g clip-path="url(#marco)">
+    <rect width="900" height="300" fill="url(#fondo)"/>
+    <rect width="900" height="300" fill="url(#pixeles)"/>
+
+    <!-- Pokébola gigante de fondo -->
+    <g class="girar" opacity="0.07">
+      <circle cx="800" cy="70" r="130" fill="none" stroke="#ffffff" stroke-width="16"/>
+      <rect x="670" y="62" width="260" height="16" fill="#ffffff"/>
+      <circle cx="800" cy="70" r="34" fill="none" stroke="#ffffff" stroke-width="16"/>
+    </g>
+
+    <!-- Chispas -->
+    <path class="chispa" d="M60 50 l4 10 l10 4 l-10 4 l-4 10 l-4 -10 l-10 -4 l10 -4 z" fill="#ffe45c"/>
+    <path class="chispa c2" d="M250 30 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 z" fill="#8ec5ff"/>
+    <path class="chispa c3" d="M860 190 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 z" fill="#ffe45c"/>
+    <path class="chispa c4" d="M40 250 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 z" fill="#ff8fa3"/>
+    <path class="chispa c5" d="M700 270 l2 6 l6 2 l-6 2 l-2 6 l-2 -6 l-6 -2 l6 -2 z" fill="#8ec5ff"/>
+
+    <!-- Pokébola que se agita como en una captura -->
+    <ellipse cx="150" cy="238" rx="62" ry="9" fill="#000000" opacity="0.35"/>
+    <g class="agitar">
+      <circle cx="150" cy="150" r="82" fill="#ffffff"/>
+      <path d="M68 150 a82 82 0 0 1 164 0 z" fill="#ee1515"/>
+      <path d="M92 110 a62 62 0 0 1 40 -28" fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="round" opacity="0.55"/>
+      <rect x="68" y="142" width="164" height="16" fill="#1b1b1b"/>
+      <circle cx="150" cy="150" r="82" fill="none" stroke="#1b1b1b" stroke-width="8"/>
+      <circle cx="150" cy="150" r="27" fill="#1b1b1b"/>
+      <circle class="boton" cx="150" cy="150" r="16" fill="#ffffff"/>
+    </g>
+
+    <!-- Título -->
+    <g class="flotar">
+      <text x="282" y="128" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="80" font-weight="900" letter-spacing="1"
+            fill="url(#titulo)" stroke="#2a5caa" stroke-width="9" stroke-linejoin="round" paint-order="stroke">PokeScript</text>
+    </g>
+
+    <!-- Consola con texto que se escribe solo -->
+    <rect x="282" y="154" width="580" height="44" rx="10" fill="#0b0c1e" stroke="#3a3f7a" stroke-width="1.5"/>
+    <text x="298" y="183" font-family="Consolas, 'Courier New', monospace" font-size="20" font-weight="700" fill="#ffcb05">›</text>
+    <text x="320" y="183" font-family="Consolas, 'Courier New', monospace" font-size="19" fill="#e6e9ff"
+          textLength="520" lengthAdjust="spacingAndGlyphs">Aprende a programar… ¡atrápalos a todos!</text>
+    <g clip-path="url(#consola)"><rect class="tapa" x="320" y="160" width="532" height="32" fill="#0b0c1e"/></g>
+    <rect class="cursor" x="320" y="166" width="3" height="22" fill="#ffcb05"/>
+
+    <!-- Tipos del lenguaje -->
+    <g font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="15" font-weight="700" text-anchor="middle" fill="#ffffff">
+      <g class="tipo t1"><rect x="282" y="222" width="104" height="32" rx="16" fill="#b8a038"/><text x="334" y="243">roca</text></g>
+      <g class="tipo t2"><rect x="396" y="222" width="104" height="32" rx="16" fill="#6890f0"/><text x="448" y="243">agua</text></g>
+      <g class="tipo t3"><rect x="510" y="222" width="104" height="32" rx="16" fill="#f08030"/><text x="562" y="243">fuego</text></g>
+      <g class="tipo t4"><rect x="624" y="222" width="104" height="32" rx="16" fill="#78c850"/><text x="676" y="243">planta</text></g>
+      <g class="tipo t5"><rect x="738" y="222" width="124" height="32" rx="16" fill="#e0b000"/><text x="800" y="243">electrico</text></g>
+    </g>
+  </g>
+</svg>

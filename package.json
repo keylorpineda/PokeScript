@@ -2,13 +2,24 @@
   "name": "pokescript",
   "private": true,
   "description": "PokeScript: lenguaje pedagógico, compilador e IDE (Wails + Go + Svelte)",
+  "type": "module",
+  "packageManager": "pnpm@11.17.0",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10",
+    "npm": "usa-pnpm"
+  },
   "scripts": {
+    "preinstall": "node scripts/solo-pnpm.mjs",
     "prepare": "husky",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint:md": "markdownlint-cli2 \"**/*.md\"",
     "spell": "cspell --no-progress --dot \"**\"",
-    "lint": "npm run format:check && npm run lint:md && npm run spell"
+    "lint": "pnpm run format:check && pnpm run lint:md && pnpm run spell",
+    "docs:svg": "node scripts/generar-svg.mjs && node scripts/generar-escenas.mjs",
+    "docs:sprites": "node scripts/descargar-sprites.mjs",
+    "docs:consulta": "go run ./cmd/pksconsulta > frontend/src/lib/consulta.json"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.3",
@@ -18,7 +29,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.5.1",
     "markdownlint-cli2": "^0.23.3",
-    "prettier": "^3.9.9"
-  },
-  "type": "module"
+    "prettier": "^3.9.9",
+    "prettier-plugin-svelte": "^4.1.1"
+  }
 }

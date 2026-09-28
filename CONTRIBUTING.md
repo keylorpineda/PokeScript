@@ -3,10 +3,12 @@
 ## Preparación
 
 ```bash
-npm install
+pnpm install
 ```
 
 Esto instala Husky y activa los hooks de Git (`.husky/`). Cada integrante debe correrlo una vez después de clonar.
+
+> El proyecto usa **solo pnpm** (`winget install pnpm.pnpm`). `npm install` y `yarn` se detienen con un mensaje a propósito, y el único lockfile válido es `pnpm-lock.yaml`.
 
 Para que `git commit` abra la plantilla con la guía:
 
@@ -74,12 +76,27 @@ PKS docs: update the type effectiveness table
 PKS chore(config): set up husky and commitlint
 ```
 
+## Ramas
+
+Las ramas salen de `dev` y se nombran **en inglés**, en minúsculas y con guiones: `<tipo>/<área>-<qué>`.
+
+| Tipo       | Uso                           | Ejemplo                      |
+| ---------- | ----------------------------- | ---------------------------- |
+| `feature/` | Funcionalidad nueva           | `feature/parser-expressions` |
+| `fix/`     | Corrección de un error        | `fix/lexer-string-escapes`   |
+| `docs/`    | Solo documentación            | `docs/user-manual`           |
+| `test/`    | Solo pruebas                  | `test/analyzer-cases`        |
+| `chore/`   | Configuración y mantenimiento | `chore/ci-cache`             |
+
+El ID de la tarea del plan (`T2.1`) va en el título del PR, no en el nombre de la rama. Al integrar el PR, el commit de merge lleva ese título; commitlint no revisa los commits de merge, solo los de trabajo. El flujo completo está en [docs/PLAN.md](docs/PLAN.md#-flujo-de-trabajo-en-git).
+
 ## Hooks
 
 | Hook         | Qué hace                                                                                          |
 | ------------ | ------------------------------------------------------------------------------------------------- |
 | `commit-msg` | Valida el mensaje con commitlint (`commitlint.config.js`)                                         |
 | `pre-commit` | Corre lint-staged (Prettier, markdownlint, CSpell) y `gofmt` sobre los `.go` si Go está instalado |
+| `pre-push`   | Rechaza el push directo a `main` y a `dev`: todo entra por un PR                                  |
 
 Si un commit se rechaza, corrige el mensaje y vuelve a intentarlo. No uses `--no-verify`.
 
@@ -100,9 +117,9 @@ Al abrir el proyecto, VS Code ofrece instalar las extensiones recomendadas de `.
 ### Comandos
 
 ```bash
-npm run format   # formatea todo con Prettier
-npm run lint     # revisa formato, markdown y ortografía (lo mismo que el CI)
-npm run spell    # solo ortografía
+pnpm format   # formatea todo con Prettier
+pnpm lint     # revisa formato, markdown y ortografía (lo mismo que el CI)
+pnpm spell    # solo ortografía
 ```
 
 ### Cuando CSpell marca una palabra válida

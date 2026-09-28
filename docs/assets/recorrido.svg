@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 280" width="900" height="280" role="img" aria-label="El recorrido de un programa: principal.pks pasa por el lexer, el parser, el analizador y el intérprete hasta la salida; el asistente ayuda cuando el analizador encuentra un error">
+  <style>
+    .viaje { animation: viaje 10s cubic-bezier(.5,0,.5,1) infinite; }
+    @keyframes viaje { 0.0%, 8.3% { transform: translateX(0px); } 15.0%, 23.3% { transform: translateX(148px); } 30.0%, 38.3% { transform: translateX(296px); } 45.0%, 53.3% { transform: translateX(444px); } 60.0%, 68.3% { transform: translateX(592px); } 75.0%, 83.3% { transform: translateX(740px); } 100% { transform: translateX(740px); } }
+    .rueda { transform-box: fill-box; transform-origin: center; animation: rueda 1.2s linear infinite; }
+    @keyframes rueda { to { transform: rotate(360deg); } }
+    .asistente { animation: asistente 10s linear infinite; }
+    @keyframes asistente { 0%, 45.0% { opacity: 0.35; } 47.0%, 60.0% { opacity: 1; } 62.0%, 100% { opacity: 0.35; } }
+    @keyframes luz0 { 0%, 0.0% { stroke: #3a3f7a; fill: #23264a; } 0.0%, 13.5% { stroke: #ffcb05; fill: #2d3160; } 13.6%, 100% { stroke: #3a3f7a; fill: #23264a; } }
+    @keyframes luz1 { 0%, 14.9% { stroke: #3a3f7a; fill: #23264a; } 15.0%, 28.5% { stroke: #ffcb05; fill: #2d3160; } 28.6%, 100% { stroke: #3a3f7a; fill: #23264a; } }
+    @keyframes luz2 { 0%, 29.9% { stroke: #3a3f7a; fill: #23264a; } 30.0%, 43.5% { stroke: #ffcb05; fill: #2d3160; } 43.6%, 100% { stroke: #3a3f7a; fill: #23264a; } }
+    @keyframes luz3 { 0%, 44.9% { stroke: #3a3f7a; fill: #23264a; } 45.0%, 58.5% { stroke: #ffcb05; fill: #2d3160; } 58.6%, 100% { stroke: #3a3f7a; fill: #23264a; } }
+    @keyframes luz4 { 0%, 59.9% { stroke: #3a3f7a; fill: #23264a; } 60.0%, 73.5% { stroke: #ffcb05; fill: #2d3160; } 73.6%, 100% { stroke: #3a3f7a; fill: #23264a; } }
+    @keyframes luz5 { 0%, 74.9% { stroke: #3a3f7a; fill: #23264a; } 75.0%, 88.5% { stroke: #ffcb05; fill: #2d3160; } 88.6%, 100% { stroke: #3a3f7a; fill: #23264a; } }
+  </style>
+  <rect width="900" height="280" rx="16" fill="#1b1d36"/>
+  <line x1="80" y1="162" x2="820" y2="162" stroke="#3a3f7a" stroke-width="4" stroke-dasharray="3 9" stroke-linecap="round"/>
+    <rect x="18" y="72" width="124" height="76" rx="12" stroke-width="3" style="animation: luz0 10s linear infinite"/>
+    <text x="80" y="104" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="16" font-weight="700" fill="#e6e9ff" text-anchor="middle">principal.pks</text>
+    <text x="80" y="128" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="12" fill="#8b90c0" text-anchor="middle">tu código</text>
+    <rect x="166" y="72" width="124" height="76" rx="12" stroke-width="3" style="animation: luz1 10s linear infinite"/>
+    <text x="228" y="104" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="16" font-weight="700" fill="#e6e9ff" text-anchor="middle">Lexer</text>
+    <text x="228" y="128" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="12" fill="#8b90c0" text-anchor="middle">palabras y símbolos</text>
+    <rect x="314" y="72" width="124" height="76" rx="12" stroke-width="3" style="animation: luz2 10s linear infinite"/>
+    <text x="376" y="104" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="16" font-weight="700" fill="#e6e9ff" text-anchor="middle">Parser</text>
+    <text x="376" y="128" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="12" fill="#8b90c0" text-anchor="middle">el árbol</text>
+    <rect x="462" y="72" width="124" height="76" rx="12" stroke-width="3" style="animation: luz3 10s linear infinite"/>
+    <text x="524" y="104" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="16" font-weight="700" fill="#e6e9ff" text-anchor="middle">Analizador</text>
+    <text x="524" y="128" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="12" fill="#8b90c0" text-anchor="middle">tipos y reglas</text>
+    <rect x="610" y="72" width="124" height="76" rx="12" stroke-width="3" style="animation: luz4 10s linear infinite"/>
+    <text x="672" y="104" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="16" font-weight="700" fill="#e6e9ff" text-anchor="middle">Intérprete</text>
+    <text x="672" y="128" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="12" fill="#8b90c0" text-anchor="middle">lo ejecuta</text>
+    <rect x="758" y="72" width="124" height="76" rx="12" stroke-width="3" style="animation: luz5 10s linear infinite"/>
+    <text x="820" y="104" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="16" font-weight="700" fill="#e6e9ff" text-anchor="middle">Salida</text>
+    <text x="820" y="128" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="12" fill="#8b90c0" text-anchor="middle">gritar · capturar</text>
+  <g class="viaje"><g class="rueda"><g >
+      <circle cx="80" cy="162" r="13" fill="#ffffff"/>
+      <path d="M67 162 a13 13 0 0 1 26 0 z" fill="#ee1515"/>
+      <rect x="67" y="160.7" width="26" height="2.6" fill="#1b1b1b"/>
+      <circle cx="80" cy="162" r="13" fill="none" stroke="#1b1b1b" stroke-width="1.3"/>
+      <circle cx="80" cy="162" r="4.29" fill="#1b1b1b"/>
+      <circle cx="80" cy="162" r="2.6" fill="#ffffff"/>
+    </g></g></g>
+  <path d="M524 176 V214" stroke="#ffcb05" stroke-width="2" stroke-dasharray="4 4"/>
+  <g class="asistente">
+    <rect x="374" y="216" width="300" height="46" rx="10" fill="#23264a" stroke="#ffcb05" stroke-width="2"/>
+    <text x="524" y="234" font-family="'Trebuchet MS', 'Segoe UI', Verdana, sans-serif" font-size="12" font-weight="700" fill="#ffcb05" text-anchor="middle">ASISTENTE</text>
+    <text x="524" y="253" font-family="Consolas, 'Courier New', monospace" font-size="14" fill="#e6e9ff" text-anchor="middle">¿Quisiste decir «curar»?</text>
+  </g>
+</svg>

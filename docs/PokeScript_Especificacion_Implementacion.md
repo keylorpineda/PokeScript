@@ -279,21 +279,21 @@ Reglas adicionales:
 
 ### 3.3 Operaciones por tipo
 
-| Operación           | Tipos válidos                                | Resultado                    |
-| ------------------- | -------------------------------------------- | ---------------------------- |
-| `+ - *`             | roca·roca, agua·agua, roca·agua              | roca / agua (ensanchamiento) |
-| `+`                 | planta·planta                                | planta                       |
-| `/`                 | roca·roca, agua·agua, roca·agua              | **siempre agua**             |
-| `resto`             | roca·roca                                    | roca                         |
-| `-` unario          | roca, agua                                   | mismo                        |
-| `> < >= <=`         | roca·roca, agua·agua, roca·agua, fuego·fuego | electrico                    |
-| `igual` `diferente` | mismos tipos (o T vs posible T)              | electrico                    |
-| `y` `o` `no`        | electrico                                    | electrico                    |
-| `contiene`          | equipo·elem, mochila·clave                   | electrico                    |
-| `sino`              | posible T · T                                | T                            |
-| `[ ]`               | equipo[roca], mochila[clave], planta[roca]   | elem / valor / fuego         |
-| `.`                 | ficha.campo                                  | tipo del campo               |
-| `tamaño()`          | equipo, mochila, planta                      | roca                         |
+| Operación           | Tipos válidos                                           | Resultado                    |
+| ------------------- | ------------------------------------------------------- | ---------------------------- |
+| `+ - *`             | roca·roca, agua·agua, roca·agua                         | roca / agua (ensanchamiento) |
+| `+`                 | planta·planta                                           | planta                       |
+| `/`                 | roca·roca, agua·agua, roca·agua                         | **siempre agua**             |
+| `resto`             | roca·roca                                               | roca                         |
+| `-` unario          | roca, agua                                              | mismo                        |
+| `> < >= <=`         | roca·roca, agua·agua, roca·agua, fuego·fuego            | electrico                    |
+| `igual` `diferente` | mismos tipos (o T vs posible T)                         | electrico                    |
+| `y` `o` `no`        | electrico                                               | electrico                    |
+| `contiene`          | equipo·elem, mochila·clave, planta·planta, planta·fuego | electrico                    |
+| `sino`              | posible T · T                                           | T                            |
+| `[ ]`               | equipo[roca], mochila[clave], planta[roca]              | elem / valor / fuego         |
+| `.`                 | ficha.campo                                             | tipo del campo               |
+| `tamaño()`          | equipo, mochila, planta                                 | roca                         |
 
 **No encadenables:** `> < >= <=`, `igual`, `diferente`, `contiene`. Una sola aparición por expresión; `a > b > c` es **error de sintaxis**, no de tipos.
 

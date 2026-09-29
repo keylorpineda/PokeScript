@@ -1,6 +1,6 @@
 // Las palabras mal escritas de estas pruebas son a propósito: son los
 // errores que el asistente debe corregir.
-// cspell:words combte curra Estdo gritra nivle Pokemno vdia verdadro calcular_dan
+// cspell:words combte curra Estdo gritra nivle Pokemno recorerer vdia verdadro calcular_dan
 
 package asistente_test
 
@@ -228,6 +228,10 @@ func TestPalabraReservadaLeidaComoTipoONombre(t *testing.T) {
 		{"combate\n    gritra \"hola\"\nfin\n", "asignacion-esperada", "gritar"},
 		{"combate\n    roca vida = 1\n    gritra vida\nfin\n", "tipo-desconocido", "gritar"},
 		{"combate\n    electrico listo = verdadro\n    gritar listo\nfin\n", "nombre-no-declarado", "verdadero"},
+		// «recorerer nombre» es un dato de tipo «recorerer»; el error cae en
+		// lo que sobra después.
+		{"combate\n    planta nombre = \"a\"\n    recorerer nombre, nombre\nfin\n", "token-inesperado", "recorrer"},
+		{"combate\n    equipo de roca l = [1]\n    recorerer x en l\n    fin\nfin\n", "token-inesperado", "recorrer"},
 	}
 	for _, c := range casos {
 		diags, e := analizar(t, map[string]string{"principal.pks": c.fuente})

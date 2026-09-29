@@ -1,6 +1,6 @@
 // Las palabras mal escritas de estas pruebas son a propósito: son los
 // errores que el asistente debe corregir.
-// cspell:words combte curra Estdo gritra nivle Pokemno vdia verdadro calcular_dan
+// cspell:words combte curra Estdo Fina gritra nivle Pokemno recorerer vdia verdadro calcular_dan
 
 package servicio
 
@@ -111,5 +111,35 @@ func TestSugerenciaDeTipo(t *testing.T) {
 	})
 	if len(c.Diagnosticos) != 1 || c.Diagnosticos[0].Fix == nil || c.Diagnosticos[0].Fix.Replacement != "Estado" {
 		t.Errorf("diagnósticos = %+v", c.Diagnosticos)
+	}
+}
+
+// Una palabra reservada mal escrita al inicio de la línea se sugiere aunque
+// el error caiga más adelante; un tipo que el archivo declara, no, aunque
+// se parezca a una palabra reservada («Fina» y «fin»).
+func TestSugerenciaDePalabraReservadaConTokenSobrante(t *testing.T) {
+	casos := []struct {
+		fuente string
+		want   string // "" = sin sugerencia
+	}{
+		{"combate\n    planta nombre = \"a\"\n    recorerer nombre, nombre\nfin\n", "recorrer"},
+		{"especie Fina\n    ALTA, BAJA\nfin\ncombate\n    Fina f = ALTA, BAJA\n    gritar f\nfin\n", ""},
+		// El mismo tipo, pero importado de otro archivo.
+		{"enseñar Fina desde \"tipos.pks\"\ncombate\n    Fina f = ALTA, BAJA\n    gritar f\nfin\n", ""},
+	}
+	for _, c := range casos {
+		comp := compilarMapa(t, map[string]string{
+			"principal.pks": c.fuente,
+			"tipos.pks":     "especie Fina\n    ALTA, BAJA\nfin\n",
+		})
+		var got string
+		for _, d := range comp.Diagnosticos {
+			if d.Code == "token-inesperado" && d.Fix != nil {
+				got = d.Fix.Replacement
+			}
+		}
+		if got != c.want {
+			t.Errorf("%q: sugerencia %q, want %q (diagnósticos %+v)", c.fuente, got, c.want, comp.Diagnosticos)
+		}
 	}
 }

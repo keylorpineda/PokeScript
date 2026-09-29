@@ -13,7 +13,7 @@
   } from '@codemirror/view';
   import { EditorState } from '@codemirror/state';
   import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
-  import { indentOnInput, bracketMatching } from '@codemirror/language';
+  import { indentOnInput, bracketMatching, indentUnit } from '@codemirror/language';
   import { autocompletion, completionKeymap, closeBrackets } from '@codemirror/autocomplete';
   import { lintGutter, setDiagnostics } from '@codemirror/lint';
   import { pokescript, desplazamiento, completar } from '../lib/pokescript.js';
@@ -42,6 +42,8 @@
         autocompletion({ override: [completar(() => ide.resultado?.simbolos?.[archivo])] }),
         lintGutter(),
         EditorState.tabSize.of(4),
+        // Tab y Shift+Tab mueven 4 espacios, la sangría del lenguaje.
+        indentUnit.of('    '),
         keymap.of([
           { key: 'F5', run: () => (ejecutar(), true) },
           { key: 'Mod-Enter', run: () => (compilar(), true) },
@@ -58,17 +60,20 @@
             ide.sucios[archivo] = true;
             programarGuardado();
           }
-          if (u.selectionSet || u.docChanged) {
-            const pos = u.state.selection.main.head;
-            const l = u.state.doc.lineAt(pos);
-            ide.cursor = {
-              linea: l.number,
-              col: Array.from(l.text.slice(0, pos - l.from)).length + 1,
-            };
-          }
+          if (u.selectionSet || u.docChanged) marcarCursor(u.state);
         }),
       ],
     });
+  }
+
+  // marcarCursor pone en la barra de abajo la línea y columna del cursor.
+  function marcarCursor(estado) {
+    const pos = estado.selection.main.head;
+    const l = estado.doc.lineAt(pos);
+    ide.cursor = {
+      linea: l.number,
+      col: Array.from(l.text.slice(0, pos - l.from)).length + 1,
+    };
   }
 
   function mostrar(archivo) {
@@ -79,6 +84,9 @@
     }
     estados[archivo] ??= crearEstado(archivo);
     vista.setState(estados[archivo]);
+    // Al cambiar de archivo (o de proyecto) no hay evento de selección: sin
+    // esto, la barra seguiría mostrando la posición del archivo anterior.
+    marcarCursor(vista.state);
     vista.scrollDOM.scrollTop = scrolls[archivo] ?? 0;
     mostrado = archivo;
     pintarDiagnosticos();
@@ -133,6 +141,9 @@
         effects: EditorView.scrollIntoView(from, { y: 'center' }),
       });
       vista.focus();
+      // Se usa una sola vez: si quedara guardado, el próximo editor que se
+      // monte (por ejemplo, al abrir otro proyecto) volvería a saltar.
+      ide.ir = null;
     });
   });
 
@@ -150,6 +161,9 @@
         selection: { anchor: from + f.replacement.length },
       });
       vista.focus();
+      // Se aplica una sola vez: si quedara guardado, el próximo editor que se
+      // monte lo volvería a aplicar sobre otro archivo con el mismo nombre.
+      ide.arreglo = null;
     });
   });
 </script>

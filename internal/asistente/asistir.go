@@ -54,7 +54,11 @@ func Asistir(diags []diag.Diagnostic, e Entrada) []diag.Diagnostic {
 			sugerirPalabra(&salida[i], e, candidatos(e.Exportados, rutaImportada(e, d)), nil)
 		case "archivo-inexistente":
 			sugerirArchivo(&salida[i], e)
-		case "asignacion-esperada", "instruccion-esperada", "instruccion-fuera-de-bloque", "declaracion-esperada":
+		case "asignacion-esperada", "instruccion-esperada", "instruccion-fuera-de-bloque", "declaracion-esperada",
+			// Una palabra reservada mal escrita seguida de un nombre se lee como
+			// la declaración de un dato de ese tipo, y el error cae en lo que
+			// sobra después (por ejemplo, una coma).
+			"token-inesperado":
 			sugerirPalabraReservada(&salida[i], e)
 		}
 	}
@@ -131,9 +135,17 @@ func sugerirPalabraReservada(d *diag.Diagnostic, e Entrada) {
 	if palabra == "" || token.Buscar(palabra) != token.IDENT {
 		return
 	}
-	for _, n := range candidatos(e.Nombres, d.File) {
-		if n == palabra {
-			return // es un nombre válido del programa: el error es otro
+	// Con errores de sintaxis no hay tabla de símbolos: los tipos propios
+	// solo aparecen entre lo que declara o importa el archivo.
+	declarados := [][]string{
+		candidatos(e.Nombres, d.File), candidatos(e.Tipos, d.File),
+		candidatos(e.Exportados, d.File), importados(e.Fuentes[d.File]),
+	}
+	for _, lista := range declarados {
+		for _, n := range lista {
+			if n == palabra {
+				return // es un nombre o un tipo válido del programa: el error es otro
+			}
 		}
 	}
 	if utf8.RuneCountInString(palabra) < minimoReservada {
@@ -142,6 +154,29 @@ func sugerirPalabraReservada(d *diag.Diagnostic, e Entrada) {
 	if parecido, ok := Parecido(palabra, reservadas()); ok {
 		corregir(d, d.Line, inicio+1, fin-inicio, parecido)
 	}
+}
+
+// importados lee los nombres de las líneas «enseñar A, B desde "…"» del
+// texto. Sirve aunque el archivo tenga errores de sintaxis, cuando todavía
+// no hay tabla de símbolos.
+func importados(fuente string) []string {
+	var nombres []string
+	for _, linea := range strings.Split(fuente, "\n") {
+		linea = strings.TrimSpace(linea)
+		if !strings.HasPrefix(linea, "enseñar ") {
+			continue
+		}
+		lista := strings.TrimPrefix(linea, "enseñar ")
+		if i := strings.Index(lista, " desde"); i >= 0 {
+			lista = lista[:i]
+		}
+		for _, n := range strings.Split(lista, ",") {
+			if n = strings.TrimSpace(n); n != "" {
+				nombres = append(nombres, n)
+			}
+		}
+	}
+	return nombres
 }
 
 // minimoReservada es el largo mínimo de una palabra para sugerir una

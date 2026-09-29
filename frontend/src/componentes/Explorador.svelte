@@ -4,7 +4,7 @@
   // sueltas. El fondo de la caja, el nombre del PC y el Pokémon que habla
   // cambian con el tema.
   import { onMount, tick } from 'svelte';
-  import { explorador, cerrarExplorador, perfil } from '../lib/estado.svelte.js';
+  import { explorador, cerrarExplorador, perfil, navegacion } from '../lib/estado.svelte.js';
   import { temaActual } from '../lib/temas.js';
   import { api } from '../lib/api.js';
   import { POKEMON, sprite, objeto } from '../lib/pokemon.js';
@@ -36,7 +36,7 @@
     if (explorador.modo === 'crear')
       return `Elige dónde crear «${explorador.nombre}». Se hará una carpeta nueva con ese nombre.`;
     if (elegida?.tipo === 'carpeta' && elegida.proyecto)
-      return `«${elegida.nombre}» es un proyecto con ${elegida.pks} ${elegida.pks === 1 ? 'archivo' : 'archivos'} .pks. ¡Ábrelo!`;
+      return `«${elegida.nombre}» es un proyecto con ${elegida.pks} ${elegida.pks === 1 ? 'archivo' : 'archivos'} .pks. ¡Ábrelo, o haz doble clic para ver qué tiene adentro!`;
     if (elegida?.tipo === 'archivo' && !elegida.pks)
       return `«${elegida.nombre}» no es de PokeScript: aquí solo se abren carpetas con archivos .pks.`;
     return '¿Qué carpeta quieres abrir? Las que tienen Pokéball ya son proyectos.';
@@ -78,14 +78,22 @@
     sonar('mover');
   }
 
+  // Doble clic en una carpeta entra en ella, aunque sea un proyecto: así se
+  // llega a las carpetas que tiene adentro. Para abrirla está el botón.
   function doble(item) {
     if (item.tipo === 'carpeta') {
-      if (explorador.modo === 'abrir' && item.proyecto) return elegir(item.ruta);
       sonar('abrir');
       ir(item.ruta);
     } else if (item.pks && explorador.modo === 'abrir') {
-      elegir(carpeta.ruta);
+      abrirPks(item);
     }
+  }
+
+  // abrirPks abre la carpeta del archivo con ese archivo a la vista, no el
+  // principal.
+  function abrirPks(item) {
+    navegacion.archivo = { ruta: carpeta.ruta, nombre: item.nombre };
+    elegir(carpeta.ruta);
   }
 
   function elegir(ruta) {
@@ -257,6 +265,10 @@
       {:else}
         {#if elegida?.tipo === 'carpeta'}
           <button class="boton principal" onclick={() => elegir(elegida.ruta)}
+            >ABRIR «{elegida.nombre}»</button
+          >
+        {:else if elegida?.tipo === 'archivo' && elegida.pks}
+          <button class="boton principal" onclick={() => abrirPks(elegida)}
             >ABRIR «{elegida.nombre}»</button
           >
         {/if}

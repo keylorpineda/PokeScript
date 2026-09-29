@@ -48,6 +48,9 @@ export async function abrirProyecto(ruta) {
     resultado: null,
     salida: [],
     esperandoEntrada: null,
+    // Un salto o un arreglo pendiente era del proyecto anterior.
+    ir: null,
+    arreglo: null,
   });
   // Una carpeta sin ningún .pks: se le deja un principal.pks para empezar.
   if (!info.archivos.length) {
@@ -68,7 +71,11 @@ export async function abrirProyecto(ruta) {
     ide.contenidos[archivo] = await api.leerArchivo(ruta, archivo);
   }
   const { archivos, principal } = ide.proyecto;
-  ide.archivoActivo = archivos.includes(principal) ? principal : archivos[0];
+  // Si en el explorador se eligió un .pks de esta carpeta, se abre ese.
+  const pedido = navegacion.archivo?.ruta === ruta ? navegacion.archivo.nombre : null;
+  navegacion.archivo = null;
+  if (archivos.includes(pedido)) ide.archivoActivo = pedido;
+  else ide.archivoActivo = archivos.includes(principal) ? principal : archivos[0];
   recordar(ruta, ide.proyecto.nombre);
   if (!archivos.includes(principal)) {
     decir(
@@ -129,10 +136,22 @@ export async function revisar() {
   }
 }
 
+// cortarCombate detiene el combate en curso y espera su fin, para que sus
+// últimos mensajes no caigan en el panel del proyecto que se abre después.
+async function cortarCombate() {
+  if (!ide.ejecutando) return;
+  await api.detener();
+  for (let i = 0; i < 40 && ide.ejecutando; i++) await new Promise((r) => setTimeout(r, 50));
+  ide.ejecutando = false;
+  ide.esperandoEntrada = null;
+}
+
 // abrirCarpeta abre cualquier carpeta del disco como proyecto.
 export async function abrirCarpeta() {
   const ruta = await buscarProyecto();
   if (!ruta) return;
+  // El combate que estaba corriendo es del proyecto que se deja.
+  await cortarCombate();
   await guardarTodo();
   navegacion.ruta = ruta;
   navegacion.pantalla = 'carga';
@@ -188,6 +207,9 @@ export async function compilar() {
     // La animación del escaneo dura al menos un momento.
     await new Promise((res) => setTimeout(res, Math.max(0, 1300 - (Date.now() - inicio))));
     reaccionar(r);
+  } catch (e) {
+    sonar('error');
+    decir(`No pude leer el proyecto: ${e?.message ?? e}.`, 'triste', 'psyduck');
   } finally {
     ide.compilando = false;
   }
@@ -204,15 +226,33 @@ export async function ejecutar() {
   // (por ejemplo, la pregunta de un capturar) antes de que vuelva la
   // respuesta, y esos mensajes no se deben perder.
   api.reiniciarOrden();
-  const anterior = ide.salida;
   ide.salida = [
     { tipo: 'sistema', texto: `¡${perfil.nombre} y ${companero()} entran en combate!` },
   ];
   ide.ejecutando = true;
-  const r = await api.ejecutar(RUTA_ACTUAL());
+  let r;
+  try {
+    r = await api.ejecutar(RUTA_ACTUAL());
+  } catch (e) {
+    // El backend no pudo ni leer el proyecto (proyecto.json roto, falta el
+    // principal…): no empezó ningún combate, así que no hay nada que esperar.
+    ide.ejecutando = false;
+    ide.salida = [{ tipo: 'sistema', texto: `El combate no empezó: ${e?.message ?? e}.` }];
+    sonar('error');
+    decir(`No pude leer el proyecto: ${e?.message ?? e}.`, 'triste', 'psyduck');
+    return;
+  }
   reaccionar(r);
   if (!r.exito) {
-    ide.salida = anterior;
+    // No se deja la salida de la ejecución anterior: parecería que este
+    // programa corrió y falló.
+    const n = (r.diagnosticos ?? []).filter((d) => d.severity === 'error').length;
+    ide.salida = [
+      {
+        tipo: 'sistema',
+        texto: `El combate no empezó: hay ${n} ${n === 1 ? 'error' : 'errores'}. Mira la Pokédex de errores.`,
+      },
+    ];
     ide.ejecutando = false;
     return;
   }
@@ -257,7 +297,10 @@ export function escucharEjecucion() {
   });
   api.alEvento('error-ejecucion', (e) => {
     const d = e.diagnostico;
-    ide.salida.push({ tipo: 'error', texto: `${d.heading} Línea ${d.line}: ${d.desc}` });
+    // El archivo va siempre: el error puede estar en un archivo importado,
+    // no en el que se ve en el editor.
+    const donde = d.file ? `${d.file} · línea ${d.line}` : `Línea ${d.line}`;
+    ide.salida.push({ tipo: 'error', texto: `${d.heading} ${donde}: ${d.desc}` });
     sonar('golpe');
     decir(`${d.heading} ${d.desc}`, 'triste', 'snorlax');
   });
@@ -300,7 +343,14 @@ export function irA(d) {
 
 async function refrescar() {
   const info = await api.leerProyecto(RUTA_ACTUAL());
-  ide.proyecto = { ruta: RUTA_ACTUAL(), ...info };
+  // leerProyecto no trae los archivos que no son .pks: se conservan.
+  let otros = ide.proyecto?.otros ?? [];
+  try {
+    otros = await api.otrosArchivos(RUTA_ACTUAL());
+  } catch {
+    // Si no se pueden leer, se deja la lista que había.
+  }
+  ide.proyecto = { ruta: RUTA_ACTUAL(), ...info, otros };
 }
 
 // nombrePks agrega .pks si hace falta y quita espacios.
@@ -328,7 +378,9 @@ export async function nuevoArchivo(nombre, contenido = '') {
   const archivo = nombrePks(nombre);
   const ok = await intentar(async () => {
     await api.nuevoArchivo(RUTA_ACTUAL(), archivo);
-    if (contenido) await api.guardarArchivo(RUTA_ACTUAL(), archivo, contenido);
+    // Siempre se escribe: aunque venga vacío (plantilla «En blanco» o la
+    // copia de un archivo vacío), el disco debe quedar igual que el editor.
+    await api.guardarArchivo(RUTA_ACTUAL(), archivo, contenido);
   }, `¡Nuevo archivo en la mochila: ${archivo}!`);
   if (!ok) return;
   ide.contenidos[archivo] = contenido;
@@ -413,7 +465,7 @@ export function proyectosConocidos() {
 // salirAlMenu guarda todo, corta el combate si hay uno y vuelve al menú del
 // título para abrir o crear otro proyecto.
 export async function salirAlMenu() {
-  if (ide.ejecutando) await api.detener();
+  await cortarCombate();
   await guardarTodo();
   sonar('huir');
   navegacion.pantalla = 'menu';

@@ -82,7 +82,9 @@ export function logro(nombre) {
 }
 
 // Pantalla actual del IDE y el proyecto elegido en el menú del título.
-export const navegacion = $state({ pantalla: 'titulo', ruta: null, aviso: '' });
+// archivo: el .pks que se eligió en el explorador, { ruta, nombre }, para
+// abrirlo en lugar del principal.
+export const navegacion = $state({ pantalla: 'titulo', ruta: null, aviso: '', archivo: null });
 
 // El explorador (PC de Bill) se abre desde cualquier pantalla y devuelve la
 // carpeta elegida, o null si se cierra sin elegir.

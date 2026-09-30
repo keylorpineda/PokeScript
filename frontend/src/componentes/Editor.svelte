@@ -17,6 +17,7 @@
   import { autocompletion, completionKeymap, closeBrackets } from '@codemirror/autocomplete';
   import { lintGutter, setDiagnostics } from '@codemirror/lint';
   import { pokescript, desplazamiento, completar } from '../lib/pokescript.js';
+  import { niveles, atajosNiveles } from '../lib/niveles.js';
   import { ide } from '../lib/estado.svelte.js';
   import { compilar, ejecutar, programarGuardado, guardarAhora } from '../lib/acciones.js';
   import { sonar } from '../lib/sonido.js';
@@ -49,11 +50,13 @@
           { key: 'Mod-Enter', run: () => (compilar(), true) },
           { key: 'Mod-s', preventDefault: true, run: () => (guardarAhora(), true) },
           ...completionKeymap,
+          ...atajosNiveles,
           ...defaultKeymap,
           ...historyKeymap,
           indentWithTab,
         ]),
         pokescript,
+        niveles,
         EditorView.updateListener.of((u) => {
           if (u.docChanged) {
             ide.contenidos[archivo] = u.state.doc.toString();

@@ -117,7 +117,11 @@ const analizador = {
     bool: t.bool,
     character: t.character,
   },
-  languageData: { commentTokens: { line: '//' } },
+  languageData: {
+    commentTokens: { line: '//' },
+    // Al terminar de escribir fin o sino, la línea vuelve al nivel de su bloque.
+    indentOnInput: /^\s*(fin|sino)$/,
+  },
 };
 const lenguaje = StreamLanguage.define(analizador);
 

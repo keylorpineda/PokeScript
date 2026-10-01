@@ -14,15 +14,33 @@ import {
   IndentContext,
 } from '@codemirror/language';
 import { insertNewlineAndIndent } from '@codemirror/commands';
-import { ABREN, analizar, clase, palabras, sangria } from './bloques.js';
+import { ABREN, analizar, clase, nivelesGuia, palabras, rutaEn, sangria } from './bloques.js';
 
 const lineasDe = (doc) => doc.toString().split('\n');
 
-// La estructura del documento, que se vuelve a calcular solo cuando cambia el texto.
+// La estructura del documento (bloques y columnas de las guías), que se
+// vuelve a calcular solo cuando cambia el texto.
+function calcular(estado) {
+  const lineas = lineasDe(estado.doc);
+  return {
+    lineas,
+    ...analizar(lineas, estado.tabSize),
+    guias: nivelesGuia(lineas, getIndentUnit(estado), estado.tabSize),
+  };
+}
 const estructura = StateField.define({
-  create: (estado) => analizar(lineasDe(estado.doc), estado.tabSize),
-  update: (valor, tr) => (tr.docChanged ? analizar(lineasDe(tr.newDoc), tr.state.tabSize) : valor),
+  create: calcular,
+  update: (valor, tr) => (tr.docChanged ? calcular(tr.state) : valor),
 });
+
+// rutaDelCursor devuelve los bloques donde está el cursor, de afuera hacia
+// adentro: [«combate», «recorrer», «si»].
+export function rutaDelCursor(estado) {
+  const e = estado.field(estructura, false);
+  if (!e) return [];
+  const n = estado.doc.lineAt(estado.selection.main.head).number - 1;
+  return rutaEn(e.lineas, e, n);
+}
 
 // ─── Sangría automática ─────────────────────────────────────────────────────
 
@@ -71,13 +89,13 @@ function enterConNiveles(vista) {
 const COLORES = ['--t-agua', '--t-planta', '--t-fuego', '--t-electrico', '--t-roca'];
 const RELLENO = 10; // el padding izquierdo de .cm-line en pokescript.js
 
-function guiasDeLinea(bloques, dentro) {
-  if (!dentro.length) return null;
-  const capas = dentro.map((b, n) => {
+function guiasDeLinea(columnas) {
+  if (!columnas.length) return null;
+  const capas = columnas.map((col, n) => {
     const color = `color-mix(in srgb, var(${COLORES[n % COLORES.length]}) 55%, transparent)`;
     return {
       imagen: `linear-gradient(${color}, ${color})`,
-      pos: `calc(${RELLENO}px + ${bloques[b].col}ch) 0`,
+      pos: `calc(${RELLENO}px + ${col}ch) 0`,
     };
   });
   return Decoration.line({
@@ -99,15 +117,13 @@ const guias = ViewPlugin.fromClass(
       if (u.docChanged || u.viewportChanged) this.decorations = this.construir(u.view);
     }
     construir(vista) {
-      const { info, bloques } = vista.state.field(estructura);
+      const { guias: columnas } = vista.state.field(estructura);
       const b = new RangeSetBuilder();
       for (const { from, to } of vista.visibleRanges) {
         for (let pos = from; pos <= to;) {
           const linea = vista.state.doc.lineAt(pos);
           const i = linea.number - 1;
-          // La guía de un bloque baja por su cuerpo: no se dibuja en la línea
-          // que lo abre ni en su fin (dentro ya los excluye).
-          const deco = info[i] ? guiasDeLinea(bloques, info[i].dentro) : null;
+          const deco = columnas[i] ? guiasDeLinea(columnas[i]) : null;
           if (deco) b.add(linea.from, linea.from, deco);
           pos = linea.to + 1;
         }
@@ -190,6 +206,35 @@ const estilos = EditorView.theme({
     padding: '0 4px',
   },
   '.cm-foldGutter .cm-gutterElement:hover': { color: 'var(--acento)' },
+  '.cm-tipo-dato': {
+    display: 'grid',
+    gap: '4px',
+    padding: '6px 10px',
+    fontSize: '14px',
+  },
+  '.cm-tipo-dato > div': { display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' },
+  '.cm-tipo-dato .clase': {
+    fontFamily: 'var(--titulo)',
+    fontSize: '11px',
+    letterSpacing: '1px',
+    textTransform: 'uppercase',
+    color: 'var(--texto-suave)',
+  },
+  '.cm-tipo-dato code': { fontFamily: 'var(--codigo)', fontWeight: '700' },
+  '.cm-tipo-dato .chip-tipo': {
+    padding: '0 6px',
+    fontFamily: 'var(--titulo)',
+    fontSize: '12px',
+    color: '#fff',
+    textShadow: '1px 1px 0 rgba(0, 0, 0, 0.45)',
+    border: '2px solid rgba(0, 0, 0, 0.35)',
+    borderRadius: '3px',
+  },
+  '.cm-tipo-dato small': {
+    width: '100%',
+    fontFamily: 'var(--codigo)',
+    color: 'var(--texto-suave)',
+  },
   '.cm-foldPlaceholder': {
     backgroundColor: 'var(--editor-seleccion)',
     border: '1px solid var(--acento)',

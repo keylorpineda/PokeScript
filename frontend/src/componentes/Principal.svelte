@@ -12,7 +12,7 @@
   import OakAviso from './OakAviso.svelte';
   import Pokedex from './Pokedex.svelte';
   import IconoMochila from './IconoMochila.svelte';
-  import { ide, perfil, navegacion } from '../lib/estado.svelte.js';
+  import { ide, perfil, navegacion, miPokemon } from '../lib/estado.svelte.js';
   import { temaActual } from '../lib/temas.js';
   import { objeto, sprite } from '../lib/pokemon.js';
   import { abrirProyecto, escucharEjecucion, guardarAhora } from '../lib/acciones.js';
@@ -107,6 +107,13 @@
           <span class="miga">{ide.proyecto?.nombre ?? ''}</span>
           <span class="sep"></span>
           <b>{ide.archivoActivo ?? ''}</b>
+          {#if ide.ruta.length}
+            <span class="bloques" title="Bloques donde está el cursor">
+              {#each ide.ruta as bloque, i (i)}
+                <span class="sep"></span><span class="bloque">{bloque}</span>
+              {/each}
+            </span>
+          {/if}
           <button
             class="estado-guardado der"
             class:pendiente={Object.keys(ide.sucios).length}
@@ -138,7 +145,7 @@
         onclick={() => (verCompanero = !verCompanero)}
         title="Compañero y errores"
       >
-        <img class="sprite" src={sprite(perfil.companero ?? 'pikachu')} alt="" />
+        <img class="sprite" src={sprite(miPokemon())} alt="" />
         {#if errores}<span class="cuenta">{errores}</span>{/if}
       </button>
     {/if}
@@ -166,7 +173,7 @@
     <span>Línea {ide.cursor.linea}, columna {ide.cursor.col}</span>
     <span>{ide.archivoActivo ?? ''}</span>
     <span class="paseo" aria-hidden="true">
-      <img class="sprite" src={sprite(perfil.companero ?? 'pikachu')} alt="" />
+      <img class="sprite" src={sprite(miPokemon())} alt="" />
     </span>
     <span class="der ancho">Tema: {temaActual(perfil.tema).nombre}</span>
     <span class="ancho">Entrenador: {perfil.nombre}</span>
@@ -285,6 +292,19 @@
   }
   .ruta b {
     color: var(--texto);
+  }
+  .bloques {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .bloque {
+    font-family: var(--codigo);
+    font-weight: 700;
+    color: var(--control);
   }
   .sep {
     border-top: 4px solid transparent;

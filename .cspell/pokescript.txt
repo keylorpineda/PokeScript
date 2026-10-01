@@ -304,3 +304,15 @@ basico
 hgss
 heartgold
 soulsilver
+Charmeleon
+Ivysaur
+Raichu
+Venusaur
+Wartortle
+charmeleon
+ivysaur
+raichu
+venusaur
+wartortle
+celebracion
+evolucion

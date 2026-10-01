@@ -1,7 +1,15 @@
 // Acciones del IDE: abrir el proyecto, compilar, ejecutar y responder a
 // capturar. Cambian el estado compartido; los componentes solo lo pintan.
 import { api } from './api.js';
-import { ide, perfil, guardarPerfil, logro, navegacion, pedirCarpeta } from './estado.svelte.js';
+import {
+  ide,
+  perfil,
+  guardarPerfil,
+  logro,
+  navegacion,
+  pedirCarpeta,
+  miPokemon,
+} from './estado.svelte.js';
 import { POKEMON } from './pokemon.js';
 import { sonar } from './sonido.js';
 
@@ -19,7 +27,7 @@ export const INVITADOS = {
   '¿Seguro que quieres hacer eso?': 'porygon',
 };
 
-const companero = () => POKEMON[perfil.companero]?.nombre ?? 'Tu compañero';
+const companero = () => POKEMON[miPokemon()]?.nombre ?? 'Tu compañero';
 
 export function decir(texto, animo = 'normal', invitado = null) {
   ide.asistente = { texto, animo, invitado, vez: (ide.asistente.vez ?? 0) + 1 };
@@ -51,6 +59,9 @@ export async function abrirProyecto(ruta) {
     // Un salto o un arreglo pendiente era del proyecto anterior.
     ir: null,
     arreglo: null,
+    debilitado: false,
+    ruta: [],
+    palabra: '',
   });
   // Una carpeta sin ningún .pks: se le deja un principal.pks para empezar.
   if (!info.archivos.length) {
@@ -163,8 +174,18 @@ function reaccionar(r) {
   const errores = ide.diagnosticos.filter((d) => d.severity === 'error');
   const avisos = ide.diagnosticos.length - errores.length;
   if (r.exito) {
+    ide.debilitado = false;
+    const antes = miPokemon();
     perfil.exp = (perfil.exp ?? 0) + 1;
     guardarPerfil();
+    const ahora = miPokemon();
+    if (ahora !== antes) {
+      ide.evolucion = { de: antes, a: ahora, vez: Date.now() };
+      oak(
+        `¿Qué? ¡${POKEMON[antes]?.nombre} está evolucionando!`,
+        `¡Felicidades! Tu ${POKEMON[antes]?.nombre} evolucionó a ${POKEMON[ahora]?.nombre}.`,
+      );
+    }
     sonar('exito');
     decir(
       avisos
@@ -230,6 +251,9 @@ export async function ejecutar() {
     { tipo: 'sistema', texto: `¡${perfil.nombre} y ${companero()} entran en combate!` },
   ];
   ide.ejecutando = true;
+  // La transición de combate tapa la pantalla 1,3 s; el ataque de festejo
+  // espera a que termine (un programa corto acaba antes).
+  ide.finTransicion = Date.now() + 1500;
   let r;
   try {
     r = await api.ejecutar(RUTA_ACTUAL());
@@ -257,8 +281,12 @@ export async function ejecutar() {
     return;
   }
   ide.transicion = (ide.transicion ?? 0) + 1;
+  ide.finTransicion = Date.now() + 1400;
   sonar('combate');
-  if (ide.esperandoEntrada === null) decir('¡Vamos! Mira la salida del combate abajo.', 'feliz');
+  // Un programa corto puede haber terminado ya: entonces el compañero ya dijo
+  // «¡Ganamos!» y no hay que taparlo.
+  if (ide.ejecutando && ide.esperandoEntrada === null)
+    decir('¡Vamos! Mira la salida del combate abajo.', 'feliz');
 }
 
 export async function detener() {
@@ -276,6 +304,17 @@ export async function responder(texto) {
   ide.esperandoEntrada = null;
   sonar('elegir');
   await api.enviarEntrada(texto);
+}
+
+// celebrar hace que el compañero lance su ataque, cuando ya no hay
+// transición de combate encima.
+function celebrar() {
+  const falta = (ide.finTransicion ?? 0) - Date.now();
+  if (falta > 0) {
+    setTimeout(celebrar, falta);
+    return;
+  }
+  ide.celebracion += 1;
 }
 
 let escuchando = false;
@@ -297,6 +336,7 @@ export function escucharEjecucion() {
   });
   api.alEvento('error-ejecucion', (e) => {
     const d = e.diagnostico;
+    ide.debilitado = true;
     // El archivo va siempre: el error puede estar en un archivo importado,
     // no en el que se ve en el editor.
     const donde = d.file ? `${d.file} · línea ${d.line}` : `Línea ${d.line}`;
@@ -313,6 +353,8 @@ export function escucharEjecucion() {
       error: 'El combate terminó con un error.',
     };
     ide.salida.push({ tipo: 'sistema', texto: fin[e.texto] ?? 'Fin.' });
+    // Un combate que termina bien: el compañero lanza su ataque.
+    if (e.texto === 'terminado') celebrar();
     if (e.texto === 'detenido') sonar('huir');
     else if (e.texto === 'terminado') sonar('victoria');
     if (e.texto === 'terminado') {

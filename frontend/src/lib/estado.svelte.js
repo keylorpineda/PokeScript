@@ -2,7 +2,7 @@
 // diagnosticos, salida, esperandoEntrada, estadoAsistente) más el perfil del
 // entrenador, que se guarda en el navegador.
 import { aplicarTema, TEMAS } from './temas.js';
-import { INICIALES } from './pokemon.js';
+import { INICIALES, forma, nivelDe } from './pokemon.js';
 import { sonidoActivo } from './sonido.js';
 
 const CLAVE = 'pokescript-perfil';
@@ -71,7 +71,20 @@ export const ide = $state({
   // Oak aparece encima de todo cuando hay algo importante que decir.
   oak: null, // { lineas: [] }
   cursor: { linea: 1, col: 1 },
+  // Bloques abiertos donde está el cursor, de afuera hacia adentro
+  // («combate», «recorrer», «si»…), para la ruta de arriba del editor.
+  ruta: [],
+  // Nombre que está bajo el cursor, para mostrar su tipo en el cuadro.
+  palabra: '',
+  debilitado: false, // el último combate terminó con un error de ejecución
+  celebracion: 0, // sube cada vez que un combate termina bien
+  finTransicion: 0, // cuándo termina la transición del último combate
+  evolucion: null, // { de, a, vez } mientras se ve la evolución
 });
+
+// miPokemon es la forma actual del compañero: el inicial o su evolución
+// según el nivel.
+export const miPokemon = () => forma(perfil.companero, nivelDe(perfil.exp));
 
 // logro marca un logro y devuelve true solo la primera vez.
 export function logro(nombre) {

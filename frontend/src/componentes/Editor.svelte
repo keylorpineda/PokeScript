@@ -10,6 +10,7 @@
     highlightActiveLine,
     highlightActiveLineGutter,
     drawSelection,
+    hoverTooltip,
   } from '@codemirror/view';
   import { EditorState } from '@codemirror/state';
   import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
@@ -17,7 +18,8 @@
   import { autocompletion, completionKeymap, closeBrackets } from '@codemirror/autocomplete';
   import { lintGutter, setDiagnostics } from '@codemirror/lint';
   import { pokescript, desplazamiento, completar } from '../lib/pokescript.js';
-  import { niveles, atajosNiveles } from '../lib/niveles.js';
+  import { niveles, atajosNiveles, rutaDelCursor } from '../lib/niveles.js';
+  import { buscar, describir, colorTipo } from '../lib/simbolos.js';
   import { ide } from '../lib/estado.svelte.js';
   import { compilar, ejecutar, programarGuardado, guardarAhora } from '../lib/acciones.js';
   import { sonar } from '../lib/sonido.js';
@@ -57,6 +59,7 @@
         ]),
         pokescript,
         niveles,
+        tipoAlPasar(archivo),
         EditorView.updateListener.of((u) => {
           if (u.docChanged) {
             ide.contenidos[archivo] = u.state.doc.toString();
@@ -69,7 +72,9 @@
     });
   }
 
-  // marcarCursor pone en la barra de abajo la línea y columna del cursor.
+  // marcarCursor pone en la barra de abajo la línea y columna del cursor, en
+  // la ruta de arriba los bloques donde está, y en el cuadro del Pokémon el
+  // nombre que tiene debajo.
   function marcarCursor(estado) {
     const pos = estado.selection.main.head;
     const l = estado.doc.lineAt(pos);
@@ -77,6 +82,55 @@
       linea: l.number,
       col: Array.from(l.text.slice(0, pos - l.from)).length + 1,
     };
+    const ruta = rutaDelCursor(estado);
+    if (ruta.join('›') !== ide.ruta.join('›')) ide.ruta = ruta;
+    const w = estado.wordAt(pos);
+    const palabra = w ? estado.sliceDoc(w.from, w.to) : '';
+    if (palabra !== ide.palabra) ide.palabra = palabra;
+  }
+
+  // tipoAlPasar muestra, al pasar el mouse sobre un nombre, qué es y de qué
+  // tipo, según la última compilación.
+  function tipoAlPasar(archivo) {
+    return hoverTooltip((vistaHover, pos) => {
+      const w = vistaHover.state.wordAt(pos);
+      if (!w) return null;
+      const nombre = vistaHover.state.sliceDoc(w.from, w.to);
+      const hallados = buscar(ide.resultado?.simbolos?.[archivo], nombre).map(describir);
+      if (!hallados.length) return null;
+      return {
+        pos: w.from,
+        end: w.to,
+        above: true,
+        create() {
+          const dom = document.createElement('div');
+          dom.className = 'cm-tipo-dato';
+          for (const h of hallados) {
+            const fila = document.createElement('div');
+            const clase = document.createElement('span');
+            clase.className = 'clase';
+            clase.textContent = h.clase;
+            const texto = document.createElement('code');
+            texto.textContent = h.texto;
+            fila.append(clase, texto);
+            if (h.tipo) {
+              const chip = document.createElement('span');
+              chip.className = 'chip-tipo';
+              chip.style.background = colorTipo(h.tipo);
+              chip.textContent = h.tipo;
+              fila.append(chip);
+            }
+            if (h.detalle) {
+              const det = document.createElement('small');
+              det.textContent = h.detalle;
+              fila.append(det);
+            }
+            dom.append(fila);
+          }
+          return { dom };
+        },
+      };
+    });
   }
 
   function mostrar(archivo) {

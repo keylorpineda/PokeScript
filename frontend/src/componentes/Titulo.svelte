@@ -11,9 +11,10 @@
     cambiarSonido,
     navegacion,
     explorador,
+    miPokemon,
   } from '../lib/estado.svelte.js';
   import { TEMAS } from '../lib/temas.js';
-  import { POKEMON, sprite } from '../lib/pokemon.js';
+  import { POKEMON, sprite, nivelDe } from '../lib/pokemon.js';
   import { PORTADAS, portadaInicial } from '../lib/portadas.js';
   import { crearProyecto, buscarProyecto, proyectosConocidos } from '../lib/acciones.js';
   import { api } from '../lib/api.js';
@@ -216,7 +217,7 @@
               </button>
               {#if op.id === 'continuar' && ultimo}
                 <div class="ficha">
-                  <img class="sprite" src={sprite(perfil.companero)} alt="" />
+                  <img class="sprite" src={sprite(miPokemon())} alt="" />
                   <dl>
                     <dt>ENTRENADOR</dt>
                     <dd>{perfil.nombre}</dd>
@@ -224,7 +225,7 @@
                     <dd>{ultimo.nombre}</dd>
                     <dt>COMPAÑERO</dt>
                     <dd>
-                      {POKEMON[perfil.companero]?.nombre} Nv{5 + Math.floor((perfil.exp ?? 0) / 3)}
+                      {POKEMON[miPokemon()]?.nombre} Nv{nivelDe(perfil.exp)}
                     </dd>
                   </dl>
                 </div>

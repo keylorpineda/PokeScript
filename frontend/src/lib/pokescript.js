@@ -9,6 +9,7 @@ import {
 } from '@codemirror/language';
 import { Tag, tags as t } from '@lezer/highlight';
 import { EditorView } from '@codemirror/view';
+import { snippetCompletion } from '@codemirror/autocomplete';
 
 const et = {
   roca: Tag.define(),
@@ -239,8 +240,33 @@ export function desplazamiento(doc, linea, col) {
   return Math.min(l.from + antes.length, l.to);
 }
 
-// Fuente de autocompletado: palabras reservadas y los símbolos que devolvió
-// la última compilación para este archivo.
+// Plantillas de bloques: al elegir «si» se escribe el bloque completo con su
+// fin y el cursor queda en la condición; Tab pasa al siguiente hueco. «\t»
+// es un nivel de sangría. Van primero en la lista (boost) para que Enter
+// las elija.
+const PLANTILLAS = [
+  ['si', 'si ${1:condición}\n\t${2}\nfin', 'si … fin'],
+  ['si', 'si ${1:condición}\n\t${2}\nsino\n\t${3}\nfin', 'si … sino … fin'],
+  ['mientras', 'mientras ${1:condición}\n\t${2}\nfin', 'mientras … fin'],
+  [
+    'recorrer',
+    'recorrer ${1:i} de ${2:1} hasta ${3:10}\n\t${4}\nfin',
+    'recorrer … de … hasta … fin',
+  ],
+  ['recorrer', 'recorrer ${1:elemento} en ${2:equipo}\n\t${3}\nfin', 'recorrer … en … fin'],
+  [
+    'segun',
+    'segun ${1:valor}\n\t${2:PATRON} entonces ${3:gritar ""}\n\totro entonces ${4:gritar ""}\nfin',
+    'segun … otro … fin',
+  ],
+  ['movimiento', 'movimiento ${1:nombre}(${2})\n\t${3}\nfin', 'movimiento … fin'],
+  ['combate', 'combate\n\t${1}\nfin', 'combate … fin'],
+].map(([label, plantilla, detalle], i) =>
+  snippetCompletion(plantilla, { label, detail: detalle, type: 'snippet', boost: 10 - i / 10 }),
+);
+
+// Fuente de autocompletado: plantillas de bloques, palabras reservadas y los
+// símbolos que devolvió la última compilación para este archivo.
 export function completar(simbolos) {
   const clase = {
     movimiento: 'function',
@@ -255,6 +281,7 @@ export function completar(simbolos) {
     const palabra = ctx.matchBefore(/[\p{L}][\p{L}\p{Nd}_]*/u);
     if (!palabra || (palabra.from === palabra.to && !ctx.explicit)) return null;
     const opciones = [
+      ...PLANTILLAS,
       ...RESERVADAS.map((p) => ({ label: p, type: 'keyword' })),
       ...(simbolos() ?? []).map((s) => ({
         label: s.nombre,

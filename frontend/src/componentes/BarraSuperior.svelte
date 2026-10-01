@@ -4,15 +4,22 @@
   // tema, sonidos y la vuelta a la portada).
   import Pokebola from './Pokebola.svelte';
   import IconoPokedex from './IconoPokedex.svelte';
-  import { ide, perfil, cambiarTema, cambiarSonido, logro } from '../lib/estado.svelte.js';
+  import {
+    ide,
+    perfil,
+    cambiarTema,
+    cambiarSonido,
+    logro,
+    miPokemon,
+  } from '../lib/estado.svelte.js';
   import { TEMAS } from '../lib/temas.js';
-  import { POKEMON, sprite, objeto } from '../lib/pokemon.js';
+  import { POKEMON, sprite, objeto, nivelDe } from '../lib/pokemon.js';
   import { compilar, ejecutar, detener, salirAlMenu, oak } from '../lib/acciones.js';
   import { sonar } from '../lib/sonido.js';
   import { alternarPantallaCompleta } from '../lib/ventana.js';
 
   let abierto = $state(false);
-  const nivel = $derived(5 + Math.floor((perfil.exp ?? 0) / 3));
+  const nivel = $derived(nivelDe(perfil.exp));
 
   function alternar() {
     abierto = !abierto;
@@ -66,7 +73,7 @@
 
     <div class="entrenador">
       <button class="boton tarjeta" class:abierto onclick={alternar} title="Opciones">
-        <img class="sprite mini" src={sprite(perfil.companero ?? 'pikachu')} alt="" />
+        <img class="sprite mini" src={sprite(miPokemon())} alt="" />
         <span class="quien">{perfil.nombre}</span>
         <i class="flechita"></i>
       </button>
@@ -74,10 +81,10 @@
       {#if abierto}
         <div class="menu marco">
           <div class="ficha">
-            <img class="sprite" src={sprite(perfil.companero ?? 'pikachu')} alt="" />
+            <img class="sprite" src={sprite(miPokemon())} alt="" />
             <div>
               <b>{perfil.nombre}</b>
-              <small>{POKEMON[perfil.companero]?.nombre} · Nv{nivel}</small>
+              <small>{POKEMON[miPokemon()]?.nombre} · Nv{nivel}</small>
             </div>
           </div>
 

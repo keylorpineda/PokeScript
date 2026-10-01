@@ -98,3 +98,62 @@ export function sangria(lineasAntes, textoLinea, unidad = 4, tab = 4) {
   if (c === 'cierra' || c === 'medio') return arriba.col;
   return arriba.col + unidad;
 }
+
+// nivelesGuia dice, para cada línea, en qué columnas van sus líneas guía.
+// Como en VS Code, salen de la sangría escrita y no de dónde está la palabra
+// que abre el bloque: hay una guía cada `unidad` columnas antes del texto
+// de la línea. Así, si una línea que abre un bloque se corre con Tab, las
+// guías de su cuerpo no se mueven con ella. Una línea en blanco toma el
+// nivel de las que la rodean, para que las guías no se corten.
+export function nivelesGuia(lineas, unidad = 4, tab = 4) {
+  const nivel = lineas.map((l) => (l.trim() ? Math.floor(columna(l, tab) / unidad) : -1));
+  const arriba = [];
+  let previo = -1;
+  for (const n of nivel) {
+    arriba.push(previo);
+    if (n >= 0) previo = n;
+  }
+  const abajo = new Array(nivel.length);
+  let siguiente = -1;
+  for (let i = nivel.length - 1; i >= 0; i--) {
+    abajo[i] = siguiente;
+    if (nivel[i] >= 0) siguiente = nivel[i];
+  }
+  return nivel.map((n, i) => {
+    let k = n;
+    if (n < 0) {
+      const a = arriba[i];
+      const b = abajo[i];
+      if (a < 0 || b < 0) k = 0;
+      else if (a < b) k = a + 1;
+      else if (a === b) k = a;
+      else k = b + 1;
+    }
+    return Array.from({ length: k }, (_, j) => j * unidad);
+  });
+}
+
+// rutaEn devuelve los bloques que contienen la línea `n` (base 0), de afuera
+// hacia adentro, con un nombre corto para cada uno: «combate», «si»,
+// «movimiento curar», «especie Estado»…
+export function rutaEn(lineas, datos, n) {
+  const { info, bloques } = datos;
+  if (!info[n]) return [];
+  const ids = [...info[n].dentro];
+  const propio = bloques.findIndex((b) => b.abre === n);
+  if (propio >= 0) ids.push(propio);
+  return ids.map((i) => nombreBloque(lineas[bloques[i].abre]));
+}
+
+function nombreBloque(linea) {
+  const ps = palabras(linea);
+  let clave = ps[0];
+  if (!ABREN.has(clave)) clave = ps[ps.indexOf('entonces') + 1];
+  if (clave === 'movimiento') {
+    // «movimiento roca curar(…)»: el nombre es la palabra antes del paréntesis.
+    const m = /([\p{L}][\p{L}\p{Nd}_]*)\s*\(/u.exec(linea.replace(/\/\/.*$/, ''));
+    return m ? `movimiento ${m[1]}` : 'movimiento';
+  }
+  if ((clave === 'especie' || clave === 'ficha') && ps[1]) return `${clave} ${ps[1]}`;
+  return clave;
+}
